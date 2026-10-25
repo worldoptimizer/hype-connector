@@ -1,5 +1,7 @@
 # Start automating Hype
 
+**Coming soon.** The Connector app is not currently available to download. This guide documents the previous preview for existing installations; examples and the agent skill remain available.
+
 Connector adds local automation to the Tumult Hype editor. Build repeatable templates with a script, connect an MCP client, or send operations from AppleScript. An AI service is optional.
 
 The Connector app installs its plugin inside Hype and manages the connection. Your script or agent sends JSON operations to that running editor. Hype remains a desktop application, including for documents opened without an initial window.
@@ -13,7 +15,7 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 
 ## Install and connect
 
-1. Download the DMG from [GitHub Releases](https://github.com/WorldOptimizer/hype-connector/releases). Copy Connector into Applications and open it.
+1. If you already have the preview DMG, copy Connector into Applications and open it. Public app downloads are currently unavailable.
 2. Choose Hype's existing `Application Support/Hype` folder when Connector asks. This selection lets Connector install its plugin and find running Hype sessions. Keep the selection so the app can restore access later.
 3. Install the bundled Connector plugin. If Hype is already open, save your work and restart Hype when convenient to load it. Connector does not quit Hype for you.
 4. Create and save a small Hype document of your own. Start with a single layout, stop playback and leave the scene's root editing context active.
@@ -58,6 +60,6 @@ For a multi-step workflow, work on a fresh copy and keep the selected process an
 
 ## Updates
 
-Connector 0.1.4 enables signed app updates through GitHub. Choose **Connector → Check for Updates…**, or open **Updates** to manage automatic checks and installation. If you have 0.1.3, install 0.1.4 once from the download page. After Connector restarts, it updates an older installed Connector plugin using your saved Hype folder access. Save your work and restart Hype when convenient to load that plugin. See [Updates](updates.md).
+Connector 0.1.4 enables signed app updates through GitHub. Choose **Connector → Check for Updates…**, or open **Updates** to manage automatic checks and installation. The public update feed currently offers no releases. Version 0.1.3 has no configured update channel. After Connector restarts, it updates an older installed Connector plugin using your saved Hype folder access. Save your work and restart Hype when convenient to load that plugin. See [Updates](updates.md).
 
 The project website is [worldoptimizer.github.io/hype-connector](https://worldoptimizer.github.io/hype-connector/).

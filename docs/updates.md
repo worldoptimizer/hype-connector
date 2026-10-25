@@ -1,10 +1,12 @@
 # App and plugin updates
 
+**App distribution is paused.** No app releases are currently available, and the signed update feed contains no update offers. Existing installations remain usable. The following describes the previous preview’s update mechanism.
+
 Connector 0.1.4 includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
 ## If you have Connector 0.1.3
 
-Install 0.1.4 from the website once. Version 0.1.3 did not have a configured update channel, so it cannot discover this release itself. After that upgrade, use the app’s update settings.
+Version 0.1.3 did not have a configured update channel. No manual upgrade is currently offered.
 
 ## Choose how to update
 
@@ -26,4 +28,4 @@ If folder access cannot be restored, open **Connection**, choose the Hype suppor
 
 ## Release channel
 
-The public channel uses [GitHub Releases](https://github.com/worldoptimizer/hype-connector/releases) for app downloads and GitHub Pages for the signed update feed. No private server or account is required to receive updates. This update mechanism does not change the supported Hype versions or the operation limits described in the [compatibility guide](../skills/hype-connector/references/compatibility.md).
+App downloads have been withdrawn from GitHub Releases. The signed feed remains on GitHub Pages with no release entries, so existing clients are not directed to removed downloads. This update mechanism does not change the supported Hype versions or the operation limits described in the [compatibility guide](../skills/hype-connector/references/compatibility.md).

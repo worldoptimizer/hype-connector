@@ -88,8 +88,7 @@ def build(preview=False):
     (dist / 'updates').mkdir()
     shutil.copyfile(feed, dist / 'updates/appcast.xml')
     banner = ('<div class="preview-banner">Local preview. Nothing has been published.</div>' if preview else '')
-    button = ('<a class="button" href="downloads/Connector-0.1.4-build22.dmg">Download local app</a>'
-              if preview else '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build22.dmg">Download for macOS</a>')
+    button = '<p class="availability" lang="en">Coming soon</p>'
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
     homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
     showcase_link = '<a href="demos/eiszeit/index.html">Play the EISZEIT demo</a>'
@@ -131,7 +130,7 @@ def build(preview=False):
         document = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f4f0"><title>{html.escape(title)} — Connector</title><meta name="description" content="{html.escape(title)} with Connector for Tumult Hype 4."><link rel="icon" href="../assets/connector-app-icon.png" type="image/png"><link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/connector-brand.css"><script src="../assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a>{banner}
-<header class="site-header wrap"><a class="brand" href="../"><img src="../assets/connector-app-icon.png" width="76" height="76" alt="">Connector</a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Download</a></nav></header>
+<header class="site-header wrap"><a class="brand" href="../"><img src="../assets/connector-app-icon.png" width="76" height="76" alt="">Connector</a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Coming soon</a></nav></header>
 <div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.4 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
 <footer class="footer wrap"><p>By Max Ziebell. Independent software for Tumult Hype.</p><a class="footer-brand" href="../"><img src="../assets/connector-app-icon.png" alt="" width="28" height="28">Connector home</a></footer><div class="copy-status sr-only" aria-live="polite"></div></body></html>'''
         metadata = (f'<meta property="og:title" content="{html.escape(title, quote=True)} — Connector">'
@@ -168,6 +167,6 @@ def build(preview=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--preview', action='store_true', help='Show unpublished status and use the local preview download route')
+    parser.add_argument('--preview', action='store_true', help='Show local preview status')
     args = parser.parse_args()
     build(args.preview)

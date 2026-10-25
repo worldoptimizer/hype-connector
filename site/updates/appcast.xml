@@ -1,19 +1,12 @@
-<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><!-- sparkle-sign-warning:
 IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
 --><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
-    <channel>
-        <title>Connector</title>
-        <item>
-            <title>0.1.4</title>
-            <pubDate>Sun, 25 Oct 2026 14:34:01 +0100</pubDate>
-            <sparkle:version>22</sparkle:version>
-            <sparkle:shortVersionString>0.1.4</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>Connector 0.1.4</h2><p>Signed automatic updates are now available through GitHub.</p><ul><li>Check for updates and choose automatic download preferences in Updates.</li><li>Connector waits for active automations before restarting.</li><li>Scoped Hype connections are preserved across an update restart.</li><li>An older installed Connector plugin is reconciled after relaunch. Restart Hype when convenient to load it.</li></ul>]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build22.dmg" length="4837617" type="application/octet-stream" sparkle:edSignature="YXXG/rqPuu0i53IV3vf9C7CsoUnSN6mc+dFFzIx/R8b0K8XMKHSt5hfEtO/vUu0e9ejSiYNnDa4+Vr8LLQydDg=="></enclosure>
-        </item>
-    </channel>
+  <channel>
+    <title>Connector</title>
+    <link>https://worldoptimizer.github.io/hype-connector/</link>
+    <description>App distribution is paused. No updates are currently offered.</description>
+  </channel>
 </rss><!-- sparkle-signatures:
-edSignature: ZRHAhzTSnTBdl0DR7w0aPzQW1GTE5a4JQJv2sJPP6DL2MSkxzJc9brHRI6lCuIOAo2Cyko0OYyWhmzpJznPNAw==
-length: 1547
+edSignature: 8vnBMPPr4AWTppObNpv3oCGJLG4gN3QC8CJfuEtWBp4ua0wjuiU0V2YJjMXlU5QCz1QJC7QDgy2TwXXwIfIHCw==
+length: 598
 -->

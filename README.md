@@ -4,7 +4,7 @@
 
 Connector adds local scripting to the Hype editor. Use a repeatable Python or shell script, AppleScript, or an MCP-connected agent to inspect documents, build content, record animation, save and export.
 
-This repository contains the public website, usage guides, three Python examples and a small independent agent skill. The signed and notarized macOS app is available from [GitHub Releases](https://github.com/worldoptimizer/hype-connector/releases/latest).
+This repository contains the public website, usage guides, three Python examples and a small independent agent skill. **The Connector app is coming soon.** App downloads and update offers are currently unavailable. Documentation, examples and the agent skill remain available.
 
 [Visit the website](https://worldoptimizer.github.io/hype-connector/) · [Play EISZEIT](https://worldoptimizer.github.io/hype-connector/demos/eiszeit/index.html)
 
@@ -18,7 +18,7 @@ This repository contains the public website, usage guides, three Python examples
 - [Install the Codex / Claude Code skill](skills/README.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
-The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. Version 0.1.4 enables signed automatic updates through GitHub Releases. If you have 0.1.3, install 0.1.4 once to enable the update channel. See [Updates](docs/updates.md) for settings and plugin behavior.
+The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. The documented preview includes signed automatic updates, but the public feed currently offers no releases. Existing installations are not disabled. See [Updates](docs/updates.md) for details.
 
 ## Examples and skill
 
@@ -39,7 +39,7 @@ python3 -m venv .venv
 python3 scripts/serve_preview.py --port 8080
 ```
 
-To enable the preview's app-download button, pass `--download /absolute/path/Connector.dmg` to the preview server. Without a selected DMG, that route explains that the local download is unavailable. Omit `--preview` only when preparing a reviewed publication with its release asset available. The builder copies an explicit set of assets, renders the guides and creates the example and skill ZIPs. It does not upload anything.
+The app section displays Coming soon in both preview and public builds. There is no public app download. Omit `--preview` to build the reviewed public website. The builder copies an explicit set of assets, renders the guides and creates the example and skill ZIPs. It does not upload anything.
 
 ## Project
 
