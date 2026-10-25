@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Connector</title>
+  <desc id="desc">Two opposing brackets meet to form a connection.</desc>
+  <path d="M34 8H17C10.925 8 6 12.925 6 19v22c0 6.075 4.925 11 11 11h10V40H18V20h16V8Z" fill="#18221f"/>
+  <path d="M30 56h17c6.075 0 11-4.925 11-11V23c0-6.075-4.925-11-11-11H37v12h9v20H30v12Z" fill="#18221f"/>
+  <path d="M25 26h14v12H25z" fill="#ff957b"/>
+</svg>

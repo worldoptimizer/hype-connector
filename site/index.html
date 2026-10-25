@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4f0">
+  <meta name="description" content="Build editable Hype documents with scripts or agents. Connector brings local CLI, AppleScript and MCP automation to Tumult Hype 4.">
+  <meta property="og:title" content="Connector — Automations for Tumult Hype 4">
+  <meta property="og:description" content="Build in Hype. Run it again. Local scripting and agent tools for editable documents.">
+  <meta property="og:type" content="website">
+  <title>Connector — Automations for Tumult Hype 4</title>
+  <link rel="icon" href="assets/connector-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<!--PREVIEW_NOTICE-->
+<header class="site-header wrap">
+  <a class="brand" href="./">Connector</a>
+  <nav aria-label="Main navigation"><a href="#examples">Examples</a><a href="guides/getting-started.html">Documentation</a><a href="guides/agent-skill.html">Agent skill</a><a href="#download">Download</a></nav>
+</header>
+<main id="main">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <h1 id="hero-title">Build in Hype.<br>Run it again.</h1>
+    <div class="hero-intro"><p>Automations for Tumult Hype 4.</p><p>Create scenes, add content, animate and export through scripts or an agent. The result stays editable in Hype.</p><a class="button" href="#download">Get Connector</a></div>
+  </section>
+
+  <section class="showcase wrap" id="examples" aria-labelledby="showcase-title">
+    <figure>
+      <img class="showcase-image" src="assets/eiszeit.jpg" width="886" height="590" alt="EISZEIT start scene: cream background, large red typography, two navigation buttons and a strawberry and vanilla ice cream photograph." fetchpriority="high">
+      <figcaption class="showcase-caption">
+        <h2 id="showcase-title">Made with Connector.<br>EISZEIT.</h2>
+        <div><p>A three-scene Hype document, built through Connector. An ice cream campaign with an ingredients page, different scene transitions and an interactive flavour choice.</p><p>Text, images and controls remain separate editable elements. The giveaway is a local demonstration without data collection.</p><!--SHOWCASE_LINK--></div>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="section wrap split" id="workflows" aria-labelledby="workflows-title">
+    <div class="section-intro"><h2 id="workflows-title">A script when you know the steps.<br>An agent when you want help.</h2><p>Connector runs locally alongside Hype. CLI, MCP and AppleScript use the same operations. No AI service is needed to run a script.</p><a href="guides/scripting.html">Read the scripting guide</a></div>
+    <div class="code-demo">
+      <div class="code-tabs" role="tablist" aria-label="Choose an interface">
+        <button id="tab-cli" role="tab" aria-selected="true" aria-controls="panel-cli" data-tab="cli">CLI</button>
+        <button id="tab-mcp" role="tab" aria-selected="false" aria-controls="panel-mcp" tabindex="-1" data-tab="mcp">MCP</button>
+        <button id="tab-applescript" role="tab" aria-selected="false" aria-controls="panel-applescript" tabindex="-1" data-tab="applescript">AppleScript</button>
+      </div>
+      <div class="code-panel" id="panel-cli" role="tabpanel" aria-labelledby="tab-cli" tabindex="0">
+        <p>List your open Hype documents.</p>
+        <pre><code>'/Applications/Connector.app/Contents/MacOS/ConnectorApp' \
+  --run-operation '{"op":"document.list"}'</code></pre>
+        <div class="code-bottom"><a href="guides/getting-started.html">First connection</a><button class="copy-button" data-copy="panel-cli" aria-label="Copy CLI example">Copy</button></div>
+      </div>
+      <div class="code-panel" id="panel-mcp" role="tabpanel" aria-labelledby="tab-mcp" tabindex="0" hidden>
+        <p>Connect an MCP client to the local app.</p>
+        <pre><code>{
+  "mcpServers": {
+    "hype-connector": {
+      "command": "/Applications/Connector.app/Contents/MacOS/ConnectorApp",
+      "args": ["--mcp-stdio"]
+    }
+  }
+}</code></pre>
+        <div class="code-bottom"><a href="guides/mcp.html">MCP setup</a><button class="copy-button" data-copy="panel-mcp" aria-label="Copy MCP configuration">Copy</button></div>
+      </div>
+      <div class="code-panel" id="panel-applescript" role="tabpanel" aria-labelledby="tab-applescript" tabindex="0" hidden>
+        <p>Find Hype sessions from Script Editor.</p>
+        <pre><code>tell application "Connector"
+    set responseJSON to perform operation "{\"op\":\"host.list\"}"
+end tell</code></pre>
+        <div class="code-bottom"><a href="guides/applescript.html">AppleScript guide</a><button class="copy-button" data-copy="panel-applescript" aria-label="Copy AppleScript example">Copy</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap split" aria-labelledby="skill-title">
+    <div class="section-intro"><h2 id="skill-title">Teach your agent<br>how Hype works.</h2><p>The Connector skill gives Codex and Claude Code the instructions, recipes and Python helpers to work with the editor.</p><a class="button" href="downloads/hype-connector-skill.zip" download>Download the skill</a></div>
+    <div class="skill-content"><p>Connection and permissions. Document creation. Scenes, images, typography, actions and animations. Saving, exporting and checking the result.</p><p>Recipes distinguish supported operations from native authoring calls and explain the editor context they require. They also cover known limitations and how to handle an uncertain result.</p><p>Install the complete folder alongside your existing agent tools. Connector and its Hype plugin are installed separately.</p><div class="link-row"><a href="guides/agent-skill.html">Installation</a><a href="guides/skill-design.html">Design recipes</a><a href="guides/skill-native.html">Native authoring</a></div></div>
+  </section>
+
+  <section class="section wrap split" aria-labelledby="guides-title">
+    <div class="section-intro"><h2 id="guides-title">Make it repeatable.</h2><p>Start with a connection, discover the document, make your changes and verify the saved result.</p><p>Short Python examples are included for learning individual operations.</p><a href="downloads/connector-examples.zip" download>Download the scripting examples</a></div>
+    <nav class="guide-links" aria-label="Guides"><a href="guides/getting-started.html">Install and connect</a><a href="guides/scripting.html">Write a script</a><a href="guides/examples.html">Run the Python examples</a><a href="guides/mcp.html">Set up MCP</a><a href="guides/applescript.html">Use AppleScript</a><a href="guides/troubleshooting.html">Resolve connection and editing errors</a></nav>
+  </section>
+
+  <section class="download-section" id="download" aria-labelledby="download-title"><div class="wrap download-layout"><div><h2 id="download-title">Connector</h2><p>Automations for Tumult Hype 4.</p><p>Version 0.1.3 · Developer ID signed and notarized.</p><!--DOWNLOAD_BUTTON--></div><div class="download-details"><p>macOS 14 or later.<br>Tumult Hype 4.1.22.<br>Universal app for Apple Silicon and Intel.</p><p>Verified on Apple Silicon and under Rosetta. Physical Intel Macs and other Hype versions have not been qualified.</p><p>Automatic updates are not enabled in this build.</p></div></div></section>
+</main>
+<footer class="footer wrap"><p>By <a href="https://github.com/worldoptimizer">Max Ziebell</a>. Independent software for Tumult Hype.</p><a href="https://github.com/worldoptimizer/hype-connector">GitHub</a></footer>
+<div class="copy-status sr-only" aria-live="polite"></div>
+</body>
+</html>

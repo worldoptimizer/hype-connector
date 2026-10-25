@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	<title>index</title>
+	<style>
+		html {
+			height:100%;
+		}
+		body {
+			background-color:#FFF4D7;
+			margin:0;
+			height:100%;
+		}
+	</style>
+	<!-- copy these lines to your document head: -->
+
+	<meta name="viewport" content="user-scalable=yes, width=1200" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html,body {margin:0;width:100%;height:100%;background:#FFF4D7;overflow:hidden;}
+body{display:flex;align-items:center;justify-content:center;}
+.HYPE_document{flex:none;}
+.HYPE_element[role="button"]:focus-visible {outline:3px dashed currentColor;outline-offset:5px;}
+.HYPE_element[role="button"]:hover {filter:brightness(.94);}
+</style>
+<script>
+(function(){
+ function fit(){document.querySelectorAll('.HYPE_document').forEach(function(d){d.style.zoom=Math.min(1.5,window.innerWidth/1200,window.innerHeight/800);});}
+ window.addEventListener('resize',fit);
+ window.HYPE_eventListeners=window.HYPE_eventListeners||[];
+ window.HYPE_eventListeners.push({type:'HypeDocumentLoad',callback:function(){document.title='EISZEIT · Connector Beispiel';fit();document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.getAttribute('role')==='button'){e.preventDefault();e.target.click();}});}});
+})();
+</script>
+
+	<!-- end copy -->
+  </head>
+  <body>
+	<!-- copy these lines to your document: -->
+
+	<div id="index_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:1200px;height:800px;overflow:hidden;">
+		<script type="text/javascript" charset="utf-8" src="index.hyperesources/index_hype_generated_script.js?65133"></script>
+	</div>
+
+	<!-- end copy -->
+  </body>
+</html>
