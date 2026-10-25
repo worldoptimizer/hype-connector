@@ -22,14 +22,14 @@ def main():
 
     class Handler(SimpleHTTPRequestHandler):
         def do_GET(self):
-            if urlsplit(self.path).path == '/downloads/Connector-0.1.3-build15.dmg':
+            if urlsplit(self.path).path == '/downloads/Connector-0.1.4-build21.dmg':
                 if not artifact:
                     self.send_error(503, 'No local app download selected for this design preview')
                     return
                 self.send_response(200)
                 self.send_header('Content-Type', 'application/x-apple-diskimage')
                 self.send_header('Content-Length', str(artifact.stat().st_size))
-                self.send_header('Content-Disposition', 'attachment; filename="Connector-0.1.3-build15.dmg"')
+                self.send_header('Content-Disposition', 'attachment; filename="Connector-0.1.4-build21.dmg"')
                 self.end_headers()
                 with artifact.open('rb') as stream:
                     shutil.copyfileobj(stream, self.wfile)

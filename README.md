@@ -18,7 +18,7 @@ This repository contains the public website, usage guides, three Python examples
 - [Install the Codex / Claude Code skill](skills/README.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
-The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. Automatic updates are not enabled in the first preview.
+The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. Version 0.1.4 enables signed automatic updates through GitHub Releases. If you have 0.1.3, install 0.1.4 once to enable the update channel. See [Updates](docs/updates.md) for settings and plugin behavior.
 
 ## Examples and skill
 

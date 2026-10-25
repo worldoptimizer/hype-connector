@@ -13,6 +13,7 @@ import markdown
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = [
     ('docs/getting-started.md', 'getting-started', 'Getting started'),
+    ('docs/updates.md', 'updates', 'App and plugin updates'),
     ('docs/scripting.md', 'scripting', 'Manual scripting'),
     ('docs/mcp.md', 'mcp', 'MCP & agents'),
     ('docs/applescript.md', 'applescript', 'AppleScript'),
@@ -27,7 +28,7 @@ DOCS = [
     ('skills/hype-connector/references/design-recipes.md', 'skill-design', 'Design recipes'),
 ]
 EXAMPLES = ['build_template.py', 'build_image_template.py', 'build_animation_template.py']
-ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'eiszeit.jpg', 'connector-share-v1.png']
+ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'connector-app-icon.png', 'eiszeit.jpg', 'connector-share-v1.png']
 SITE_URL = 'https://worldoptimizer.github.io/hype-connector/'
 SHARE_IMAGE = SITE_URL + 'assets/connector-share-v1.png'
 SHARE_ALT = 'Connector — Automations for Tumult Hype 4, with the Hype app icon on a warm white background.'
@@ -87,8 +88,8 @@ def build(preview=False):
     (dist / 'updates').mkdir()
     shutil.copyfile(feed, dist / 'updates/appcast.xml')
     banner = ('<div class="preview-banner">Local preview. Nothing has been published.</div>' if preview else '')
-    button = ('<a class="button" href="downloads/Connector-0.1.3-build15.dmg">Download local app</a>'
-              if preview else '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.3/Connector-0.1.3-build15.dmg">Download for macOS</a>')
+    button = ('<a class="button" href="downloads/Connector-0.1.4-build21.dmg">Download local app</a>'
+              if preview else '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build21.dmg">Download for macOS</a>')
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
     homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
     showcase_link = '<a href="demos/eiszeit/index.html">Play the EISZEIT demo</a>'
@@ -128,10 +129,10 @@ def build(preview=False):
         content = rewrite_links(content, source)
         nav = ''.join('<a href="' + other + '.html"' + (' aria-current="page"' if other == slug else '') + '>' + html.escape(label) + '</a>' for path, other, label in DOCS if path != 'examples/README.md')
         document = f'''<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f4f0"><title>{html.escape(title)} — Connector</title><meta name="description" content="{html.escape(title)} with Connector for Tumult Hype 4."><link rel="icon" href="../assets/connector-mark.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/style.css"><script src="../assets/site.js" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f4f0"><title>{html.escape(title)} — Connector</title><meta name="description" content="{html.escape(title)} with Connector for Tumult Hype 4."><link rel="icon" href="../assets/connector-app-icon.png" type="image/png"><link rel="stylesheet" href="../assets/style.css"><script src="../assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a>{banner}
 <header class="site-header wrap"><a class="brand" href="../">Connector</a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Download</a></nav></header>
-<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.3 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
+<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.4 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
 <footer class="footer wrap"><p>By Max Ziebell. Independent software for Tumult Hype.</p><a href="../">Connector home</a></footer><div class="copy-status sr-only" aria-live="polite"></div></body></html>'''
         metadata = (f'<meta property="og:title" content="{html.escape(title, quote=True)} — Connector">'
                     f'<meta property="og:description" content="{html.escape(title, quote=True)} with Connector for Tumult Hype 4.">'

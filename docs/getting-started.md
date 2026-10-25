@@ -8,7 +8,7 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 
 - macOS 14 or later.
 - Tumult Hype 4. Compatibility for this preview is established with **Hype 4.1.22, build 786**. A newer version is not automatically supported simply because it starts.
-- Connector 0.1.3, build 15.
+- Connector 0.1.4, build 21.
 - Python 3 for the optional example scripts. Connector itself does not require Python.
 
 ## Install and connect
@@ -58,6 +58,6 @@ For a multi-step workflow, work on a fresh copy and keep the selected process an
 
 ## Updates
 
-Automatic app updates are disabled in this build until a signed update feed is configured. Use the release downloads for manual app updates. Connector can then update an older installed Connector plugin. Save your work and restart Hype to load the new plugin.
+Connector 0.1.4 enables signed app updates through GitHub. Choose **Connector → Check for Updates…**, or open **Updates** to manage automatic checks and installation. If you have 0.1.3, install 0.1.4 once from the download page. After Connector restarts, it updates an older installed Connector plugin using your saved Hype folder access. Save your work and restart Hype when convenient to load that plugin. See [Updates](updates.md).
 
 The project website is [worldoptimizer.github.io/hype-connector](https://worldoptimizer.github.io/hype-connector/).

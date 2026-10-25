@@ -2,7 +2,7 @@
 
 ## Qualified baseline
 
-The current public guidance targets Connector 0.1.3, app build 15 and plugin build 14, with Tumult Hype 4.1.22 build 786. The app requires macOS 14 or later. Native workflows have been exercised on Apple Silicon and with the Intel executable under Rosetta. This is not physical Intel hardware qualification or a Hype 5 compatibility claim.
+The current public guidance targets Connector 0.1.4, app build 21 and plugin build 16, with Tumult Hype 4.1.22 build 786. The app requires macOS 14 or later. Native workflows have been exercised on Apple Silicon and with the Intel executable under Rosetta. This is not physical Intel hardware qualification or a Hype 5 compatibility claim.
 
 The catalog contains 50 service operations. Representative current-build workflows exercised each operation name, including the native escape hatch. That does not establish every property, argument combination, document structure, architecture or editor state. A successful catalog lookup establishes the request shape; runtime capabilities establish that the loaded plugin advertises it; a successful response establishes only that particular invocation's reported result.
 
@@ -34,7 +34,7 @@ The fixed-text-box and fractional-time helper refinements incorporate targeted o
 | Undo | Optimistic state guards and representative comparisons do not guarantee transactional rollback, dirty-flag restoration or history retention across reopening. |
 | Trace | Synchronous notification/KVO observations were demonstrated on controlled objects. They do not enumerate all Hype events, prove absence of side effects or establish later asynchronous behavior. |
 | Permissions | Saved folder selection can be reused by app-backed operations. Standalone CLI/MCP uses its launcher's access. No universal promise of prompt-free operation after updates or reboot. |
-| Updates | Replacing the plugin on disk requires a new Hype process to load it. Connector does not quit Hype automatically. The current app's automatic update channel is not enabled. |
+| Updates | Replacing the plugin on disk requires a new Hype process to load it. Connector does not quit Hype automatically. App 0.1.4 enables signed automatic updates through GitHub. Version 0.1.3 needs one manual app upgrade. App updates preserve an explicitly selected Hype connection and use the saved folder access to update an older installed plugin. |
 
 ## Failure handling by category
 
