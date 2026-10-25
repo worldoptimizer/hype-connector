@@ -43,6 +43,44 @@ doc.go(story, back, start, transition=4)
 
 This demonstrates composition syntax, not a mandatory design style. Scene names can be changed without changing their IDs. Native buttons can have default border, padding and state appearance; set intended values and check hover/click visually. Text boxes need enough height for all lines and native `ExplicitDimensions:'YES'` when width/height are intended to stay fixed. `Document.text` supplies it; direct text construction must supply it deliberately. Width/height model values alone are insufficient to establish export sizing. Use explicit pixel line height, and avoid typography that depends on fonts absent from the export viewer.
 
+## Button styling without breaking Hype positioning
+
+For native buttons, first consider Hype's own normal/hover/pressed state styling and native animations through the discovered Connector interface. Use those when they express the requested behavior and keep it editable in Hype. Custom head CSS is an additional option, not a required replacement for native button states.
+
+Hype can position a native element with an inline `transform: matrix(...)` or translation. A rule such as `:active { transform: translateY(5px) !important; }` replaces that entire positioning transform. The button can jump toward the scene origin while pressed and return after release. This affects hover rules, CSS animations and JavaScript assignments too. Do not overwrite `transform` or `-webkit-transform` on the Hype-managed node for a decorative effect. Use Hype's native timeline/runtime APIs for intended scene movement. Do not add a CSS `top`/`left` offset assuming Hype's position is stored there.
+
+For a raised button, assign a known `DomID`, set explicit native dimensions (for example 280 × 68), zero all four native padding values, and set `ExplicitDimensions:'YES'`. Add styling through the Hype document head before export. This example targets only the chosen buttons:
+
+```css
+[id^="demo-button-"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  line-height: 1.15 !important;
+  text-align: center;
+  border-radius: 18px;
+  background-image: linear-gradient(rgba(255,255,255,.25), rgba(0,0,0,.06));
+  box-shadow: 0 6px 0 rgba(70,35,20,.22), inset 0 2px 0 rgba(255,255,255,.4);
+  transition: box-shadow .12s, filter .12s;
+}
+[id^="demo-button-"]:active {
+  box-shadow: 0 2px 0 rgba(70,35,20,.22), inset 0 2px 3px rgba(70,35,20,.12);
+}
+@supports (translate: 0 3px) {
+  [id^="demo-button-"]:active { translate: 0 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [id^="demo-button-"] { transition: none; }
+  [id^="demo-button-"]:active { translate: none; }
+}
+```
+
+Independent CSS `translate` composes with the existing transform instead of replacing it. Use it only when that property is not already used by the document, and verify scaled/rotated layouts in the target browser. Shadow/color changes alone are the simplest fallback. An inner visual child is another option when it does not disturb the native action target. Use explicit transition properties, not `transition:all`, which can animate Hype's own position changes.
+
+Verify the actual label center and outer button bounds after export. Native padding can enlarge the box beyond its nominal height. Leave space for the shadow and pressed travel between controls. For a stationary button, record its bounding box and computed transform, hold the pointer down, then release: the Hype transform should remain intact, with only the intended small local offset during the press. Repeat keyboard activation and a narrow layout. A screenshot taken after `click()` finishes does not prove that the pressed state stayed in place.
+
 ## Image placement
 
 Provide an existing, readable PNG or RGB JPEG within Connector's limits. Asset creation is separate from Hype authoring and must follow the user's tool constraints. Do not silently substitute another Hype exporter or package editor.
@@ -83,7 +121,7 @@ A fixed 1200×800 stage is not a responsive layout by itself. Named scene scalin
 1. Read complete scene, element, JavaScript and animation lists. Check names, action targets and actual geometry. Do not infer a successful insertion from a command count.
 2. `doc.save()` must confirm completion. `doc.export(new_export_directory)` needs a new path with an existing Hype-writable parent. Save again if export changed native state you want persisted.
 3. For a persistence check, close only your saved working document, reopen the exact path, rediscover IDs/handles and read the meaningful projections. Never reuse resource UUIDs or handles after the relevant lifetime ends.
-4. Serve the unchanged export locally and inspect each scene at its intended size. Test every navigation route, each local interaction, motion and browser errors. For text and dynamic feedback, measure live bounding boxes and `scrollWidth`/`clientWidth` plus `scrollHeight`/`clientHeight` after the longest messages. Check computed wrapping, clipping, neighboring controls and scene edges. Account for transforms, borders and padding. Take screenshots of the actual interaction states, not an independent mockup.
+4. Serve the unchanged export locally and inspect each scene at its intended size. Test every navigation route, each local interaction, motion and browser errors. Hold styled buttons down to inspect their active state before releasing, then verify keyboard activation. For text and dynamic feedback, measure live bounding boxes and `scrollWidth`/`clientWidth` plus `scrollHeight`/`clientHeight` after the longest messages. Check computed wrapping, clipping, neighboring controls and scene edges. Account for transforms, borders and padding. Take screenshots of the actual interaction states, not an independent mockup.
 5. Deliver the editable `.hype`, native HTML export, reproducible builder script, small README and screenshots. A `.hype.zip` must contain exactly one top-level `.hype` package, with `data.plist` and `Resources` directly inside that package. Keep README and screenshots outside that ZIP. Verify extraction structure.
 
 A script is reproducible when it discovers new IDs and accepts paths/host selection. Hardcoded transient object references are not a recipe. Write generated assets and build outputs to the user's requested location; never edit the skill installation to store one example's state.

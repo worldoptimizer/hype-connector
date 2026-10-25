@@ -22,7 +22,7 @@ The app requires macOS 14 or later and Tumult Hype. Current native compatibility
 
 ## Examples and skill
 
-EISZEIT is a three-scene ice cream campaign built through Connector, with native Hype transitions and an interactive flavour choice. Its exported demo is included in `site/demos/eiszeit`. The fixed 1200 × 800 composition scales to fit the window. The giveaway is a local demonstration and collects no data.
+EISZEIT · Scoop Studio is a three-scene English ice cream campaign built through Connector, with desktop and phone layouts. Serve three orders to unlock a fictional coupon and a short confetti celebration. The native Hype export is included in `site/demos/eiszeit/scene`, with a small “Made with Hype” frame around it. The game stays local, collects no personal data and offers no real discount.
 
 The [examples](examples/README.md) use Python 3's standard library. Keep all three scripts together and supply your own small Hype base document. Each script works on a fresh copy.
 

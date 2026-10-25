@@ -28,7 +28,7 @@ DOCS = [
     ('skills/hype-connector/references/design-recipes.md', 'skill-design', 'Design recipes'),
 ]
 EXAMPLES = ['build_template.py', 'build_image_template.py', 'build_animation_template.py']
-ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'connector-app-icon.png', 'eiszeit.jpg', 'connector-share-v2.png', 'connector-hero-v1.png', 'connector-brand.css']
+ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'connector-app-icon.png', 'eiszeit-studio.png', 'connector-share-v2.png', 'connector-hero-v1.png', 'connector-brand.css']
 SITE_URL = 'https://worldoptimizer.github.io/hype-connector/'
 SHARE_IMAGE = SITE_URL + 'assets/connector-share-v2.png'
 SHARE_ALT = 'Connector — Automations for Tumult Hype 4, with the Connector chain-link app icon on a warm white background.'
@@ -57,7 +57,7 @@ SKILL_FILES = [
     'references/design-recipes.md',
 ]
 SKILL_ROOT = ROOT / 'skills/hype-connector'
-DEMO_FILES = ['index.html', 'index.hyperesources/Eiszeit-Showcase-hero.jpg', 'index.hyperesources/Eiszeit-Showcase-hero_2x.jpg', 'index.hyperesources/HYPE-786.full.min.js', 'index.hyperesources/HYPE-786.thin.min.js', 'index.hyperesources/PIE.htc', 'index.hyperesources/blank.gif', 'index.hyperesources/index_hype_generated_script.js']
+DEMO_FILES = ['index.html', 'scene/index.html', 'scene/index.hyperesources/hero.jpg', 'scene/index.hyperesources/hero_2x.jpg', 'scene/index.hyperesources/scoop.png', 'scene/index.hyperesources/scoop_2x.png', 'scene/index.hyperesources/cone.png', 'scene/index.hyperesources/cone_2x.png', 'scene/index.hyperesources/HYPE-786.full.min.js', 'scene/index.hyperesources/HYPE-786.thin.min.js', 'scene/index.hyperesources/PIE.htc', 'scene/index.hyperesources/blank.gif', 'scene/index.hyperesources/index_hype_generated_script.js']
 
 
 def build(preview=False):
@@ -91,7 +91,7 @@ def build(preview=False):
     button = '<p class="availability" lang="en">Coming soon</p>'
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
     homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
-    showcase_link = '<a href="demos/eiszeit/index.html">Play the EISZEIT demo</a>'
+    showcase_link = '<a class="button" href="demos/eiszeit/index.html">Play EISZEIT</a>'
     homepage = homepage.replace('<!--SHOWCASE_LINK-->', showcase_link)
     (dist / 'index.html').write_text(homepage)
     routes = {str((ROOT / source).resolve()): slug for source, slug, _ in DOCS}

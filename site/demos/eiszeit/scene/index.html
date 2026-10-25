@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="chrome=1,IE=edge" />
+	<title>index</title>
+	<style>
+		html {
+			height:100%;
+		}
+		body {
+			background-color:#FFF3DF;
+			margin:0;
+			height:100%;
+		}
+	</style>
+	<!-- copy these lines to your document head: -->
+
+	<meta name="viewport" content="user-scalable=yes, initial-scale=1.0, width=600" />
+<title>EISZEIT · Scoop Studio</title><meta name="viewport" content="width=device-width, initial-scale=1"><style>
+html,body{margin:0;background:#FFF3DF;color:#382A23}body{overflow-x:hidden}
+[id^="ss-nav"],[id^="ss-pick"],#ss-serve,#ss-clear,[id^="ss-serve-"],[id^="ss-clear-"]{border-radius:18px!important;cursor:pointer!important;box-sizing:content-box!important;white-space:normal!important;transition:filter .15s,box-shadow .15s}
+[role="button"]:hover{filter:brightness(.96)}[role="button"]:focus-visible{outline:4px solid #382A23!important;outline-offset:5px}
+[id^="ss-hero"]{border-radius:40px!important;mix-blend-mode:multiply}
+[id^="ss-bottom"],[id^="ss-top"]{pointer-events:none!important;transition:opacity .18s}
+[id^="ss-feedback"],[id^="ss-order"]{white-space:normal!important;overflow-wrap:break-word}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style><script>(function () {
+  'use strict';
+  var orders = [ ['Strawberry','Pistachio'], ['Vanilla','Vanilla'], ['Pistachio','Vanilla'] ];
+  var guests = ['Mia', 'Sam', 'Alex'];
+  var state = { order: 0, scoops: [], served: 0, done: false, message: 'Match the order. Any stacking order is fine.', couponMessage: 'Your demo code is ready to copy.' };
+  var filters = {Vanilla:'none', Strawberry:'sepia(.4) saturate(1.55) hue-rotate(315deg)', Pistachio:'sepia(.4) saturate(1.1) hue-rotate(23deg)'};
+  function all(id, fn) { document.querySelectorAll('[id="'+id+'"],[id="'+id+'-phone"]').forEach(fn); }
+  function text(id, value) { all(id, function(n) { n.textContent = value; }); }
+  function render() {
+    text('ss-game-title',state.done ? 'Your treat is ready.' : 'Scoop. Serve. Get a treat.');
+    text('ss-progress', state.done ? 'Three happy customers.' : 'Order '+(state.order+1)+' of 3');
+    text('ss-guest', state.done ? 'Sweet work.' : guests[state.order]+' would love');
+    text('ss-order', state.done ? 'You made everyone’s day.' : orders[state.order].join(' + '));
+    text('ss-feedback',state.message);
+    text('ss-count', state.done ? '3 / 3 served' : state.scoops.length+' / 2 scoops');
+    text('ss-serve', state.done ? 'Play again' : 'Serve this cone');
+    ['ss-progress','ss-guest','ss-order','ss-feedback','ss-count','ss-cone','ss-bottom','ss-top','ss-serve','ss-clear','ss-goal','ss-pick-vanilla','ss-pick-strawberry','ss-pick-pistachio'].forEach(function(id){all(id,function(n){n.style.setProperty('display',state.done?'none':(id==='ss-serve'||id==='ss-clear'||id.indexOf('ss-pick-')===0?'flex':'block'),'important');});});
+    document.querySelectorAll('[id^="ss-coupon-"]').forEach(function(n){
+      var button=n.id.indexOf('ss-coupon-copy')===0||n.id.indexOf('ss-coupon-replay')===0||n.id.indexOf('ss-coupon-back')===0;
+      n.style.setProperty('display',state.done?(button?'flex':'block'):'none','important');n.style.opacity=state.done?'1':'0';
+      n.setAttribute('aria-hidden',state.done?'false':'true');
+    });
+    text('ss-coupon-status',state.couponMessage);
+    all('ss-nav-home-game',function(n){n.style.setProperty('display',state.done?'none':'flex','important');});
+    ['bottom','top'].forEach(function(slot,i) { all('ss-'+slot,function(n) {
+      n.style.opacity = state.scoops[i] ? '1':'0'; n.setAttribute('aria-hidden',state.scoops[i]?'false':'true');
+      n.style.filter = filters[state.scoops[i]] || 'none';
+      n.setAttribute('aria-label', state.scoops[i] ? state.scoops[i]+' scoop' : 'Empty scoop slot'); n.setAttribute('alt',state.scoops[i] ? state.scoops[i]+' scoop' : ''); n.setAttribute('title',state.scoops[i] ? state.scoops[i]+' scoop' : '');
+    }); });
+    if(activeDocument)fit(activeDocument);
+    ['Vanilla','Strawberry','Pistachio'].forEach(function(flavor) { all('ss-pick-'+flavor.toLowerCase(),function(n) {
+      n.setAttribute('aria-disabled',state.done ? 'true':'false');
+    }); });
+  }
+  function reset() { state = {order:0,scoops:[],served:0,done:false,message:'Match the order. Any stacking order is fine.',couponMessage:'Your demo code is ready to copy.'}; render(); requestAnimationFrame(function(){window.scrollTo(0,0);all('ss-game-title',function(n){if(n.getBoundingClientRect().height){n.setAttribute('tabindex','-1');n.focus({preventScroll:true});}});}); }
+  window.ScoopStudio = {
+    pick:function(flavor) {
+      if (state.done) { state.message='All orders served! Choose Play again for another round.'; render(); return; }
+      if (state.scoops.length===2) {state.message='That’s a full cone. Serve it, or clear it to try again.'; render(); return;}
+      state.scoops.push(flavor);
+      state.message = state.scoops.length===2 ? 'Looking delicious. Ready to serve?' : 'One more scoop to make their day.';
+      render();
+    },
+    serve:function() {
+      if (state.done) { reset(); return; }
+      if (state.scoops.length!==2) {state.message='This order needs two scoops. Add '+(2-state.scoops.length)+' more.'; render(); return;}
+      if (state.scoops.slice().sort().join('|')!==orders[state.order].slice().sort().join('|')) {
+        state.message='A little mix-up. Clear the cone and match the order above.'; render(); return;
+      }
+      state.served++;
+      if (state.served===3) {state.done=true; state.message='Perfect service. Your demo treat is ready.';requestAnimationFrame(function(){window.scrollTo(0,0);all('ss-game-title',function(n){if(n.getBoundingClientRect().height){n.setAttribute('tabindex','-1');n.focus({preventScroll:true});}});});}
+      else {state.scoops=[];state.order++;state.message='Lovely! Next customer, next little moment of joy.';}
+      render();
+    }, clear:function() {if (state.done) {reset();return;} state.scoops=[];state.message='A fresh cone. Match the customer’s two scoops.';render();},
+    restart:reset,
+    copyCode:function(){
+      function manual(){
+        state.couponMessage='Select and copy SCOOP15.';render();
+        var code=Array.from(document.querySelectorAll('[id^="ss-coupon-code"]')).find(function(n){return n.getBoundingClientRect().height>0;});
+        if(code){code.style.userSelect='text';var range=document.createRange();range.selectNodeContents(code);var selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);}
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText('SCOOP15').then(function(){state.couponMessage='Copied! SCOOP15 is on your clipboard.';render();},manual);
+      }else{manual();}
+    },
+    snapshot:function() {return JSON.parse(JSON.stringify(state));}
+  };
+  var activeDocument = null;
+  function fit(hd) {
+    if (!hd) return;
+    activeDocument = hd;
+    var phone = hd.currentLayoutName() === 'Phone';
+    var base = phone ? 600 : 1200;
+    var height = phone && state.done && hd.currentSceneName()==='Scoop studio' ? 1240 : phone ? ({'Two scoops':1270,'Good ingredients':1400,'Scoop studio':1480}[hd.currentSceneName()] || 1480) : 800;
+    var scale = Math.min(window.innerWidth / base, 1);
+    var root = document.getElementById(hd.documentId());
+    if (!root) return;
+    root.style.setProperty('width', (base*scale)+'px','important');
+    root.style.setProperty('height', (height*scale)+'px','important');
+    root.style.marginLeft='auto'; root.style.marginRight='auto';
+    root.querySelectorAll('.HYPE_scene').forEach(function(n) {
+      n.style.setProperty('width',base+'px','important');
+      n.style.setProperty('height',height+'px','important');
+      n.style.zoom=String(scale);
+    });
+  }
+  function setup(hypeDocument) {
+    document.title='EISZEIT · Scoop Studio';
+    document.querySelectorAll('[id^="ss-"]').forEach(function(n) {
+      if (n.id.match(/ss-(nav|pick|serve|clear|restart|coupon-copy|coupon-replay|coupon-back)/)) {
+        n.setAttribute('role','button');n.setAttribute('tabindex','0');
+        if (!n.dataset.keyboardReady) { n.dataset.keyboardReady='yes';n.addEventListener('keydown',function(e) {
+          if (e.key==='Enter'||e.key===' ') {e.preventDefault();n.click();}
+        }); }
+      }
+    });
+    all('ss-coupon-status',function(n){n.setAttribute('role','status');n.setAttribute('aria-live','polite');n.setAttribute('aria-atomic','true');});
+    all('ss-feedback',function(n){n.setAttribute('role','status');n.setAttribute('aria-live','polite');n.setAttribute('aria-atomic','true');});
+    render();
+    fit(hypeDocument);
+    requestAnimationFrame(function(){fit(hypeDocument);window.scrollTo(0,0);});
+    return true;
+  }
+  window.HYPE_eventListeners = window.HYPE_eventListeners || [];
+  window.HYPE_eventListeners.push({type:'HypeSceneLoad',callback:setup});
+  window.HYPE_eventListeners.push({type:'HypeLayoutRequest',callback:function(hd){
+    requestAnimationFrame(function(){fit(hd);render();});
+    return window.innerWidth < 800 ? 'Phone' : 'Untitled Layout';
+  }});
+  window.addEventListener('resize',function(){requestAnimationFrame(function(){fit(activeDocument);render();});});
+})();
+</script><style>[id^="ss-nav"],[id^="ss-pick"],[id^="ss-serve"],[id^="ss-clear"],[id^="ss-coupon-copy"],[id^="ss-coupon-replay"],[id^="ss-coupon-back"]{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ padding:0!important;box-sizing:border-box!important;line-height:1.15!important;text-align:center!important;
+ border-radius:20px!important;border:1px solid rgba(97,52,32,.16)!important;border-bottom:4px solid rgba(97,52,32,.22)!important;
+ background-image:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.04) 48%,rgba(84,40,21,.07))!important;
+ box-shadow:0 8px 0 rgba(103,57,34,.22),0 13px 20px rgba(90,48,27,.12),inset 0 2px 0 rgba(255,255,255,.5)!important;
+ text-shadow:0 1px 0 rgba(255,255,255,.12);
+ transition:filter .14s,box-shadow .14s,translate .14s!important;
+}
+[role="button"]:hover{filter:brightness(1.035)}
+[role="button"]:active{translate:0 5px!important;box-shadow:0 3px 0 rgba(103,57,34,.26),0 6px 10px rgba(90,48,27,.12),inset 0 2px 3px rgba(70,30,15,.12)!important}
+@media(prefers-reduced-motion:reduce){[role="button"]{transition:none!important}}
+
+[id^="ss-coupon-panel"]{border-radius:32px!important;background-image:linear-gradient(145deg,rgba(255,255,255,.52),transparent 55%,rgba(128,69,29,.08));box-shadow:0 10px 0 #DBB889,0 20px 32px rgba(83,43,18,.12),inset 0 2px 0 rgba(255,255,255,.7);border:1px solid #E3BD8C!important;box-sizing:border-box!important}
+[id^="ss-coupon-code"]{letter-spacing:4px!important;user-select:text!important}
+</style>
+
+	<!-- end copy -->
+  </head>
+  <body>
+	<!-- copy these lines to your document: -->
+
+	<div id="index_hype_container" class="HYPE_document" style="margin:auto;position:relative;width:100%;height:1270px;overflow:hidden;">
+		<script type="text/javascript" charset="utf-8" src="index.hyperesources/index_hype_generated_script.js?91192"></script>
+	</div>
+
+	<!-- end copy -->
+  </body>
+</html>

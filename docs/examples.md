@@ -1,10 +1,29 @@
 # Runnable examples
 
-## EISZEIT: a complete campaign
+## EISZEIT: Scoop Studio
 
-[Play EISZEIT](../site/demos/eiszeit/index.html), a three-scene ice cream campaign built through Connector. Explore the ingredients, switch scenes and choose a flavour in the local giveaway demonstration. No data is collected. The fixed 1200 × 800 composition scales to fit the window.
+[Play EISZEIT](../site/demos/eiszeit/index.html), an English ice cream campaign built through Connector. Explore the ingredients, then serve three customers their two-scoop orders. Match all three to unlock the fictional **SCOOP15** coupon and a short confetti celebration. The demo collects no personal data, needs no signup and offers no real discount.
 
-The original Hype document contains separately editable text, images, controls and animation. The website serves its native HTML export. For building your own complete design, start with the [design recipes](../skills/hype-connector/references/design-recipes.md) and [native authoring recipes](../skills/hype-connector/references/native-recipes.md).
+### A complete, editable example
+
+The campaign has three native Hype scenes, each with desktop and phone layouts. Text, image elements, buttons and action bindings remain editable in Hype. Document-head CSS supplies the raised surfaces and responsive fitting. Hype JavaScript functions connect the controls to the local game logic. The website displays the native HTML export inside a small frame with a **Made with Hype** credit.
+
+The example was started by a fresh GPT-6.1 agent using the public Connector skill and recipes, then refined through visual review and interaction testing. Hype authoring, saving and exporting used Connector. The ice cream artwork was generated separately.
+
+### Try the whole interaction
+
+- Explore the flavors and return to the landing scene.
+- Match each order in either stacking order. Try a wrong flavor or an incomplete cone, then clear it and try again.
+- Serve all three orders, copy the demo code and play again.
+- Try a phone-sized window and keyboard activation. Reduced-motion settings skip the confetti.
+
+The game stays local to the page. Moving between scenes preserves the round, while reloading starts over. The finite canvas celebration is a Hype function named `celebrateTreat`. It runs once on completion and removes its canvas and listeners afterward.
+
+### Build your own
+
+Start with the [design recipes](../skills/hype-connector/references/design-recipes.md) for composition, text bounds, native buttons, safe pressed styling and responsive checks. Use the [native authoring recipes](../skills/hype-connector/references/native-recipes.md) for creating scenes, binding actions and adding Hype functions.
+
+The source example was saved, closed and reopened before its final native export. Browser checks covered navigation, wrong and incomplete orders, duplicate flavors, replay, copied-code feedback, phone layout, keyboard controls, pressed-button positioning and confetti cleanup. These checks used Chromium; Safari has not been separately qualified.
 
 ## Small scripting examples
 
