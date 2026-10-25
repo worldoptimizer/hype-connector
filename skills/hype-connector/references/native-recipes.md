@@ -100,9 +100,30 @@ Navigation dictionary: `{"type":1,"sceneOid":TARGET_SCENE_CONTAINER,"transition"
 
 ## Document JavaScript and head content
 
-Create a function using `doc.script(name, source)`, then bind it with `doc.run_script(scene, element_id, script_id)`. Source is a complete named function with `(hypeDocument, element, event)`. Use `DomID:'choice-result'` on an output element, then `hypeDocument.getElementById('choice-result')` in the function. Storing source does not attach a click event. A navigation action and a JavaScript action are separate; deliberately construct a multiple-action array if both are intended.
+Use Hype's own function template. `javascript.add` already returns the native source, including the two comments explaining `element` and `event`. These comments are ordinary editable source, not a separate header file. Do not discard them by writing a bare function over the whole source.
 
-For a new document, exact document selector `setHeadHtml:` can set export head CSS/JavaScript, followed by `doc.dirty()` and save. Read `headHtml` first in an existing document and preserve unrelated content. Native element attributes should provide the main design. Do not replace the export with hand-authored HTML. External scripts/styles can instead use named resource import and head inclusion.
+Prefer the body-only helper, which fills the empty template returned by Hype and keeps its header and signature:
+
+```python
+script_id = doc.script_body('showMessage', "\tconsole.log('Hello from Hype');")
+doc.run_script(scene, button_id, script_id)
+```
+
+The existing `doc.script(name, source)` helper still accepts a complete named function with `(hypeDocument, element, event)` and now retains the native header too. Additional supplied comments are retained inside the function. Neither helper rewrites JavaScript body whitespace, which can be meaningful inside template literals. A nonempty or unexpected native template stops the operation; inspect the already-created function before any retry. These helpers are not JavaScript syntax validators.
+
+For an existing function, read `javascript.list` first. Preserve its comments, wrapper and unrelated code, including user changes. The helper below replaces exactly one occurrence and refuses a changed source or an ambiguous match:
+
+```python
+row = next(r for r in doc.run('javascript.list')['scripts'] if r['id'] == script_id)
+doc.replace_script_text(script_id, "'Hello from Hype'", "'Welcome back'",
+                        expected_source=row['source'])
+```
+
+This is a read-before-write check, not an atomic editor lock. Avoid concurrent edits. `javascript.setSource` remains an explicit full-source replacement at the low level; it does not merge or protect comments by itself.
+
+Use `DomID:'choice-result'` on an output element, then `hypeDocument.getElementById('choice-result')` in the function. Storing source does not attach a click event. A navigation action and a JavaScript action are separate; deliberately construct a multiple-action array if both are intended.
+
+Document head HTML is separate from function source. Read `headHtml` even for a new document and preserve the returned content. Add or update only your own clearly delimited block, keeping existing comments, script/style tags and user formatting. Exact document selector `setHeadHtml:` replaces the full head string, followed by `doc.dirty()` and save. Inspect again before writing if another editor may have changed it. Native element attributes should provide the main design. Do not replace the export with hand-authored HTML. External scripts/styles can instead use named resource import and head inclusion.
 
 ## Record simple native motion
 

@@ -198,9 +198,19 @@ def main(argv=None):
     script = client.request('javascript.add', document=working)
     script_id = identifier(script.get('id') if isinstance(script, dict) else None, 'JavaScript ID')
     function = 'connectorTemplate_' + uuid.uuid4().hex[:8]
+    template, native_name = script.get('source'), script.get('name')
+    if not isinstance(template, str) or not isinstance(native_name, str):
+        raise ExampleFailure('invalid_result', 'Missing native function template. Inspect the created function.')
+    declaration = 'function ' + native_name + '(hypeDocument, element, event) {'
+    start, end = template.find(declaration), template.rfind('}')
+    body_start = start + len(declaration)
+    if start < 0 or end < body_start or template[body_start:end].strip() or template[end+1:].strip():
+        raise ExampleFailure('invalid_result', 'Unexpected native function template. No source replacement attempted.')
+    source = (template[:start] + declaration.replace('function ' + native_name + '(', 'function ' + function + '(', 1)
+              + '\n\treturn "Created by Connector";\n\t\n' + template[end:])
     client.request('javascript.rename', document=working, script=script_id, value=function)
     client.request('javascript.setSource', document=working, script=script_id,
-                   value='function ' + function + '(hypeDocument, element, event) { return "Created by Connector"; }')
+                   value=source)
     saved = client.request('document.save', document=working)
     if not isinstance(saved, dict) or saved.get('saved') is not True:
         raise ExampleFailure('invalid_result', 'Save did not report completion. Inspect the working copy before exporting.')

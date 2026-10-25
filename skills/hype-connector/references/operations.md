@@ -129,7 +129,7 @@ For new recorded motion, establish the baseline through the inspector at the ini
 
 ## JavaScript functions
 
-`javascript.add` needs `document` and returns the new function's ID, name and source. `javascript.rename` and `javascript.setSource` take `document`, `script`, `value`; `javascript.delete` takes `document`, `script`. Renaming requires a JavaScript identifier matching `[A-Za-z_$][A-Za-z0-9_$]*`. Source must be a string and an explicit empty string clears it. Merely storing a function does not attach it to an event, execute it, or validate browser behavior. Follow a documented action-binding recipe for invocation, then test the exported interaction.
+`javascript.add` needs `document` and returns the new function's ID, name and source. `javascript.rename` and `javascript.setSource` take `document`, `script`, `value`; `javascript.delete` takes `document`, `script`. Renaming requires a JavaScript identifier matching `[A-Za-z_$][A-Za-z0-9_$]*`. Source must be a string and an explicit empty string clears it. `javascript.setSource` replaces the entire function source, including comments and wrapper; it is not a body-only edit. Preserve the native template from `javascript.add` and read existing source before editing. The authoring helpers in [native recipes](native-recipes.md) retain the native header and support narrow edits. Merely storing a function does not attach it to an event, execute it, or validate browser behavior. Follow a documented action-binding recipe for invocation, then test the exported interaction.
 
 ## Undo and synchronous diagnostics
 

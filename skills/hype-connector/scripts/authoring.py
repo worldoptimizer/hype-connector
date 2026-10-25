@@ -5,10 +5,46 @@ These model setters do not claim inspector-equivalent side effects or atomicity.
 """
 from pathlib import Path
 import math
+import re
 import struct
 import time
 
 MAIN = 'kTimelineDefaultIdentifier'
+
+
+def _function_parts(source, name):
+    """Recognize the documented function envelope, not arbitrary JavaScript."""
+    if not isinstance(name, str) or not re.fullmatch(r'[A-Za-z_$][A-Za-z0-9_$]*', name):
+        raise ValueError('Use a JavaScript identifier for the function name.')
+    if not isinstance(source, str):
+        raise ValueError('Function source must be a string.')
+    comments = r'(?:(?:\s+)|(?://[^\r\n]*(?:\r?\n|$))|(?:/\*[\s\S]*?\*/))*'
+    match = re.fullmatch(
+        r'(?P<header>' + comments + r')(?P<opening>function\s+' + re.escape(name)
+        + r'\s*\(\s*hypeDocument\s*,\s*element\s*,\s*event\s*\)\s*\{)'
+        + r'(?P<body>[\s\S]*)(?P<closing>\}\s*)', source)
+    if not match:
+        raise ValueError('Expected a named Hype function with hypeDocument, element, event. '
+                         'Inspect custom source instead of replacing its envelope.')
+    return match
+
+
+def fill_function_template(template, native_name, name, body):
+    """Fill only a fresh, empty native template; preserve its comments and spacing."""
+    parts = _function_parts(template, native_name)
+    if not isinstance(body, str) or parts['body'].strip():
+        raise ValueError('Expected an empty native template and a string body. No replacement was made.')
+    if not isinstance(name, str) or not re.fullmatch(r'[A-Za-z_$][A-Za-z0-9_$]*', name):
+        raise ValueError('Use a JavaScript identifier for the function name.')
+    opening = re.sub(r'\bfunction\s+' + re.escape(native_name) + r'(?=\s*\()',
+                     lambda m: m[0][:-len(native_name)] + name, parts['opening'], count=1)
+    # Never reindent JavaScript: whitespace inside template literals is data.
+    newline = '\r\n' if '\r\n' in template else '\n'
+    if body and not body.startswith(('\n', '\r')):
+        body = newline + body
+    if body and not body.endswith(('\n', '\r')):
+        body += newline
+    return parts['header'] + opening + (body or parts['body']) + parts['closing']
 
 
 def timeline_guard_seconds(actual, duration):
@@ -158,10 +194,43 @@ class Document:
         return self.element(scene, 'text', name, x, y, width, height, **defaults)
 
     def script(self, name, source):
-        script = self.run('javascript.add')['id']
+        """Create a function using Hype's header; accepts the existing full-source API."""
+        parts = _function_parts(source, name)  # Validate before native insertion.
+        return self.script_body(name, parts['body'], comments=parts['header'])
+
+    def script_body(self, name, body, *, comments=''):
+        """Create from a body without throwing away Hype's native template."""
+        if not isinstance(name, str) or not re.fullmatch(r'[A-Za-z_$][A-Za-z0-9_$]*', name):
+            raise ValueError('Use a JavaScript identifier for the function name.')
+        if not isinstance(body, str) or not isinstance(comments, str):
+            raise ValueError('Body and comments must be strings.')
+        if comments.strip():
+            _function_parts(comments + '\nfunction ' + name + '(hypeDocument, element, event) {}', name)
+        created = self.run('javascript.add')
+        script = created['id']
+        template = created['source']
+        native = _function_parts(template, created['name'])
+        # Keep caller comments too, but do not duplicate a copied native header.
+        if comments.strip() and comments.strip() != native['header'].strip():
+            body = comments + body
+        source = fill_function_template(template, created['name'], name, body)
         self.run('javascript.rename', script=script, value=name)
         self.run('javascript.setSource', script=script, value=source)
         return script
+
+    def replace_script_text(self, script, old, new, *, expected_source):
+        """Apply one exact replacement, preserving all other source bytes.
+
+        The read-before-write check is not an atomic editor lock. Avoid concurrent edits.
+        """
+        if not all(isinstance(v, str) for v in (old, new, expected_source)) or not old:
+            raise ValueError('Provide a nonempty exact old text, new text and expected source.')
+        rows = [r for r in self.run('javascript.list')['scripts'] if r['id'] == script]
+        if len(rows) != 1 or rows[0]['source'] != expected_source:
+            raise ValueError('Function changed or is missing. Read it again before editing.')
+        if expected_source.count(old) != 1:
+            raise ValueError('Replacement must match exactly once; nothing was written.')
+        return self.run('javascript.setSource', script=script, value=expected_source.replace(old, new, 1))
 
     def click(self, scene, element, fields):
         # These are native HypeAction values, not edits to a package/plist file.
