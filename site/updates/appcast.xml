@@ -5,15 +5,15 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
         <title>Connector</title>
         <item>
             <title>0.1.4</title>
-            <pubDate>Sun, 25 Oct 2026 14:20:17 +0100</pubDate>
-            <sparkle:version>19</sparkle:version>
+            <pubDate>Sun, 25 Oct 2026 14:26:30 +0100</pubDate>
+            <sparkle:version>21</sparkle:version>
             <sparkle:shortVersionString>0.1.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <description><![CDATA[<h2>Connector 0.1.4</h2><p>Signed automatic updates are now available through GitHub.</p><ul><li>Check for updates and choose automatic download preferences in Updates.</li><li>Connector waits for active automations before restarting.</li><li>Scoped Hype connections are preserved across an update restart.</li><li>An older installed Connector plugin is reconciled after relaunch. Restart Hype when convenient to load it.</li></ul>]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build19.dmg" length="4466129" type="application/octet-stream" sparkle:edSignature="W5fMO+E00vyIyTMNwpDsHHRIDhVL8mzZbas1ejLRBstL1N1KQgbsY+58h8lKYJe1a1/92vgwtv91x74PX0ztCQ=="></enclosure>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build21.dmg" length="4466680" type="application/octet-stream" sparkle:edSignature="y1hwsos72gq5ZESdRod8uDHTOJbVK2yX7pnyZwM6nXZ+yXoGL24/bWFezJjuRNMe8ZG+7EvsH+CvecCkswWIBg=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: cPuUH4o2cj0PqnLb01LiOvlklkjOYL58vN2748sOBTUkF4CpHBce3HQbbND0pl6LV9BWri4nGU7Wa6fqudqeAw==
+edSignature: aJqexE8CNcIdLeNgKvqnNoYoxg79/EVPvQjFyt3w5nJ71yH9mQMzqRvNYeKj3XMT1FW6ogYpnsg7KcLeUaOeCg==
 length: 1547
 -->
