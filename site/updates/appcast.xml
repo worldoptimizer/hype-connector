@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Connector</title>
+        <item>
+            <title>0.1.4</title>
+            <pubDate>Sun, 25 Oct 2026 14:09:33 +0100</pubDate>
+            <sparkle:version>17</sparkle:version>
+            <sparkle:shortVersionString>0.1.4</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<h2>Connector 0.1.4</h2><p>Signed automatic updates are now available through GitHub.</p><ul><li>Check for updates and choose automatic download preferences in Updates.</li><li>Connector waits for active automations before restarting.</li><li>Scoped Hype connections are preserved across an update restart.</li><li>An older installed Connector plugin is reconciled after relaunch. Restart Hype when convenient to load it.</li></ul>]]></description>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build17.dmg" length="2971987" type="application/octet-stream" sparkle:edSignature="ZeYdu8gWqITj2gZCCLm45rwrGXDfoe3wMJlZpTgpALxi/ArOAM82QGP11mbisjrDUCMX9sNefHiM5754iqMUBA=="></enclosure>
+        </item>
+    </channel>
+</rss><!-- sparkle-signatures:
+edSignature: LQ+WCOxYJHzs87vbbwx5xYDpdNghLdQeBNXVLKaEWFb+Xrh2SY4vceqkefoXDuWO9Ya5RWJb5MdKAE3NVY6fBQ==
+length: 1547
+-->

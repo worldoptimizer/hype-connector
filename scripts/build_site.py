@@ -81,6 +81,11 @@ def build(preview=False):
         destination = dist / 'demos/eiszeit' / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, destination)
+    feed = ROOT / 'site/updates/appcast.xml'
+    if not feed.is_file() or feed.is_symlink():
+        raise RuntimeError('Missing signed update feed')
+    (dist / 'updates').mkdir()
+    shutil.copyfile(feed, dist / 'updates/appcast.xml')
     banner = ('<div class="preview-banner">Local preview. Nothing has been published.</div>' if preview else '')
     button = ('<a class="button" href="downloads/Connector-0.1.3-build15.dmg">Download local app</a>'
               if preview else '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.3/Connector-0.1.3-build15.dmg">Download for macOS</a>')
