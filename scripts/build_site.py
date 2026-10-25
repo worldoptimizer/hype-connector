@@ -27,7 +27,24 @@ DOCS = [
     ('skills/hype-connector/references/design-recipes.md', 'skill-design', 'Design recipes'),
 ]
 EXAMPLES = ['build_template.py', 'build_image_template.py', 'build_animation_template.py']
-ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'eiszeit.jpg']
+ASSETS = ['style.css', 'site.js', 'connector-mark.svg', 'eiszeit.jpg', 'connector-share-v1.png']
+SITE_URL = 'https://worldoptimizer.github.io/hype-connector/'
+SHARE_IMAGE = SITE_URL + 'assets/connector-share-v1.png'
+SHARE_ALT = 'Connector — Automations for Tumult Hype 4, with the Hype app icon on a warm white background.'
+
+
+def share_tags():
+    return f'''<meta property="og:site_name" content="Connector">
+<meta property="og:image" content="{SHARE_IMAGE}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1734">
+<meta property="og:image:height" content="907">
+<meta property="og:image:alt" content="{SHARE_ALT}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SHARE_IMAGE}">
+<meta name="twitter:image:alt" content="{SHARE_ALT}">'''
+
+
 SKILL_FILES = [
     'SKILL.md',
     'scripts/connector_client.py',
@@ -68,6 +85,7 @@ def build(preview=False):
     button = ('<a class="button" href="downloads/Connector-0.1.3-build15.dmg">Download local app</a>'
               if preview else '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.3/Connector-0.1.3-build15.dmg">Download for macOS</a>')
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
+    homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
     showcase_link = '<a href="demos/eiszeit/index.html">Play the EISZEIT demo</a>'
     homepage = homepage.replace('<!--SHOWCASE_LINK-->', showcase_link)
     (dist / 'index.html').write_text(homepage)
@@ -110,6 +128,12 @@ def build(preview=False):
 <header class="site-header wrap"><a class="brand" href="../">Connector</a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Download</a></nav></header>
 <div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.3 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
 <footer class="footer wrap"><p>By Max Ziebell. Independent software for Tumult Hype.</p><a href="../">Connector home</a></footer><div class="copy-status sr-only" aria-live="polite"></div></body></html>'''
+        metadata = (f'<meta property="og:title" content="{html.escape(title, quote=True)} — Connector">'
+                    f'<meta property="og:description" content="{html.escape(title, quote=True)} with Connector for Tumult Hype 4.">'
+                    f'<meta property="og:type" content="article">'
+                    f'<meta property="og:url" content="{SITE_URL}guides/{slug}.html">'
+                    + share_tags())
+        document = document.replace('</head>', metadata + '</head>')
         (dist / 'guides' / (slug + '.html')).write_text(document)
     for filename in EXAMPLES:
         shutil.copyfile(ROOT / 'examples' / filename, dist / 'downloads/examples' / filename)
