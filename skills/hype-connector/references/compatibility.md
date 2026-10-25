@@ -2,7 +2,7 @@
 
 ## Qualified baseline
 
-The current public guidance targets Connector 0.1.4, app build 21 and plugin build 16, with Tumult Hype 4.1.22 build 786. The app requires macOS 14 or later. Native workflows have been exercised on Apple Silicon and with the Intel executable under Rosetta. This is not physical Intel hardware qualification or a Hype 5 compatibility claim.
+The current public guidance targets Connector 0.1.4, app build 22 and plugin build 16, with Tumult Hype 4.1.22 build 786. The app requires macOS 14 or later. Native workflows have been exercised on Apple Silicon and with the Intel executable under Rosetta. This is not physical Intel hardware qualification or a Hype 5 compatibility claim.
 
 The catalog contains 50 service operations. Representative current-build workflows exercised each operation name, including the native escape hatch. That does not establish every property, argument combination, document structure, architecture or editor state. A successful catalog lookup establishes the request shape; runtime capabilities establish that the loaded plugin advertises it; a successful response establishes only that particular invocation's reported result.
 

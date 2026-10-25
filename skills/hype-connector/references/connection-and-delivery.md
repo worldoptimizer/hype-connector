@@ -1,6 +1,6 @@
 # Connection, documents and delivery
 
-Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. The supported baseline is Connector 0.1.4 build 21 with Hype 4.1.22 build 786 on macOS 14+. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
+Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. The supported baseline is Connector 0.1.4 build 22 with Hype 4.1.22 build 786 on macOS 14+. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
 
 ## Connect once, keep the identity
 

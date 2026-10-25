@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Require the linked app release to exist
-        run: curl --fail --location --head 'https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build21.dmg'
+        run: curl --fail --location --head 'https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.4/Connector-0.1.4-build22.dmg'
       - name: Install site builder
         run: python -m pip install -r requirements.txt
       - name: Build public files

@@ -8,7 +8,7 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 
 - macOS 14 or later.
 - Tumult Hype 4. Compatibility for this preview is established with **Hype 4.1.22, build 786**. A newer version is not automatically supported simply because it starts.
-- Connector 0.1.4, build 21.
+- Connector 0.1.4, build 22.
 - Python 3 for the optional example scripts. Connector itself does not require Python.
 
 ## Install and connect
