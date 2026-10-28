@@ -1,12 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><!-- sparkle-sign-warning:
+<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
 IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
 --><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
-  <channel>
-    <title>Connector</title>
-    <link>https://worldoptimizer.github.io/hype-connector/</link>
-    <description>App distribution is paused. No updates are currently offered.</description>
-  </channel>
+    <channel>
+        <title>Connector</title>
+        <item>
+            <title>0.1.5</title>
+            <pubDate>Wed, 28 Oct 2026 07:15:42 +0100</pubDate>
+            <sparkle:version>44</sparkle:version>
+            <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<h2>Connector 0.1.5</h2><p>Automations for Tumult Hype 4</p><ul><li>Create documents without manual preparation.</li><li>Guarded element editing and animation creation with editor and playhead preparation.</li><li>Improved native video export and color handling.</li><li>Updated scripting recipes and agent skill.</li></ul>]]></description>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.5/Connector-0.1.5.dmg" length="5370961" type="application/octet-stream" sparkle:edSignature="4RMjByoHmsbmz9Lo5LkOEuSY/roXgTFHSiOWPjZFxBe2UCV8T4Y+Rn3S/gAWo5iRmrjyQAEICq1RGfr7H3S3Aw=="></enclosure>
+        </item>
+    </channel>
 </rss><!-- sparkle-signatures:
-edSignature: 8vnBMPPr4AWTppObNpv3oCGJLG4gN3QC8CJfuEtWBp4ua0wjuiU0V2YJjMXlU5QCz1QJC7QDgy2TwXXwIfIHCw==
-length: 598
+edSignature: fYRPdz3ffgg1j+47hmzBmP+c4hVpgfDr7luUgx261Ue7OAWyvu0YamtstMhU+rCt+YzWZVmY+bAYkBOfCVW4Dw==
+length: 1431
 -->
