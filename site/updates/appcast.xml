@@ -4,16 +4,26 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Connector</title>
         <item>
-            <title>0.1.5</title>
-            <pubDate>Wed, 28 Oct 2026 07:15:42 +0100</pubDate>
-            <sparkle:version>44</sparkle:version>
-            <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+            <title>0.1.6</title>
+            <pubDate>Wed, 28 Oct 2026 10:20:47 +0100</pubDate>
+            <sparkle:version>47</sparkle:version>
+            <sparkle:shortVersionString>0.1.6</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>Connector 0.1.5</h2><p>Automations for Tumult Hype 4</p><ul><li>Create documents without manual preparation.</li><li>Guarded element editing and animation creation with editor and playhead preparation.</li><li>Improved native video export and color handling.</li><li>Updated scripting recipes and agent skill.</li></ul>]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.5/Connector-0.1.5.dmg" length="5370961" type="application/octet-stream" sparkle:edSignature="4RMjByoHmsbmz9Lo5LkOEuSY/roXgTFHSiOWPjZFxBe2UCV8T4Y+Rn3S/gAWo5iRmrjyQAEICq1RGfr7H3S3Aw=="></enclosure>
+            <description><![CDATA[<h2>Connector 0.1.6</h2>
+<p>Automations for Tumult Hype 4.</p>
+<p>This version introduces a seven-day trial and paid licenses. Automation requires an active trial or license. Start your trial explicitly in License, with no payment card or automatic purchase.</p>
+<ul>
+<li>Buy a license or request your license key again from the app.</li>
+<li>Activate a license on up to two Macs.</li>
+<li>CLI, MCP and AppleScript share the app's license.</li>
+<li>Signed updates and downloads remain available through GitHub.</li>
+</ul>
+<p>After installing the bundled plugin, save your work and restart Hype when convenient to load it. Connector does not restart Hype automatically.</p>
+]]></description>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg" length="5625200" type="application/octet-stream" sparkle:edSignature="JxtFjHRNL9pfntjpOBGrpS/UAAcqA+Kr0PncvgZ1Yr969e1doyop7JF8toMJdk74lJyejvQHW6/eVkHeKj6dCA=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: fYRPdz3ffgg1j+47hmzBmP+c4hVpgfDr7luUgx261Ue7OAWyvu0YamtstMhU+rCt+YzWZVmY+bAYkBOfCVW4Dw==
-length: 1431
+edSignature: kOsV0EWJN31Ez6BJsKNs2DF1LgfYnOYDu/dddUBmFqJUAJIdrmZ6gXwHiWGSd2YxvclSiCWqpuEhvFjSw9GUBA==
+length: 1789
 -->

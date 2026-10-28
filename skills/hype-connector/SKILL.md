@@ -9,6 +9,8 @@ Use Connector to operate the desktop editor. This package includes working patte
 
 ## Start here
 
+Connector 0.1.6 automation requires an active trial or paid license. If it returns `license_required`, ask the user to start the seven-day trial or activate a key in Connector's **License** section. Do not start their trial merely to test connectivity. License errors do not call for reinstalling Hype or probing private selectors. See [Connection and delivery](references/connection-and-delivery.md#license-status).
+
 1. Discover the intended Hype host. Pin its PID and plugin session throughout the workflow. If several hosts or documents fit, resolve the target before editing. Never silently switch after a restart. Do not quit another workflow's Hype instance.
 2. Read runtime capabilities and the current request contract. With MCP use `hype_hosts`, `hype_capabilities`, `connector://operations` and `connector://guide`. With the CLI use `hosts`, `capabilities` and `catalog OPERATION`. An installed app normally contains `/Applications/Connector.app/Contents/MacOS/connector`; honor a supplied executable or test wrapper instead.
 3. Prefer the composed editing commands when capabilities list them: `element.edit`, `scene.configure`, `animation.create`. Read [reliable editing](references/reliable-editing.md) for the complete named-only workflow. Use native recipes only for a capability genuinely absent from the named surface, not for basic creation or animation.

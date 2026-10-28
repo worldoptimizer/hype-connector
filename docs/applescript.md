@@ -2,6 +2,8 @@
 
 Connector supplies an AppleScript dictionary and forwards JSON operations to Hype. These examples address **Connector**; they do not require Hype to provide its own AppleScript commands.
 
+Connector 0.1.6 automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
+
 Complete [installation](getting-started.md) and choose the Hype folder in Connector first. macOS may also ask whether your scripting app is allowed to control Connector. You can inspect Connector's dictionary in Script Editor.
 
 ## Discover a connection

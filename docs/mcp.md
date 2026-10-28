@@ -2,6 +2,8 @@
 
 Connector lets an MCP-capable client discover Hype documents, inspect their content and make explicit editor changes. It communicates locally over standard input/output. It does not expose a public network service.
 
+Connector 0.1.6 automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
+
 First complete [installation](getting-started.md), select Hype's folder in Connector and load the plugin in Hype. Keep a small disposable document available for your first session.
 
 ## Server configuration

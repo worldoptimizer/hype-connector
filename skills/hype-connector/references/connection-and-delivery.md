@@ -11,6 +11,14 @@ A normal installation contains two executables:
 
 Use the actual installed location if different. Open Connector normally to select Hype's support folder and install the plugin. If installation changed a running Hype's plugin, Hype must restart before that new version loads. Do not restart an editor with someone else's work as a side effect of discovery.
 
+### License status
+
+Connector 0.1.6 requires an active seven-day trial or paid license. The app, CLI, MCP and AppleScript share that license. `connector license status` inspects the local status. The trial begins only when explicitly started, so obtain the user's intent before `connector license trial` or the app's **Start 7-day trial** action. Activation and the first trial start need internet access. Enter keys in the app or via `connector license activate -` on stdin, never command-line arguments, logs or public messages.
+
+On `license_expired`, use **Refresh status** or `connector license refresh` while online. A valid signed receipt supports at most 72 hours offline. `trial_expired` requires a paid license, and `license_revoked` requires resolving the purchase with support. Do not delete Keychain entries, reset installation IDs, downgrade or switch transports to work around these errors. These are licensing outcomes, not a reason to mutate a Hype document or reinstall its plugin.
+
+### Discover the host
+
 ```sh
 '/Applications/Connector.app/Contents/MacOS/connector' hosts --details
 '/Applications/Connector.app/Contents/MacOS/connector' catalog

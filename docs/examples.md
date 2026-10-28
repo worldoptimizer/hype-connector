@@ -2,6 +2,8 @@
 
 ## EISZEIT: Scoop Studio
 
+For Connector 0.1.6, start or activate the [trial or paid app license](licensing.md) before running automation. The examples use the same license as the app.
+
 [Play EISZEIT](../site/demos/eiszeit/index.html), an English ice cream campaign built through Connector. Explore the ingredients, then serve three customers their two-scoop orders. Match all three to unlock the fictional **SCOOP15** coupon and a short confetti celebration. The demo collects no personal data, needs no signup and offers no real discount.
 
 ### A complete, editable example
@@ -116,4 +118,4 @@ python3 -B build_image_template.py --help
 python3 -B build_animation_template.py --help
 ```
 
-The original small-script examples were verified with Connector 0.1.3/build 15 and Hype 4.1.22/build 786. Connector 0.1.5 adds named creation and editing workflows, described in the [scripting guide](scripting.md) and [reliable editing recipes](../skills/hype-connector/references/reliable-editing.md). Their receipts confirm editing, saving and native export stages; inspect the resulting HTML in a browser to assess visual output and playback.
+The original small-script examples were verified with Connector 0.1.3/build 15 and Hype 4.1.22/build 786. Connector 0.1.5 introduced named creation and editing workflows, described in the [scripting guide](scripting.md) and [reliable editing recipes](../skills/hype-connector/references/reliable-editing.md). Their receipts confirm editing, saving and native export stages; inspect the resulting HTML in a browser to assess visual output and playback.

@@ -6,13 +6,16 @@ Connector adds local scripting to the Hype editor. Use a repeatable Python or sh
 
 This repository contains the public website, usage guides, three Python examples and an agent skill. The Connector app and Hype plugin implementations are private and are not included here.
 
-[Download Connector 0.1.5 for macOS](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.5/Connector-0.1.5.dmg).
+[Download Connector 0.1.6 for macOS](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg).
 
 [Visit the website](https://worldoptimizer.github.io/hype-connector/) · [Play EISZEIT](https://worldoptimizer.github.io/hype-connector/demos/eiszeit/index.html)
+
+Connector 0.1.6 requires a trial or paid license for automation. Start a **7-day trial without a card**, or [buy a €29 one-time license](https://license.maxziebell.de/checkout) for up to two Macs. CLI, MCP and AppleScript use the same app license. [Recover a key](https://license.maxziebell.de/recover) or read [Licensing](docs/licensing.md). Connector 0.1.5 is a historical release that did not require a license.
 
 ## Read the guides
 
 - [Getting started](docs/getting-started.md)
+- [Trial and license](docs/licensing.md)
 - [Manual scripting](docs/scripting.md)
 - [MCP](docs/mcp.md)
 - [AppleScript](docs/applescript.md)
@@ -20,7 +23,7 @@ This repository contains the public website, usage guides, three Python examples
 - [Install the Codex / Claude Code skill](skills/README.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
-The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. Connector 0.1.5 includes signed automatic updates through GitHub. See [Updates](docs/updates.md) for details.
+The app requires macOS 14 or later and Tumult Hype. Current native compatibility checks cover Hype 4.1.22/build 786 on Apple Silicon and x86_64 under Rosetta. Hype continues to run as a desktop app. Connector includes signed automatic updates through GitHub. See [Updates](docs/updates.md) for details.
 
 ## Examples and skill
 
@@ -41,7 +44,7 @@ python3 -m venv .venv
 python3 scripts/serve_preview.py --port 8080
 ```
 
-The app download links to the Connector 0.1.5 release on GitHub. Omit `--preview` to build the public website without the local preview banner. The builder copies an explicit set of assets, renders the guides and creates the example and skill ZIPs. It does not upload anything.
+Use `--output /path/to/preview` to build into a separate local directory. The app download links to the Connector 0.1.6 release on GitHub. Omit `--preview` to build the public website without the local preview banner. The builder copies an explicit set of assets, renders the guides and creates the example and skill ZIPs. It does not upload anything.
 
 ## Project
 

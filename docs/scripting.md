@@ -2,6 +2,8 @@
 
 Connector accepts the same JSON operation objects through its CLI, app command mode, MCP and AppleScript. Use a script for a repeatable workflow that discovers IDs, makes edits and checks their results.
 
+Connector 0.1.6 automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
+
 ## Discover and pin a connection
 
 ```sh
@@ -51,7 +53,7 @@ For subprocesses, pass arguments as an array and serialize JSON with your langua
 
 ## Create a document
 
-Connector 0.1.5 provides named document creation. Check that `document.create` appears in the selected host's capabilities, then choose a new `.hype` destination with an existing writable parent:
+Connector 0.1.5 introduced named document creation. Check that `document.create` appears in the selected host's capabilities, then choose a new `.hype` destination with an existing writable parent:
 
 ```json
 {"op":"document.create","destination":"/absolute/output/New.hype","display":true,"timeout":120}
@@ -121,7 +123,7 @@ Read the same element with `element.get` afterward. Model setters do not automat
 
 ## Composed editing operations
 
-Connector 0.1.5 provides three operations that combine preparation, current-value checks and verification. They appear in capabilities only when the loaded plugin supplies their prerequisites. Discover the real IDs before using these examples:
+Connector 0.1.5 introduced three operations that combine preparation, current-value checks and verification. They appear in capabilities only when the loaded plugin supplies their prerequisites. Discover the real IDs before using these examples:
 
 ```json
 {"op":"element.edit","document":"/absolute/Working.hype","scene":"DISCOVERED-LAYOUT-ID","symbol":"DISCOVERED-SYMBOL-ID","timeline":"kTimelineDefaultIdentifier","element":"DISCOVERED-ELEMENT-ID","property":"Top","value":80}

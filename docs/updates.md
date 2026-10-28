@@ -1,8 +1,14 @@
 # App and plugin updates
 
-[Download Connector 0.1.5](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.5/Connector-0.1.5.dmg) from GitHub Releases.
+[Download Connector 0.1.6](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg) from GitHub Releases.
 
-Connector 0.1.5 includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
+Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
+
+## What changes in 0.1.6
+
+Connector 0.1.6 includes app build 47 and plugin build 38. Automation now requires a trial or paid license. Connector 0.1.5 is a historical release that did not require a license.
+
+After updating, open **License** and explicitly start the seven-day trial without a card, or activate a paid key. A [€29 one-time license](https://license.maxziebell.de/checkout) covers up to two Macs and all app, CLI, MCP and AppleScript automation. Your Hype documents remain editable in Hype after a trial or license receipt expires. See [Trial and license](licensing.md).
 
 ## If you have Connector 0.1.3
 

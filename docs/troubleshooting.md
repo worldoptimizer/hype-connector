@@ -1,5 +1,13 @@
 # Troubleshooting
 
+## A trial or license is required
+
+Connector 0.1.6 requires a trial or paid license for automation. Open **License** in Connector to explicitly start the seven-day trial without a card, or activate your paid key. CLI, MCP and AppleScript use that same license. Connector 0.1.5 did not require a license.
+
+If a receipt has expired, connect to the internet and choose **Refresh status**. Temporary connection failures can use a still-valid signed receipt until its original expiry, at most 72 hours after issue. They do not extend the trial or receipt. A revoked license or invalid receipt cannot be used. Keep the Mac’s date and time correct.
+
+[Recover a license key](https://license.maxziebell.de/recover) using your purchase email address. For activation or two-Mac limit issues, contact [license@maxziebell.de](mailto:license@maxziebell.de). Do not post license keys publicly or delete Keychain data as a troubleshooting step. See [Trial and license](licensing.md).
+
 ## Connector cannot find Hype
 
 Open Connector normally, select Hype's existing support folder and confirm that its plugin is installed. If installation happened while Hype was running, save your work and restart Hype to load it. A new plugin on disk does not change an existing process.
@@ -22,7 +30,7 @@ A successful version or catalog command reads local information and does not pro
 
 Compare the local `catalog` with the selected host's `capabilities`. The catalog describes the installed app; capabilities describe the plugin loaded in Hype. Update Connector's plugin, then save and restart Hype when convenient.
 
-Connector 0.1.5 targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
+Connector 0.1.6 targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
 
 ## The session changed
 
