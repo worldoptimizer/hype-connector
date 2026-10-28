@@ -1,6 +1,6 @@
 # Connection, documents and delivery
 
-Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. The supported baseline is Connector 0.1.4 build 22 with Hype 4.1.22 build 786 on macOS 14+. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
+Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. Connector 0.1.5 targets Hype 4.1.22 build 786 on macOS 14 or later. Named creation, duration, video and external-access workflows require their advertised capabilities. Read [compatibility.md](compatibility.md) for architecture coverage and concrete limits. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
 
 ## Connect once, keep the identity
 
@@ -50,7 +50,7 @@ The standalone CLI inherits its launcher's access. The app-backed mode reuses th
 
 Its selectors must be paired. Add `--allow-native` when the input operation is `native.query`. App mode accepts inline JSON or stdin, not `@FILE`. Input is UTF-8, at most 64 KiB, and stdin must reach EOF within ten seconds before dispatch. This explicit mode does not open another app window. Prefer bounded requests to enormous text or source payloads.
 
-If saved access is unavailable, open the normal Connector app and select the folder again. Its saved grant covers the selected support folder, not every source image, document or export directory that Hype might access. A successful Terminal read does not establish that Hype can read the same file. Use an output/asset location Hype can access. Do not fix a missing grant by repeated Hype launches or by disabling macOS protections.
+If saved access is unavailable, open the normal Connector app and select the folder again. Its saved grant covers the selected support folder, not every source image, document or export directory that Hype might access. A successful Terminal read does not establish that Hype can read the same file. On hosts advertising `ephemeralDestinationAccess`, supported create/copy/HTML/video operations transfer a fresh temporary bookmark for the existing destination parent. `ephemeralDocumentAccess` adds external `document.open` and in-place `document.save`. The client must already hold the required parent access; these transfers do not grant new client permission or permanent Hype access. Scope remains active through native completion or terminal job observation, including work beyond a timeout. Read-only parents may be opened but cannot be writable destinations. Older hosts retain their original sandbox requirements. `resource.import` is outside these transfers, so use an asset location Hype can already read. Do not fix a missing grant by repeated Hype launches or by disabling macOS protections.
 
 `recipe FILE` executes a fixed `steps` array sequentially, stops on the first failure, and pins the host before its first host operation. It is neither a transaction nor an ID-substitution language. Use a short Python or other script when later requests depend on returned IDs.
 
@@ -70,14 +70,26 @@ Use the returned `path`; it is a fresh package copy. Optional `destination` is a
 
 By default, `document.open` waits for its native job and returns `opened:true`. `wait:false` returns a job receipt instead, which requires polling. `display:false` suppresses the initial window. This is a hidden desktop editor, not a headless rendering service: inspector initialization or subsequent editor operations can show UI.
 
-For a genuinely new project without a base package, use the native creation recipe in [native-recipes.md](native-recipes.md). Its required lifecycle is:
+For a new project, prefer the named `document.create` operation when the loaded
+host advertises it:
 
-1. Acquire `NSDocumentController.sharedDocumentController`.
-2. Invoke `openUntitledDocumentAndDisplay:error:` with `true` and `{"$out":"NSError"}`. Inspect both returned document and the error output.
-3. Save the new document by its returned reference using native `save`, a **new** destination and type `com.tumult.hype.document`. Wait for `saved:true`.
-4. Close that untitled native document, then open the saved package through `document.open` and rediscover its contexts. The initial write is a copy; do not assume it assigned the untitled document's URL.
+```json
+{"op":"document.create","destination":"/absolute/output/New.hype","display":true,"timeout":120}
+```
 
-Do **not** call `setFileURL:` before the first save. That was not a substitute for the native first-save lifecycle and caused a modal save error. Do not substitute the fire-and-forget `saveDocument:` selector for Connector's completion-aware save.
+Use a fresh absolute `.hype` path under an existing accessible parent. The
+operation creates a native untitled document, performs initial Save As and
+verifies the assigned document URL, completed job and package contents. Require
+`created:true` and `saved:true`, then discover its contexts directly. Hidden
+creation with `display:false` is supported; movie export separately requires a
+displayed document. A failure can preserve an untitled document or partial
+package. Inspect the returned job and `preservedDocuments` instead of retrying
+or closing it as cleanup. A timeout does not cancel native work.
+
+If `document.create` is absent, read the documented legacy native creation
+recipe in [native-recipes.md](native-recipes.md) before proceeding. Do not guess
+selectors, call `setFileURL:` as a substitute for initial save, or substitute the
+fire-and-forget `saveDocument:` selector for completion-aware save.
 
 Discover layouts using `layout.list`, then elements and timelines for the returned root symbol. Use each layout/controller ID where a named operation requests `scene`; it differs from the scene-container ID. Native scene transitions use the scene-container identity described in the native recipes. Follow `nextOffset` while `hasMore` for named inventories. Invented IDs or partially read inventories make later mutations unreliable.
 
@@ -97,7 +109,9 @@ For a separate editable deliverable:
 {"op":"document.saveCopy","document":"/absolute/Working.hype","destination":"/absolute/output/Result.hype"}
 ```
 
-This does not change the source document's URL and may leave it edited. The destination must be new unless deliberately using `overwrite:true`; do not enable overwrite to conceal a partially completed prior attempt. Parent directories must already exist and be writable by Hype.
+This does not change the source document's URL and may leave it edited. The destination must be new unless deliberately using `overwrite:true`; do not enable overwrite to conceal a partially completed prior attempt. Parent directories must already exist and have the access required by the loaded host. New ephemeral-access hosts transfer the client's existing parent access as described above.
+
+If the original must stay unchanged, save it, create the copy **before the first revision**, and open that copy as the editing target. Rediscover its IDs. Hype may autosave changes even without an explicit `document.save`; a later `saveCopy` or close with `discard:true` cannot restore the original. For persistence checks compare authored content through fresh inventories, and distinguish native metadata/thumbnail rewrites from content changes.
 
 ```json
 {"op":"document.exportHTML","document":"/absolute/Working.hype","destination":"/absolute/output/Result-html"}
@@ -105,7 +119,37 @@ This does not change the source document's URL and may leave it edited. The dest
 
 Export uses the document's current native export options with HTML enabled and enclosing-folder disabled. Its named API does not expose arbitrary export slices. The destination must be fresh, with no symlink components. Require `exported:true` and use the returned `indexPath`, rather than guessing the HTML filename. Completion verifies HTML, generated JavaScript, referenced runtimes and a restorable plist when requested. Default wait is 120 seconds. Export may update native layout or metadata: save explicitly afterward if those changes belong in the editable deliverable.
 
+For a native movie, check `document.exportVideo` in host capabilities before
+editing or promising delivery:
+
+```json
+{"op":"document.exportVideo","document":"/absolute/Working.hype","destination":"/absolute/output/Result.mp4","duration":3,"framesPerSecond":30}
+```
+
+The current adapter is restricted to Hype 4.1.22 build 786, H.264 MP4 without
+audio, positive duration up to 30 seconds, integer FPS 1–60 (default 30), and
+`scale:1`. The document must be displayed without an existing sheet. Its first
+scene needs even integer dimensions at most 1920 × 1080. Native progress runs
+without a Save dialog or simulated keys. Require a successful envelope with
+`writerStatus:2`, `nativeSheetResponse:1`, `containerVerified:true`, positive
+`capturedFrames` and the intended output `path`. Completion checks native
+cleanup/sheet completion, writer completion and container structure,
+then delivers without replacing an existing destination. Partial output is
+preserved. Independent decoding and visual checks remain necessary for the
+specific deliverable.
+
+The default wait is 120 seconds, with optional `timeout` 1–300. A timeout means
+unknown outcome, not cancellation. Inspect the exact export job with `job.get`;
+keep its document open while `nativePending` is true. To request cancellation,
+use `document.cancelVideo` with the exact `document` and export `job`, then poll
+for terminal state. A finalizing writer may refuse cancellation. Never export
+again to resolve an uncertain response. Capture includes the endpoint frame:
+three seconds at 30 fps produces 91 frames, about 3.033 seconds encoded. Receipts
+separate `requestedDuration` and `capturedFrames`.
+
 Inspect the exported page in a browser for layout, scene navigation, animation, custom JavaScript, and usable controls. This checks the native export; it is not an opportunity to rebuild the design in a replacement HTML page. When the user requires Connector-only authoring, keep document changes and export generation in Connector. Generated files can be copied unchanged for delivery.
+
+Serve that unchanged export folder on loopback HTTP before opening it in a browser. For example, run `python3 -m http.server 8770 --bind 127.0.0.1 --directory '/absolute/output/Result-html'` using an available port, then open its `http://127.0.0.1:8770/index.html`. Track that server's process and stop only your server after verification. Browser tools may disallow `file:` URLs. Use HTTP from the start, do not disable security or try alternate routes after a policy refusal. Inspect computed text color/font size and visible bounds after all edits, as well as motion at multiple times; an inspector receipt alone does not establish the final appearance.
 
 ```json
 {"op":"document.close","document":"/absolute/Working.hype"}
@@ -151,14 +195,19 @@ This illustrates the `mcpServers` config format; clients may express the same co
 - `hype_hosts`: discover sessions.
 - `hype_capabilities`: check selected loaded plugin.
 - `hype_query`: named reads only.
-- `hype_apply`: named mutations.
+- `hype_apply`: named mutations through a `request` object.
+- `hype_document_create`: direct `destination`, optional `display` and `timeout`.
+- `hype_timeline_set_duration`: direct `document`, `symbol`, `timeline`, positive `seconds` and fresh `expectedDuration`.
+- `hype_document_export_video`: direct `document`, `destination`, `duration`, optional `framesPerSecond` and `timeout`.
 - `hype_native`: raw native bridge request, exposed only with `--allow-native`.
 
-Read `connector://guide` and `connector://operations` for the current request contracts. Named tool arguments wrap the operation:
+Read `connector://guide` and `connector://operations` for the current request contracts. `hype_query` and `hype_apply` arguments wrap the operation:
 
 ```json
 {"pid":12345,"session":"DISCOVERED-SESSION","request":{"op":"document.list"}}
 ```
+
+The three dedicated mutation tools take their fields directly without `op` or a `request` wrapper, plus optional `pid` and `session`. Tool presence alone does not establish support in the selected loaded plugin. Use `hype_apply` for `document.cancelVideo`.
 
 For `hype_native`, `request` is the **raw** native object, such as `{"op":"roots"}`, without another `native.query` wrapper. The query/apply tools reject `native.query`; use the enabled native tool explicitly. Native getters can initialize state, so native tools are not classified as inherently read-only.
 
@@ -197,3 +246,16 @@ return {jobID, statusJSON}
 This polls only once. Continue reading `job status jobID` while its parsed state is `running`. `completed` includes a `response` operation envelope; verify its success and `saved:true`. `failed` may include a failed response or an error. Release only after handling the result with `job status jobID releasing true`. These records belong to the running app; do not send their IDs to native `job.get`. Connector refuses a normal quit while app-owned jobs/helpers are active.
 
 Generate JSON with a serializer and parse responses as JSON; substring searches for `true` or `saved` do not establish success. The named operation contracts are identical across CLI, MCP and AppleScript.
+
+## Movie window preparation
+
+When capabilities advertise `videoExport.preparesDocumentWindow`, a named video
+export prepares the requested document window and selects its tab if necessary.
+Do not add a close/reopen workaround. Existing sheets remain untouched and cause
+`document_busy`. The operation converts captured images into tagged sRGB buffers
+for the native H.264 writer (BT.709 primaries/matrix, sRGB transfer). It composites
+alpha over black. Verify the completed movie independently; compression is lossy.
+
+## Playhead after opening a document
+
+Use `playhead.seek` with the document, layout/controller scene ID, expected Main timeline and requested seconds. It prepares the requested scene when its editor has not loaded, waits for a stable cursor, then performs one guarded seek. No manual inspector preparation is required. This may change the active scene. `playhead.get` stays read-only and may return `editor_not_ready` or `inspector_controller_not_ready` before the target editor has loaded. Unknown outcomes are not replayed automatically.

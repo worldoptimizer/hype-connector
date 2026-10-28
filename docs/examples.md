@@ -116,4 +116,4 @@ python3 -B build_image_template.py --help
 python3 -B build_animation_template.py --help
 ```
 
-The examples demonstrate Connector 0.1.3/build 15 with Hype 4.1.22/build 786. Their receipts confirm editing, saving and native export stages; inspect the resulting HTML in a browser to assess visual output and playback.
+The original small-script examples were verified with Connector 0.1.3/build 15 and Hype 4.1.22/build 786. Connector 0.1.5 adds named creation and editing workflows, described in the [scripting guide](scripting.md) and [reliable editing recipes](../skills/hype-connector/references/reliable-editing.md). Their receipts confirm editing, saving and native export stages; inspect the resulting HTML in a browser to assess visual output and playback.

@@ -1,6 +1,6 @@
 # CLI and scripting
 
-Connector accepts the same JSON operation objects through its CLI, app command mode, MCP and AppleScript. Use a script for a repeatable workflow that discovers IDs, makes edits and checks their results. No AI service is required.
+Connector accepts the same JSON operation objects through its CLI, app command mode, MCP and AppleScript. Use a script for a repeatable workflow that discovers IDs, makes edits and checks their results.
 
 ## Discover and pin a connection
 
@@ -49,6 +49,16 @@ A successful command writes `{"ok":true,"result":...}` to stdout. A failed comma
 
 For subprocesses, pass arguments as an array and serialize JSON with your language's JSON library. This avoids shell quoting problems in text, filenames and JavaScript source. The [Python examples](examples.md) implement this pattern.
 
+## Create a document
+
+Connector 0.1.5 provides named document creation. Check that `document.create` appears in the selected host's capabilities, then choose a new `.hype` destination with an existing writable parent:
+
+```json
+{"op":"document.create","destination":"/absolute/output/New.hype","display":true,"timeout":120}
+```
+
+Confirm `created:true`, `saved:true` and the returned path before discovering layouts and elements. Creation leaves the new document open. `display:false` requests creation without showing its initial window. A failure or timeout can leave a document or partial output, so inspect the returned job and preserved-document details before another deliberate action. A timeout does not cancel native work.
+
 ## Build a working copy
 
 Send these as separate operations, filling later values from earlier responses:
@@ -81,10 +91,10 @@ For paginated lists, follow `nextOffset` while `hasMore` is true. Insertion scri
 
 | Task | Named operations |
 | --- | --- |
-| Documents and files | `document.list`, `document.open`, `document.save`, `document.saveCopy`, `document.exportHTML`, `document.close` |
-| Scenes and layouts | `scene.list`, `layout.list`, `layout.add`, `symbol.list`, `scene.settings.prepare/get/set` |
-| Elements and text | `element.list`, `element.get`, `element.setAttribute`, `text.set`, `element.createImage`, `editor.action` |
-| Timeline and animation | `timeline.list`, `playhead.get/seek`, `animation.list/get/setTiming/delete`, `timingFunction.list` |
+| Documents and files | `document.create`, `document.list`, `document.open`, `document.save`, `document.saveCopy`, `document.exportHTML`, `document.close` |
+| Scenes and layouts | `scene.configure`, `scene.list`, `layout.list`, `layout.add`, `symbol.list`, `scene.settings.prepare/get/set` |
+| Elements and text | `element.edit`, `element.list`, `element.get`, `element.setAttribute`, `text.set`, `element.createImage`, `editor.action` |
+| Timeline and animation | `animation.create`, `timeline.list/setDuration`, `playhead.get/seek`, `animation.list/get/setTiming/delete`, `timingFunction.list` |
 | Inspector and recording | `inspector.prepare`, `inspector.get`, `inspector.set` |
 | Assets | `resource.import`, `resource.list`, `resourceGroup.list` and the resource-group operations in the catalog |
 | Document JavaScript | `javascript.list/add/rename/setSource/delete` |
@@ -108,6 +118,30 @@ For a fixed model value:
 Read the same element with `element.get` afterward. Model setters do not automatically reproduce inspector adjustments, recording behavior or undo grouping. Colors use an explicit object such as `{"$color":[0.2,0.24,0.68,1],"space":"srgb"}`. `text.set` accepts HTML, so escape plain text before sending it. It does not select rich-text ranges.
 
 `editor.action` provides named editor actions, including insertion, duplication and grouping. These change editor context and selection. Root insertion requires the scene already to be in its root editing context; clearing element selection does not leave a nested group or symbol.
+
+## Composed editing operations
+
+Connector 0.1.5 provides three operations that combine preparation, current-value checks and verification. They appear in capabilities only when the loaded plugin supplies their prerequisites. Discover the real IDs before using these examples:
+
+```json
+{"op":"element.edit","document":"/absolute/Working.hype","scene":"DISCOVERED-LAYOUT-ID","symbol":"DISCOVERED-SYMBOL-ID","timeline":"kTimelineDefaultIdentifier","element":"DISCOVERED-ELEMENT-ID","property":"Top","value":80}
+```
+
+`element.edit` reads a fresh inspector value and writes with recording disabled. An optional `expectedValue` adds your own guard. This is suitable for the inspector's supported geometry, typography and other property families.
+
+```json
+{"op":"scene.configure","document":"/absolute/Working.hype","scene":"DISCOVERED-LAYOUT-ID","property":"width","applyToMatchingLayouts":false,"value":640}
+```
+
+`scene.configure` edits one selected-layout setting. Size and scaling require `applyToMatchingLayouts:false`. Changing a scene's dimensions does not resize its elements.
+
+```json
+{"op":"animation.create","document":"/absolute/Working.hype","scene":"DISCOVERED-LAYOUT-ID","symbol":"DISCOVERED-SYMBOL-ID","timeline":"kTimelineDefaultIdentifier","element":"DISCOVERED-ELEMENT-ID","property":"Left","from":40,"to":300,"seconds":3}
+```
+
+`animation.create` records a new Left, Top or Opacity lane on Main from time zero to a positive frame-aligned endpoint. It refuses an existing lane, extends timeline duration only when needed and verifies the resulting animation. Use a stopped root-scene context with the target symbol already displayed. These operations can change selection, inspector pane and playhead. Only recording mode is restored. Completed steps remain applied if a later step fails.
+
+Read the [reliable editing recipes](../skills/hype-connector/references/reliable-editing.md) for supported contexts, receipt handling and a complete workflow. Lower-level inspector operations remain available when you need explicit control.
 
 ## Use the inspector for recording
 

@@ -1,23 +1,48 @@
 # Compatibility and interpreting results
 
-## Qualified baseline
+## Supported version and scope
 
-The current public guidance targets Connector 0.1.4, app build 22 and plugin build 16, with Tumult Hype 4.1.22 build 786. The app requires macOS 14 or later. Native workflows have been exercised on Apple Silicon and with the Intel executable under Rosetta. This is not physical Intel hardware qualification or a Hype 5 compatibility claim.
+Connector 0.1.5 requires macOS 14 or later and targets Tumult Hype 4.1.22,
+build 786. Representative workflows have been checked on Apple Silicon and
+using the Intel executable under Rosetta. Physical Intel hardware and other Hype
+versions have not been qualified. Native H.264 movie export and the newer
+external-access and composed-editing workflows have been checked on Apple
+Silicon; Intel runtime support for those workflows remains unqualified.
 
-The catalog contains 50 service operations. Representative current-build workflows exercised each operation name, including the native escape hatch. That does not establish every property, argument combination, document structure, architecture or editor state. A successful catalog lookup establishes the request shape; runtime capabilities establish that the loaded plugin advertises it; a successful response establishes only that particular invocation's reported result.
+Read the selected host's capabilities before using an operation. Updating the
+app does not replace a plugin already loaded in Hype. The local catalog describes
+request shapes, capabilities describe the loaded plugin's advertised support,
+and a successful response describes that particular invocation's result. These
+do not qualify every argument, property, document structure or editor state.
 
-Representative demonstrated workflows include:
+Connector 0.1.5 includes these named workflows, subject to the limits below:
 
-- Model geometry, whole-element text and sRGB color edits; JavaScript function creation, rename, source update and deletion.
-- Native element/scene insertion, duplication and grouping; responsive layout creation; separate scene inspector size, scaling and background changes.
-- A width edit isolated to one of two sibling layouts, with both layouts' settings read after save/reopen.
-- Main-timeline playhead control, one recorded position lane, easing/start-time edits and a terminal keyframe deletion. These do not establish arbitrary keyframe drag or deletion equivalence.
-- PNG import and native image placement; CSS/JavaScript import and head inclusion; RGB JPEG behavior on representative images. Native save/reopen and HTML output were checked for these workflows.
-- A recorded position edit followed by named undo and redo, with exposed element/animation state compared and saved/reopened. A separate border-width inspector example also exercised undo/redo.
-- CLI, app-backed one-shot commands, MCP and Connector AppleScript workflows, including session selection and native save/reopen.
-- Hidden-open template work, loaded-controller inspection and bounded native collection pagination.
+- Create a displayed or initially hidden document, save it, save a separate copy,
+  and export HTML to a fresh destination. Supported external-access operations
+  transfer the client's existing parent permission through temporary bookmarks.
+  Broader lazy media/resource reads after an open scope ends remain unqualified.
+- Change inspector fields with `element.edit`, selected-layout settings with
+  `scene.configure`, and record a new Left, Top or Opacity lane on Main with
+  `animation.create`. Read the [reliable editing recipes](reliable-editing.md)
+  for required context, receipts and partial-failure handling.
+- Set a positive explicit timeline duration with `timeline.setDuration` and a
+  fresh expected value. Zero/reset, stale-value and below-content requests are
+  refused. Duration shortening and broader numerical precision cases remain
+  qualification gaps.
+- Export H.264 MP4 from a displayed document without audio. Movie qualification
+  covers representative 8, 30 and 60 fps exports, cancellation and observation
+  after timeout. Hidden-window export, audio, other codecs and Intel movie
+  export remain unqualified.
 
-The fixed-text-box and fractional-time helper refinements incorporate targeted observations. They do not establish that an independent agent run or every newly composed document passes. Examples should still include their own persistence and browser checks. Exporting valid files does not verify that a button fires, text fits, a transition is correct or a script runs.
+Other supported operation families include model geometry, whole-element text,
+sRGB colors, document JavaScript, native element/scene insertion, responsive
+layouts, scene settings, Main-timeline playhead and animation timing, PNG/RGB
+JPEG import and CSS/JavaScript resources. Named undo/redo is available for suitable
+editor actions. Each family has its own context requirements and limits.
+
+Check saved and reopened state for persistence-sensitive changes. Exporting a
+valid file does not establish that text fits, a button fires, a transition looks
+right or a script runs. Inspect the actual export and test its interactions.
 
 ## Limits that affect planning
 
@@ -26,15 +51,15 @@ The fixed-text-box and fractional-time helper refinements incorporate targeted o
 | Native API | Private editor objects can vary between Hype versions. Use named operations and known native recipes; discover and verify before a new native call. |
 | Symbols and groups | Clearing selection does not exit nested editing. Named symbol entry/exit and persistent-symbol creation are not currently provided. Do not confuse model elements with display elements when using a documented native route. |
 | Text | `text.set` replaces HTML without promising rich-text range editing or native auto-measurement. Fixed exported text boxes need `ExplicitDimensions:'YES'` as well as dimensions; the helper supplies this measured native flag. Check rendered bounds and scroll extents after the longest dynamic messages. |
-| Animation | Named recording is Main-only. `animation.setTiming` is a model edit, not a calibrated drag gesture. Fractional endpoint guards can hit a float32/double boundary mismatch; the helper corrects only identical float32 representations. Do not extrapolate one property lane to all properties or all frame rates. |
+| Animation | Positive explicit duration uses `timeline.setDuration` when advertised, with fresh `expectedDuration`. Raw zero can mean automatic duration, and zero/reset requests are refused. Named recording is Main-only. `animation.setTiming` is a model edit, not a calibrated drag gesture. Fractional endpoint guards can hit a float32/double boundary mismatch; the helper corrects only identical float32 representations. Do not extrapolate one property lane to all properties or all frame rates. |
 | Scene geometry | Only selected-layout scope is supported by named scene settings. Resizing the stage does not proportionally reposition or resize elements. |
 | Resources | Named import is bounded to CSS, JavaScript, PNG and RGB JPEG. Resource UUIDs can change after reopening. General resource replacement/deletion is outside the named surface. |
-| Export | Named HTML export uses a narrow native writer contract. Export slices, advanced export choices and publishing do not become supported merely by adding guessed request fields. |
+| Export | Named HTML export uses a narrow native writer contract. Native H.264 MP4 export requires advertised support: Hype 4.1.22 build 786, displayed document, no audio, duration up to 30 seconds, integer FPS 1–60, scale 1 and even first-scene dimensions at most 1920 × 1080. Three seconds at 30 fps includes 91 frames. Check advertised support before promising a movie. Export slices, advanced export choices and publishing do not become supported merely by adding guessed request fields. |
 | Hidden windows | `display:false` is an opening preference. Editor controllers still need to load and some actions may expose UI. It is not a headless service guarantee. |
 | Undo | Optimistic state guards and representative comparisons do not guarantee transactional rollback, dirty-flag restoration or history retention across reopening. |
 | Trace | Synchronous notification/KVO observations were demonstrated on controlled objects. They do not enumerate all Hype events, prove absence of side effects or establish later asynchronous behavior. |
-| Permissions | Saved folder selection can be reused by app-backed operations. Standalone CLI/MCP uses its launcher's access. No universal promise of prompt-free operation after updates or reboot. |
-| Updates | Replacing the plugin on disk requires a new Hype process to load it. Connector does not quit Hype automatically. App 0.1.4 enables signed automatic updates through GitHub. Version 0.1.3 needs one manual app upgrade. App updates preserve an explicitly selected Hype connection and use the saved folder access to update an older installed plugin. |
+| Permissions | Saved folder selection can be reused by app-backed operations. Hosts advertising ephemeral access can receive the client's existing parent access for create/copy/HTML/video and open/save. This grants no new client permission or permanent Hype access; resource import remains separate. Standalone CLI/MCP uses its launcher's access. No universal promise of prompt-free operation after updates or reboot. |
+| Updates | Replacing the plugin on disk requires a new Hype process to load it. Connector does not quit Hype automatically. Connector 0.1.5 includes signed automatic updates through GitHub. Version 0.1.3 needs one manual app upgrade. App updates preserve an explicitly selected Hype connection and use the saved folder access to update an older installed plugin. |
 
 ## Failure handling by category
 

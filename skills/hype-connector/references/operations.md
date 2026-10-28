@@ -29,6 +29,7 @@ Resource UUIDs can change after close/reopen. Re-list before using them again. N
 ## Documents, persistence and export
 
 - `fixture.stage`: `source`, optional `destination`. Creates a unique copy of a `.hype` or `.hypetemplate` package and returns the path. Rejects symlinks and special files. Use that returned copy for experimentation rather than editing the source. The default staging parent has a 100 MB budget; an explicit destination permits up to 2 GB. Existing files are not overwritten.
+- `document.create`: new absolute `.hype` `destination`, optional `display` (true), `timeout` (120). Prefer this initial Save As workflow when advertised; verify `created:true` and `saved:true`. Preserve partial/untitled documents on failure.
 - `document.open`: absolute `path`, optional `display` and `wait`. Defaults to `display:false`, `wait:true`. Use `wait:false` only when you will track the returned native job to completion.
 - `document.save`: `document`. Wait for its completion result. A returned job ID alone is insufficient.
 - `document.saveCopy`: `document`, `destination`, optional `overwrite`. Use a fresh destination by default. The open document's URL remains unchanged; reopen the saved copy explicitly when checking it.
@@ -57,6 +58,24 @@ An empty `elements` array clears selection; it does not leave a nested group or 
 `text.set` requires the same identity fields plus a string `value`. It writes complete `InnerHTML`; an empty string deliberately clears it. It can introduce that text attribute, but does not promise native text measurement, a selected character range, or editor-style line-break normalization. Read actual width, height, font size and line height after changing copy. Rich-text range selection remains outside this named operation. For fixed text geometry, also establish native `ExplicitDimensions:'YES'` (a string); `Width`/`Height` alone can leave exported text auto-sized. `Document.text` sets this flag. If it is missing, use the known native attribute factory rather than expecting `element.setAttribute` to introduce it. The [native text recipe](native-recipes.md#fixed-text-boxes-and-dynamic-messages) explains wrapping and required runtime checks after the longest dynamic message.
 
 Colors use `{"$color":[0.2,0.4,0.6,1],"space":"srgb"}`. Components are numbers from 0 to 1. Unsupported spaces remain opaque. Do not reinterpret an opaque object as a usable CSS value.
+
+## Composed edits and new animation lanes
+
+Prefer the capability-gated client commands for ordinary inspector edits:
+`element.edit` prepares, reads and sets one property with recording disabled;
+`scene.configure` does the same for one selected-layout scene property;
+`animation.create` constructs one new `Left`, `Top` or `Opacity` Main lane from
+zero to a positive frame-aligned endpoint. Other properties are refused with
+`unsupported_property` before dispatch. This restriction applies to the composed
+animation writer; existing lower-level inspector property families are unchanged. They compose named operations without private selectors.
+Read [reliable-editing.md](reliable-editing.md) for request examples, prerequisite
+capabilities, partial-result handling and a complete named-only Python workflow.
+
+These commands do not save, form a transaction, restore previous editor context
+or overwrite existing animation. Their bounded readiness polling never retries a
+property mutation. Native recording restoration is verified. Check
+`host.capabilities` for `clientOperations` before using them. Their new
+compositions are not yet claimed as live qualified.
 
 ## Inspector edits: prepare, read, change
 
@@ -121,7 +140,7 @@ Import may update source metadata even if its contents stay the same. Post-dispa
 
 `animation.get` takes `document`, `symbol`, `timeline`, `animation`. Use it after listing to inspect the property, element, easing and endpoint attribute values. A missing endpoint is null; an existing attribute with an empty value remains an attribute object containing `value:null`.
 
-For new recorded motion, establish the baseline through the inspector at the initial time, prepare/read at the desired point, then set with `recording:true` on Main. Inspect the full resulting animation lane, save and read after reopening. Do not assume a particular number of rows or a synthesized UUID.
+For a new `Left`, `Top` or `Opacity` lane, prefer `animation.create` when advertised. For the lower-level recording path, establish the baseline through the inspector at the initial time, prepare/read at the desired point, then set with `recording:true` on Main. Inspect the full resulting animation lane, save and read after reopening. Do not assume a particular number of rows or a synthesized UUID.
 
 `animation.setTiming` takes the same context and animation identity, plus at least one of `startTime` or `timingFunction`. Discover an easing ID with `timingFunction.list`. Both inputs are validated before either edit. Moving start time through this model operation can also change duration to preserve the old end time. Re-read; this is not a guaranteed equivalent of dragging a keyframe in Hype.
 

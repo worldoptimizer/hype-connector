@@ -33,6 +33,9 @@ App MCP reuses Connector's saved folder selection. If it reports missing or inva
 | `hype_capabilities` | Read the selected plugin's available operations |
 | `hype_query` | Send a named read operation |
 | `hype_apply` | Send a named mutation |
+| `hype_document_create` | Create and initially save a new document |
+| `hype_timeline_set_duration` | Set a timeline duration with a current-value guard |
+| `hype_document_export_video` | Request a native video export |
 
 Start with discovery and capabilities. For a multi-step workflow, include the selected `pid` and `session` on every call. Read the available MCP resources `connector://guide` and `connector://operations` for request instructions and schemas.
 
@@ -52,7 +55,7 @@ Example `hype_query` arguments, after discovering real values:
 }
 ```
 
-Use `hype_apply` with the same wrapper for named write operations. Read tools refuse writes. Follow pagination and inspect successful results before constructing the next request.
+Use `hype_apply` with the same wrapper for named write operations, including `element.edit`, `scene.configure` and `animation.create`. The dedicated mutation tools take operation fields directly, without `op` or a `request` wrapper. Their presence does not replace the loaded host capability check. See the [scripting guide](scripting.md) for the creation and editing contracts. Read tools refuse writes. Follow pagination and inspect successful results before constructing the next request.
 
 For a server fixed to one discovered connection, append both `--hype-pid`, the PID string, and `--hype-session`, the session string, to the launch arguments. Conflicting tool selectors are refused. Refresh this configuration deliberately after Hype restarts; do not silently switch a workflow to another process.
 

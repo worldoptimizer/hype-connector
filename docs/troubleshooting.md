@@ -22,7 +22,7 @@ A successful version or catalog command reads local information and does not pro
 
 Compare the local `catalog` with the selected host's `capabilities`. The catalog describes the installed app; capabilities describe the plugin loaded in Hype. Update Connector's plugin, then save and restart Hype when convenient.
 
-This preview targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
+Connector 0.1.5 targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
 
 ## The session changed
 

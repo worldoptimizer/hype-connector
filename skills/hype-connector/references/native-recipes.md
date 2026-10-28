@@ -20,7 +20,7 @@ contract = c.command('catalog', 'editor.action')
 
 `run(op, **fields)` calls a named operation. `native(op, **fields)` sends a raw query. `invoke(target, selector, *args, retain=False)` returns the native `value` and checks error out-parameters. `page(op, key, **fields)` exhausts a named collection with advancing offsets. Errors stop this client; it does not automatically retry or replace the session. Keep a workflow log and save discovered IDs when developing a longer script.
 
-To inspect after a failure, deliberately create a fresh client with the **same PID and session** and make only the necessary diagnostic reads first. Do not restart the failed builder or silently select another host. Native first-save releases its completed job record after confirmed success; a release failure does not mean the save failed.
+To inspect after a failure, deliberately create a fresh client with the **same PID and session** and make only the necessary diagnostic reads first. Do not restart the failed builder or silently select another host. Named creation releases its completed job record after confirmed success; a release failure does not mean the save failed.
 
 ## Create and open a real editable document
 
@@ -34,9 +34,9 @@ doc.name_scene(home, 'Start')
 details = doc.add_scene('Details')
 ```
 
-The helper calls `NSDocumentController.sharedDocumentController`, then `openUntitledDocumentAndDisplay:error:` with `true` and `{"$out":"NSError"}`. It uses native `save` with the new document reference, `to`, `type:"com.tumult.hype.document"` and timeout 120. Only after `saved:true` does it close that newly created blank document, open the saved copy, and acquire its exact reference using `documentForURL:`.
+`Document.create` uses `document.create` and verifies both `created:true` and `saved:true`, including the returned path. It leaves that named document open. It never closes and reopens an untitled copy or sets `fileURL` manually. Read capabilities first; a missing operation requires a compatible app/plugin, not an improvised first-save sequence.
 
-This is a **Save To** copy: the untitled original's URL remains unset. Do not set `fileURL` before first save; this can drive the editor into an error dialog. If initial save fails or completion is uncertain, preserve the original and investigate. For a template, use `fixture.stage` and `document.open`, then `Document(c, returned_path)` instead.
+Document handles are acquired lazily only when a native-only helper needs one. Named creation, scene settings and recording need no native handle. For a template, use `fixture.stage` and `document.open`, then `Document(c, returned_path)`.
 
 Every scene in `layout.list` has an `id` for its controller/layout, `sceneContainer` for navigation and `symbol` for root content. `name_scene` names the scene container. Responsive layout names are separate.
 
@@ -128,10 +128,12 @@ Document head HTML is separate from function source. Read `headHtml` even for a 
 ## Record simple native motion
 
 ```python
-rows = doc.record(home, panel, 'Top', 270, 240, 1.0)
+receipt = doc.record(home, panel, 'Top', 270, 240, 1.0)
 ```
 
-Use this helper only for a **new unanimated element on Main**. It sets Main's `userDefinedDuration` through `HypeTimeline.setUserDefinedDuration:` first because empty timelines can have zero duration. It records a baseline at zero without recording and an endpoint using separate inspector prepare/read/set requests with `recording:true`, then seeks to zero. It checks recording restoration and returns all animation rows. This is not a general retiming tool. Use a common end time when calling this helper on multiple elements; its duration setter can shorten a previously longer timeline. For existing animation, inspect duration and lanes and use the explicit operation workflow.
+`Document.record` now calls `animation.create`. It returns the complete workflow receipt, including the verified animation projections, instead of the legacy bare row list. It accepts a new Left, Top or Opacity lane on Main, refuses an existing lane, preserves a longer timeline and checks native recording restoration. Read [reliable editing](reliable-editing.md) for contracts and partial-failure handling. It does not use private duration selectors. A non-frame-aligned endpoint is refused and may leave an earlier duration extension, reported in completed steps.
+
+`Document.duration` uses `timeline.setDuration` with a freshly read expected duration. This explicitly requested duration operation can shorten a timeline when the named API permits it; `Document.record` never does so. `Document.setting` delegates to `scene.configure`, and `Document.edit` delegates to `element.edit`.
 
 `MAIN` is `kTimelineDefaultIdentifier`. Frame quantization is authoritative. Read actual returned times and animation rows, save and test playback. Do not promise arbitrary properties are recordable merely because geometry was exercised.
 
@@ -139,7 +141,7 @@ Use this helper only for a **new unanimated element on Main**. It sets Main's `u
 
 The native cursor uses float32 while the current plugin's duration bound is compared as a double. At a timeline end of `1.1`, preparation can return `1.100000023841858`. Passing that exact number back can produce `time_range` even though it identifies the same native cursor position.
 
-`timeline_guard_seconds(actual, duration)` handles only this representation mismatch. It returns `actual` unchanged when it is within duration. If it is above duration, it substitutes duration **only when both numbers have identical float32 bytes**; otherwise it raises an error. Both values must be finite and nonnegative. `Document.time_guard(scene, actual)` reads the current Main duration before applying that rule, and `Document.record` uses it for both get and set guards.
+`timeline_guard_seconds(actual, duration)` handles only this representation mismatch. It returns `actual` unchanged when it is within duration. If it is above duration, it substitutes duration **only when both numbers have identical float32 bytes**; otherwise it raises an error. Both values must be finite and nonnegative. `Document.time_guard(scene, actual)` reads the current Main duration before applying that rule, for callers of the low-level inspector API. The composed `animation.create` handles this internally.
 
 For an explicit inspector workflow on Main, use `seconds=doc.time_guard(scene, returned_seconds)` with both `inspector.get` and `inspector.set`. Keep the actual returned cursor in diagnostics. This does not move the playhead, lengthen the timeline, relax context matching or round to another frame. Do not replace it with a broad epsilon, general decimal rounding or an automatic retry after a failed mutation. For another timeline, discover that timeline's actual duration and apply the same pure helper deliberately. This compatibility rule is not a claim that every fractional endpoint or frame rate has been qualified.
 

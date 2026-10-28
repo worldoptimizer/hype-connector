@@ -2,7 +2,7 @@
 
 Plan a small, coherent composition before sending calls. Native Hype text, shapes, image elements and buttons remain editable. Use a few repeated helper functions for typography and buttons. Keep body text readable, avoid decorative labels with no purpose, and give the layout enough space for its actual copy. A collection of default rectangles is an API smoke test, not a finished design.
 
-Read [native recipes](native-recipes.md) and the two Python helpers first. They supply connection handling, first save, scene insertion, native attributes, action binding and short motion. Use [operation families](operations.md) for named import, layouts and inspector contracts.
+Start with [reliable editing](reliable-editing.md) for named document creation, inspector changes and animation. Read [native recipes](native-recipes.md) for helpers that fill remaining gaps such as native attributes and action binding. Use [operation families](operations.md) for named import, layouts and inspector contracts.
 
 ## Compose several scenes
 
@@ -112,7 +112,7 @@ Attach the returned function ID using `doc.run_script(scene, button_id, script_i
 
 ## Motion and responsive behavior
 
-For a new decorative element, `doc.record(scene, element, 'Top', start_y, end_y, 1.0)` records native position motion on Main. Use a common duration for multiple helper calls. Fractional endpoints use the documented float32 guard in `Document.record`, which preserves the same native cursor identity. Inspect returned rows, and test the actual export. Scene transitions and timeline motion are separate features. Do not make every piece move; animate where it helps attention or orientation.
+For a new decorative element, `doc.record(scene, element, 'Top', start_y, end_y, 1.0)` records native position motion on Main. The helper now delegates to `animation.create`, which refuses an existing property lane and never shortens a longer timeline. Use frame-aligned endpoints. Inspect the returned workflow receipt and animation projections, and test the actual export. Scene transitions and timeline motion are separate features. Do not make every piece move; animate where it helps attention or orientation.
 
 A fixed 1200×800 stage is not a responsive layout by itself. Named scene scaling can scale its container but does not automatically reflow element geometry. For real alternate layouts, use `layout.add` with discovered IDs and prepare each layout independently. If using head CSS for surrounding viewport behavior, apply it in Hype before export and test narrow as well as desktop viewports. Report a fixed-stage limitation honestly when no alternate layout was built.
 
@@ -122,6 +122,7 @@ A fixed 1200×800 stage is not a responsive layout by itself. Named scene scalin
 2. `doc.save()` must confirm completion. `doc.export(new_export_directory)` needs a new path with an existing Hype-writable parent. Save again if export changed native state you want persisted.
 3. For a persistence check, close only your saved working document, reopen the exact path, rediscover IDs/handles and read the meaningful projections. Never reuse resource UUIDs or handles after the relevant lifetime ends.
 4. Serve the unchanged export locally and inspect each scene at its intended size. Test every navigation route, each local interaction, motion and browser errors. Hold styled buttons down to inspect their active state before releasing, then verify keyboard activation. For text and dynamic feedback, measure live bounding boxes and `scrollWidth`/`clientWidth` plus `scrollHeight`/`clientHeight` after the longest messages. Check computed wrapping, clipping, neighboring controls and scene edges. Account for transforms, borders and padding. Take screenshots of the actual interaction states, not an independent mockup.
+   A text element’s outer box includes native padding and may overlap another box without overlapping the glyphs. If bounds are ambiguous, inspect the rendered text and text-node ranges (`Range.getClientRects()`), along with clipping and scroll extents. Do not infer readability from outer boxes alone. Correct actual layout problems through Connector and re-export before delivery. Browser screenshot tools may restrict output paths independently of Connector. Use the tool’s supported screenshot output or inspect its returned image, then copy permitted artifacts to the deliverable folder. Do not treat a screenshot file-path refusal as failure of document authoring, and do not edit the generated page to make a screenshot pass.
 5. Deliver the editable `.hype`, native HTML export, reproducible builder script, small README and screenshots. A `.hype.zip` must contain exactly one top-level `.hype` package, with `data.plist` and `Resources` directly inside that package. Keep README and screenshots outside that ZIP. Verify extraction structure.
 
 A script is reproducible when it discovers new IDs and accepts paths/host selection. Hardcoded transient object references are not a recipe. Write generated assets and build outputs to the user's requested location; never edit the skill installation to store one example's state.

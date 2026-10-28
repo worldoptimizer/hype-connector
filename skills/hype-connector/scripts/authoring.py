@@ -72,33 +72,34 @@ def color(hex_value):
 class Document:
     def __init__(self, client, path):
         self.client, self.path = client, str(Path(path).absolute())
-        controller = client.invoke({'class': 'NSDocumentController'}, 'sharedDocumentController', retain=True)
-        self.ref = client.invoke(controller, 'documentForURL:', {'$url': Path(self.path).as_uri()}, retain=True)
-        if not isinstance(self.ref, dict) or '$ref' not in self.ref:
-            raise ValueError('Open this exact document before constructing Document.')
+        self._ref = None
+
+    @property
+    def ref(self):
+        # Native-only recipes acquire their document handle lazily. Named
+        # creation, settings and motion do not require the native escape hatch.
+        if self._ref is None:
+            controller = self.client.invoke({'class': 'NSDocumentController'},
+                                            'sharedDocumentController', retain=True)
+            ref = self.client.invoke(controller, 'documentForURL:',
+                                     {'$url': Path(self.path).as_uri()}, retain=True)
+            if not isinstance(ref, dict) or '$ref' not in ref:
+                raise ValueError('Open this exact document before using a native recipe.')
+            self._ref = ref
+        return self._ref
 
     @classmethod
     def create(cls, client, destination):
         path = Path(destination).absolute()
         if path.exists() or not path.parent.is_dir() or path.suffix != '.hype':
-            raise ValueError('Use a new .hype path with an existing Hype-writable parent.')
-        controller = client.invoke({'class': 'NSDocumentController'}, 'sharedDocumentController', retain=True)
-        ref = client.invoke(controller, 'openUntitledDocumentAndDisplay:error:', True,
-                            {'$out': 'NSError'}, retain=True)
-        if not isinstance(ref, dict) or '$ref' not in ref:
-            raise ValueError('Native document creation did not return a document handle.')
-        saved = client.native('save', target=ref, to=str(path), type='com.tumult.hype.document', timeout=120)
-        if saved.get('saved') is not True:
-            raise ValueError('Initial save did not confirm completion. Preserve the untitled document.')
-        # Failure to release this diagnostic record does not undo the confirmed save.
-        # The client stops on failure; inspect the existing output instead of recreating it.
-        if saved.get('job'):
-            client.run('job.get', job=saved['job'], release=True)
-        # Save To creates a copy and leaves the untitled document URL unset.
-        # It is safe to close the just-created blank document only after this confirmed save.
-        client.invoke(ref, 'close')
-        client.run('document.open', path=str(path), display=True)
-        return cls(client, path)
+            raise ValueError('Use a new .hype path with an existing writable parent.')
+        result = client.run('document.create', destination=str(path), display=True)
+        if result.get('created') is not True or result.get('saved') is not True:
+            raise ValueError('Creation did not confirm initial save. Preserve state and inspect before continuing.')
+        actual = result.get('document')
+        if not isinstance(actual, str) or Path(actual).resolve() != path.resolve():
+            raise ValueError('Creation returned a different document. Do not retry.')
+        return cls(client, actual)
 
     def run(self, op, **fields):
         return self.client.run(op, document=self.path, **fields)
@@ -157,9 +158,12 @@ class Document:
         return q
 
     def setting(self, scene, property, value):
-        q = self.prepare_scene(scene, property)
-        current = self.run('scene.settings.get', **q)
-        return self.run('scene.settings.set', **q, expectedValue=current['value'], value=value)
+        return self.run('scene.configure', scene=scene['id'], property=property, value=value)
+
+    def edit(self, scene, element, property, value, seconds=0, **guards):
+        return self.run('element.edit', scene=scene['id'], symbol=scene['symbol'],
+                        timeline=MAIN, element=element, property=property,
+                        value=value, seconds=seconds, **guards)
 
     def elements(self, scene):
         return self.client.page('element.list', 'elements', document=self.path, symbol=scene['symbol'])
@@ -248,34 +252,21 @@ class Document:
         self.click(scene, element, dict(type=4, javascriptOid=script))
 
     def duration(self, scene, seconds):
-        if seconds < 0:
-            raise ValueError('Duration must be nonnegative.')
-        timelines = self.client.invoke(self.symbol_ref(scene), 'timelines', retain=True)
-        r = self.client.native('find', target=timelines, where={'identifier': MAIN}, limit=1, scanLimit=1000)
-        if len(r['items']) != 1:
-            raise ValueError('Main timeline not found.')
-        self.client.invoke(r['items'][0], 'setUserDefinedDuration:', seconds)
-        self.dirty()
-        return self.run('timeline.list', symbol=scene['symbol'])
+        if type(seconds) not in (int, float) or not math.isfinite(seconds) or seconds <= 0:
+            raise ValueError('Explicit duration must be a finite positive number.')
+        rows = self.run('timeline.list', symbol=scene['symbol'])['timelines']
+        main = [row for row in rows if row['id'] == MAIN]
+        if len(main) != 1:
+            raise ValueError('Expected exactly one Main timeline.')
+        return self.run('timeline.setDuration', symbol=scene['symbol'], timeline=MAIN,
+                        seconds=seconds, expectedDuration=main[0]['duration'])
 
     def record(self, scene, element, property, start_value, end_value, end_seconds):
-        # For a newly created, unanimated element on Main; do not use as a general retiming tool.
-        self.duration(scene, end_seconds)
-        q = dict(scene=scene['id'], symbol=scene['symbol'], element=element, timeline=MAIN, property=property)
-        for seconds, value, recording in [(0, start_value, False), (end_seconds, end_value, True)]:
-            prepared = self.run('inspector.prepare', **q, seconds=seconds)
-            if prepared.get('prepared') is not True:
-                raise ValueError('Inspector preparation did not complete.')
-            actual = prepared['seconds']
-            time.sleep(.6)
-            current = self.run('inspector.get', **q, seconds=self.time_guard(scene, actual))
-            result = self.run('inspector.set', **q, seconds=self.time_guard(scene, current['seconds']),
-                              expectedValue=current['value'], value=value, recording=recording)
-            if result.get('recordingRestored') is not True:
-                raise ValueError('Recording restoration was not confirmed.')
-        self.run('playhead.seek', scene=scene['id'], timeline=MAIN, seconds=0)
-        return self.client.page('animation.list', 'animations', document=self.path,
-                                symbol=scene['symbol'], timeline=MAIN)
+        # The composed API refuses a pre-existing lane and never shortens Main.
+        # Return its complete verified receipt, including actual animation rows.
+        return self.run('animation.create', scene=scene['id'], symbol=scene['symbol'],
+                        timeline=MAIN, element=element, property=property,
+                        **{'from': start_value, 'to': end_value, 'seconds': end_seconds})
 
     def time_guard(self, scene, seconds):
         rows = self.run('timeline.list', symbol=scene['symbol'])['timelines']

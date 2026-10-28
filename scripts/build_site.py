@@ -25,6 +25,7 @@ DOCS = [
     ('skills/hype-connector/references/operations.md', 'skill-operations', 'Operation recipes'),
     ('skills/hype-connector/references/compatibility.md', 'skill-compatibility', 'Compatibility and limits'),
     ('skills/hype-connector/references/native-recipes.md', 'skill-native', 'Native authoring recipes'),
+    ('skills/hype-connector/references/reliable-editing.md', 'skill-editing', 'Reliable editing'),
     ('skills/hype-connector/references/design-recipes.md', 'skill-design', 'Design recipes'),
 ]
 EXAMPLES = ['build_template.py', 'build_image_template.py', 'build_animation_template.py']
@@ -54,6 +55,7 @@ SKILL_FILES = [
     'references/compatibility.md',
     'references/connection-and-delivery.md',
     'references/native-recipes.md',
+    'references/reliable-editing.md',
     'references/design-recipes.md',
 ]
 SKILL_ROOT = ROOT / 'skills/hype-connector'
@@ -88,7 +90,7 @@ def build(preview=False):
     (dist / 'updates').mkdir()
     shutil.copyfile(feed, dist / 'updates/appcast.xml')
     banner = ('<div class="preview-banner">Local preview. Nothing has been published.</div>' if preview else '')
-    button = '<p class="availability" lang="en">Coming soon</p>'
+    button = '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.5/Connector-0.1.5.dmg">Download Connector 0.1.5</a>'
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
     homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
     showcase_link = '<a class="button" href="demos/eiszeit/index.html">Play EISZEIT</a>'
@@ -130,8 +132,8 @@ def build(preview=False):
         document = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f4f0"><title>{html.escape(title)} — Connector</title><meta name="description" content="{html.escape(title)} with Connector for Tumult Hype 4."><link rel="icon" href="../assets/connector-app-icon.png" type="image/png"><link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/connector-brand.css"><script src="../assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a>{banner}
-<header class="site-header wrap"><a class="brand" href="../"><img src="../assets/connector-app-icon.png" width="76" height="76" alt=""><span class="brand-copy"><span>Connector</span><span class="brand-tagline">Automations for Tumult Hype 4</span></span></a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Coming soon</a></nav></header>
-<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.4 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
+<header class="site-header wrap"><a class="brand" href="../"><img src="../assets/connector-app-icon.png" width="76" height="76" alt=""><span class="brand-copy"><span>Connector</span><span class="brand-tagline">Automations for Tumult Hype 4</span></span></a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Download</a></nav></header>
+<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.5 · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
 <footer class="footer wrap"><p>By Max Ziebell. Independent software for Tumult Hype.</p><a class="footer-brand" href="../"><img src="../assets/connector-app-icon.png" alt="" width="28" height="28">Connector home</a></footer><div class="copy-status sr-only" aria-live="polite"></div></body></html>'''
         metadata = (f'<meta property="og:title" content="{html.escape(title, quote=True)} — Connector">'
                     f'<meta property="og:description" content="{html.escape(title, quote=True)} with Connector for Tumult Hype 4.">'
@@ -151,6 +153,7 @@ def build(preview=False):
                 text = text.replace('../site/demos/eiszeit/index.html', 'https://worldoptimizer.github.io/hype-connector/demos/eiszeit/index.html')
                 text = text.replace('../skills/hype-connector/references/design-recipes.md', 'https://worldoptimizer.github.io/hype-connector/guides/skill-design.html')
                 text = text.replace('../skills/hype-connector/references/native-recipes.md', 'https://worldoptimizer.github.io/hype-connector/guides/skill-native.html')
+                text = text.replace('../skills/hype-connector/references/reliable-editing.md', 'https://worldoptimizer.github.io/hype-connector/guides/skill-editing.html')
                 archive.writestr('connector-examples/' + source, text)
         archive.writestr('connector-examples/README.md', '# Connector examples\n\nStart with [the example guide](docs/examples.md). Keep the three scripts in `examples/` together and run them from that folder. Supply your own Hype base document.\n')
     with ZipFile(dist / 'downloads/hype-connector-skill.zip', 'w', ZIP_DEFLATED) as archive:
