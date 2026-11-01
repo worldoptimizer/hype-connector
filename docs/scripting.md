@@ -2,7 +2,7 @@
 
 Connector accepts the same JSON operation objects through its CLI, app command mode, MCP and AppleScript. Use a script for a repeatable workflow that discovers IDs, makes edits and checks their results.
 
-Connector 0.1.6 automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
+Connector automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
 
 ## Discover and pin a connection
 
@@ -87,7 +87,7 @@ Use the returned layout ID as `scene` where required and its root symbol ID as `
 {"op":"element.list","document":"/absolute/returned-copy.hype","symbol":"DISCOVERED-SYMBOL-ID","offset":0,"limit":100}
 ```
 
-For paginated lists, follow `nextOffset` while `hasMore` is true. Insertion scripts need complete before/after inventories to identify the new element reliably.
+For paginated lists, follow `nextOffset` while `hasMore` is true. On hosts advertising `insertedElementIDs`, use `editor.action`'s `insertedElements` receipt to identify an insertion. Older hosts need complete before/after inventories. `element.list` already includes each element's attributes, so avoid a separate `element.get` loop when those rows are enough.
 
 ## Editing building blocks
 
@@ -95,8 +95,8 @@ For paginated lists, follow `nextOffset` while `hasMore` is true. Insertion scri
 | --- | --- |
 | Documents and files | `document.create`, `document.list`, `document.open`, `document.save`, `document.saveCopy`, `document.exportHTML`, `document.close` |
 | Scenes and layouts | `scene.configure`, `scene.list`, `layout.list`, `layout.add`, `symbol.list`, `scene.settings.prepare/get/set` |
-| Elements and text | `element.edit`, `element.list`, `element.get`, `element.setAttribute`, `text.set`, `element.createImage`, `editor.action` |
-| Timeline and animation | `animation.create`, `timeline.list/setDuration`, `playhead.get/seek`, `animation.list/get/setTiming/delete`, `timingFunction.list` |
+| Elements and text | `element.edit`, `element.list`, `element.get`, `element.setAttribute`, `element.setAttributes`, `text.set`, `element.createImage`, `editor.action` |
+| Timeline and animation | `animation.create`, `animation.keyframes`, `timeline.list/setDuration`, `playhead.get/seek`, `animation.list/get/setTiming/delete`, `timingFunction.list` |
 | Inspector and recording | `inspector.prepare`, `inspector.get`, `inspector.set` |
 | Assets | `resource.import`, `resource.list`, `resourceGroup.list` and the resource-group operations in the catalog |
 | Document JavaScript | `javascript.list/add/rename/setSource/delete` |
@@ -121,6 +121,36 @@ Read the same element with `element.get` afterward. Model setters do not automat
 
 `editor.action` provides named editor actions, including insertion, duplication and grouping. These change editor context and selection. Root insertion requires the scene already to be in its root editing context; clearing element selection does not leave a nested group or symbol.
 
+## Batch attributes and insertion receipts
+
+Connector 0.1.7 adds `element.setAttributes`. Check the loaded host for `attributeBatch` before using the single-element form:
+
+```json
+{"op":"element.setAttributes","document":"/absolute/Working.hype","symbol":"DISCOVERED-SYMBOL-ID","element":"DISCOVERED-ELEMENT-ID","attributes":{"Left":64,"Top":120,"Width":320,"DisplayName":"Card"}}
+```
+
+An attribute object contains 1 to 64 identifiers. Values can be strings, finite numbers, explicit sRGB colors, or native action dictionaries inside `{"actions":[...]}` for `ActionHandler*` attributes. Boolean, null, array and handle values are refused. Use documented native values and inspect readback. An action dictionary round trip shows what Hype retained, but unknown keys can also survive and do not prove behavior.
+
+For a layout reflow, hosts advertising `multiElementAttributeBatch` accept `elements` instead of `element` and `attributes`:
+
+```json
+{"op":"element.setAttributes","document":"/absolute/Working.hype","symbol":"DISCOVERED-SYMBOL-ID","elements":{"FIRST-ELEMENT-ID":{"Left":24,"Width":320},"SECOND-ELEMENT-ID":{"Top":120,"FontSize":20}}}
+```
+
+One request can change up to 200 elements and 2,000 attributes, with at most 64 attributes per element. All elements and values are checked before the first commit. Commits then happen in sorted element-ID order. This is sequential work, not a transaction. A failure after a commit can leave earlier elements changed. Inspect the receipt's committed, unknown and untouched elements before another deliberate edit.
+
+Single-element receipts include the element projection, `before` and `after` values, and `differs` for requested values Hype normalized or did not retain. Multi-element receipts contain per-element rows without full projections. Set geometry before motion: batches refuse an attribute that already has animation rows on that element in any timeline (`animated_attribute`). Model setters do not imply inspector side effects, text measurement or undo registration. Save separately.
+
+Hosts advertising `insertedElementIDs` return `insertedElements` from insert actions, plus `element` when exactly one element was added. With `insertWithAttributes`, initial attributes can travel with the insertion:
+
+```json
+{"op":"editor.action","document":"/absolute/Working.hype","scene":"DISCOVERED-LAYOUT-ID","name":"insert.button","elements":[],"attributes":{"DisplayName":"Continue","Left":40,"Top":240,"Width":180,"InnerHTML":"Continue"}}
+```
+
+Initial values are checked before insertion and applied after any text edit opened by that insertion is finished. Text, flat-button and textured-button insertions verify the new element and finish only their own text editor before returning `textEditingFinished:true`. An existing text edit is refused before insertion. Check the returned IDs and attribute receipt. Failure after insertion can leave the element present, so never repeat it automatically.
+
+The [authoring helper](../skills/hype-connector/scripts/authoring.py) uses these capabilities automatically. `Document.element(...)` can insert and style in one request, and `attributes_many(scene, {element_id: attributes, ...})` reflows a layout. Its older-plugin fallback can require several requests and native handles. It does not add transactional guarantees.
+
 ## Composed editing operations
 
 Connector 0.1.5 introduced three operations that combine preparation, current-value checks and verification. They appear in capabilities only when the loaded plugin supplies their prerequisites. Discover the real IDs before using these examples:
@@ -144,6 +174,38 @@ Connector 0.1.5 introduced three operations that combine preparation, current-va
 `animation.create` records a new Left, Top or Opacity lane on Main from time zero to a positive frame-aligned endpoint. It refuses an existing lane, extends timeline duration only when needed and verifies the resulting animation. Use a stopped root-scene context with the target symbol already displayed. These operations can change selection, inspector pane and playhead. Only recording mode is restored. Completed steps remain applied if a later step fails.
 
 Read the [reliable editing recipes](../skills/hype-connector/references/reliable-editing.md) for supported contexts, receipt handling and a complete workflow. Lower-level inspector operations remain available when you need explicit control.
+
+## Record several keyframes
+
+`animation.keyframes` records a `Left`, `Top` or `Opacity` lane on Main in one composed request. Read the exact current lane IDs from `animation.list` and supply them as `expectedAnimations`. A new lane uses `[]` and starts at zero. Discover easing IDs through `timingFunction.list`; omit easing to use Hype's default for that segment.
+
+```json
+{
+  "op":"animation.keyframes",
+  "document":"/absolute/Working.hype",
+  "scene":"DISCOVERED-LAYOUT-ID",
+  "symbol":"DISCOVERED-SYMBOL-ID",
+  "timeline":"kTimelineDefaultIdentifier",
+  "element":"DISCOVERED-ELEMENT-ID",
+  "property":"Top",
+  "expectedAnimations":[],
+  "keyframes":[
+    {"seconds":0,"value":180},
+    {"seconds":0.6,"value":140},
+    {"seconds":1.0,"value":140},
+    {"seconds":1.2,"value":220},
+    {"seconds":1.5,"value":180}
+  ]
+}
+```
+
+Supply 2 to 16 keyframes in strictly increasing time on Hype's native frame grid. At 30 fps, use multiples of 1/30 second: 1.2 seconds is aligned; 1.15 seconds is refused with `time_alignment`. A keyframe's optional `timingFunction` is the easing of the segment arriving at it. A new lane's zero-time baseline has no easing. Opacity values stay within 0 to 1.
+
+A hold repeats the previous value, as at 1.0 seconds above. It must have a later successor with a different value. A hold cannot be last or follow another hold. Connector records holds after their successors so Hype can create an actual keyframe, then verifies times, values, easing and the terminal row. If Hype would create no keyframe, the workflow stops with `keyframe_not_recorded`.
+
+To append, supply the existing lane's exact animation IDs and only new frames strictly after its terminal keyframe. Connector refuses a changed lane or colliding time. To replace a lane, inspect and deliberately delete its old animation rows first. `Document.keyframes(...)` reads current IDs when `expected_animations` is omitted, and `Document.timing('Ease Out')` resolves a discovered timing ID.
+
+Use a stopped root-scene context with the requested symbol displayed. The workflow can change selection, inspector pane, playhead and timeline duration. Alignment checks beyond the current duration require extending that duration first, so even a `time_alignment` refusal can leave it longer. Earlier keyframes and easing changes also remain if a later step fails. Read `completedSteps`, `receipts`, `failedStep`, `contextPreparationAttempted` and `contentMutationAttempted`. On `outcome_unknown` or a lost reply, stop mutations and inspect the lane and duration before deciding what to do next. There is no automatic rollback, save or retry.
 
 ## Use the inspector for recording
 

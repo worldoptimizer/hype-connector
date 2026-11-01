@@ -1,6 +1,6 @@
 # Reliable named editing
 
-The client commands `element.edit`, `scene.configure` and `animation.create`
+The client commands `element.edit`, `scene.configure`, `animation.create` and `animation.keyframes`
 compose existing named operations. They use no private selector fallback. A
 current local catalog describes their request shapes, while the selected host's
 `host.capabilities` exposes each in `operations` and `clientOperations` only when

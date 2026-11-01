@@ -69,10 +69,56 @@ def color(hex_value):
     return {'$color': parts if len(parts) == 4 else parts + [1], 'space': 'srgb'}
 
 
+_COMMENT_MARKERS = {'html': ('<!--',), 'svg': ('<!--',), 'css': ('/*', '*'),
+                    'javascript': ('//', '/*', '*')}
+
+
+def code_readability_issues(source, language):
+    """List formatting problems in embedded HTML, SVG, CSS or JavaScript.
+
+    Advisory only: reads no document, changes nothing and validates no syntax.
+    An empty list means the layout heuristics passed, not that the code is needed.
+    """
+    if language not in _COMMENT_MARKERS:
+        raise ValueError('Use html, svg, css or javascript.')
+    if not isinstance(source, str):
+        raise ValueError('Source must be a string.')
+    markers = _COMMENT_MARKERS[language]
+    lines = [line for line in source.splitlines() if line.strip()]
+    comments = [line for line in lines if line.lstrip().startswith(markers) or '<!--' in line or '/*' in line]
+    issues = []
+    long = [n for n, line in enumerate(source.splitlines(), 1) if len(line) > 120]
+    if long:
+        issues.append(f'Lines over 120 characters: {long[:10]}. Put one element, rule or statement per line.')
+    crowded = []
+    for n, line in enumerate(source.splitlines(), 1):
+        code = line.strip()
+        if language in ('html', 'svg') and code.count('><') >= 2:
+            crowded.append(n)
+        elif language == 'css' and '{' in code and '}' in code and code.count(';') > 2:
+            crowded.append(n)
+        elif language == 'javascript' and not code.startswith('for') and code.rstrip(';').count(';') >= 2:
+            crowded.append(n)
+    if crowded:
+        issues.append(f'Several elements, declarations or statements on one line: {crowded[:10]}.')
+    if len(lines) > 3 and not any(line.lstrip().startswith(markers) for line in lines[:4]):
+        issues.append('Start with a comment that says what the code does and why native Hype features are not enough.')
+    if len(lines) > 15 and len(comments) < len(lines) // 15 + 1:
+        issues.append('Add comments for the meaningful parts; long code has too few explanations.')
+    return issues
+
+
 class Document:
     def __init__(self, client, path):
         self.client, self.path = client, str(Path(path).absolute())
         self._ref = None
+        self._features = None
+
+    def supports(self, feature):
+        """Read host features once per Document; a plugin cannot change while pinned."""
+        if self._features is None:
+            self._features = set(self.client.run('host.capabilities').get('features', []))
+        return feature in self._features
 
     @property
     def ref(self):
@@ -169,6 +215,11 @@ class Document:
         return self.client.page('element.list', 'elements', document=self.path, symbol=scene['symbol'])
 
     def attributes(self, scene, element, values):
+        if self.supports('attributeBatch'):
+            # One request: values are converted, checked and committed together.
+            # The receipt already carries the full element projection.
+            return self.run('element.setAttributes', symbol=scene['symbol'], element=element,
+                            attributes=values)['element']
         ref = self.element_ref(scene, element)
         attributes = [self.client.invoke({'class': 'HypeAttribute'}, 'attributeWithName:objectValue:',
                       key, value, retain=True) for key, value in values.items()]
@@ -180,15 +231,51 @@ class Document:
         self.client.native('release', handles=[a['$ref'] for a in attributes])
         return self.run('element.get', symbol=scene['symbol'], element=element)
 
-    def element(self, scene, kind, name, x, y, width, height, **values):
+    def attributes_many(self, scene, values_by_element):
+        """Set attributes of several elements: {element_id: {name: value}}.
+
+        One request on hosts with multiElementAttributeBatch; every value is
+        checked before the first commit. Returns per-element rows.
+        """
+        if self.supports('multiElementAttributeBatch'):
+            return self.run('element.setAttributes', symbol=scene['symbol'],
+                            elements=dict(values_by_element))['elements']
+        return {oid: self.attributes(scene, oid, values) for oid, values in values_by_element.items()}
+
+    def insert(self, scene, kind, values=None):
+        """Insert one native element, optionally with attributes, and return its ID."""
+        if values and self.supports('insertWithAttributes'):
+            # One request: values are checked before insertion, then applied.
+            receipt = self.run('editor.action', scene=scene['id'], name='insert.' + kind,
+                               elements=[], attributes=dict(values))
+            if receipt.get('insertedElements') != [receipt.get('element')] or not receipt.get('element'):
+                raise ValueError('Insertion did not add exactly one element. Inspect before continuing.')
+            return receipt['element']
+        if self.supports('insertedElementIDs'):
+            oid = self.insert_id(scene, kind)
+        else:
+            oid = self.insert_by_inventory(scene, kind)
+        if values:
+            self.attributes(scene, oid, values)
+        return oid
+
+    def insert_id(self, scene, kind):
+        receipt = self.run('editor.action', scene=scene['id'], name='insert.' + kind, elements=[])
+        fresh = receipt.get('insertedElements')
+        if not isinstance(fresh, list) or len(fresh) != 1:
+            raise ValueError('Insertion did not add exactly one element. Inspect before continuing.')
+        return fresh[0]
+
+    def insert_by_inventory(self, scene, kind):
         before = {e['id'] for e in self.elements(scene)}
         self.run('editor.action', scene=scene['id'], name='insert.' + kind, elements=[])
         fresh = [e for e in self.elements(scene) if e['id'] not in before]
         if len(fresh) != 1:
             raise ValueError('Insertion did not add exactly one element. Inspect before continuing.')
-        oid = fresh[0]['id']
-        self.attributes(scene, oid, dict(DisplayName=name, Left=x, Top=y, Width=width, Height=height, **values))
-        return oid
+        return fresh[0]['id']
+
+    def element(self, scene, kind, name, x, y, width, height, **values):
+        return self.insert(scene, kind, dict(DisplayName=name, Left=x, Top=y, Width=width, Height=height, **values))
 
     def text(self, scene, name, html, x, y, width, height, size=24, ink='#202020', **values):
         defaults = dict(InnerHTML=html, FontSize=size, FontFamily='Arial', TextColor=color(ink),
@@ -237,6 +324,9 @@ class Document:
         return self.run('javascript.setSource', script=script, value=expected_source.replace(old, new, 1))
 
     def click(self, scene, element, fields):
+        if self.supports('attributeBatch'):
+            # The host builds the native HypeAction and refuses a normalized plist.
+            return self.attributes(scene, element, {'ActionHandlerOnMouseClick': {'actions': [fields]}})
         # These are native HypeAction values, not edits to a package/plist file.
         a = self.client.invoke({'class': 'HypeAction'}, 'actionWithPlistRepresentation:', fields, retain=True)
         if self.client.invoke(a, 'plistRepresentation') != fields:
@@ -245,11 +335,11 @@ class Document:
         self.client.native('release', handles=[a['$ref']])
 
     def go(self, scene, button, target, transition=2, duration=.65):
-        self.click(scene, button, dict(type=1, sceneOid=target['sceneContainer'],
+        return self.click(scene, button, dict(type=1, sceneOid=target['sceneContainer'],
                                       transition=transition, duration=duration))
 
     def run_script(self, scene, element, script):
-        self.click(scene, element, dict(type=4, javascriptOid=script))
+        return self.click(scene, element, dict(type=4, javascriptOid=script))
 
     def duration(self, scene, seconds):
         if type(seconds) not in (int, float) or not math.isfinite(seconds) or seconds <= 0:
@@ -267,6 +357,33 @@ class Document:
         return self.run('animation.create', scene=scene['id'], symbol=scene['symbol'],
                         timeline=MAIN, element=element, property=property,
                         **{'from': start_value, 'to': end_value, 'seconds': end_seconds})
+
+    def keyframes(self, scene, element, property, frames, expected_animations=None, settle_timeout=None):
+        """Record several native keyframes on one Main lane in one request.
+
+        frames: [{'seconds': 0, 'value': 278}, {'seconds': .6, 'value': 230,
+        'timingFunction': doc.timing('Ease Out')}, ...]. Without
+        expected_animations the current lane is read first; a lane changed in
+        between is refused by the host, never overwritten. Times must lie on
+        the editor frame grid (multiples of 1/30 s at 30 fps). settle_timeout
+        (0 to 10 s, host default 3) bounds each readiness phase.
+        """
+        if expected_animations is None:
+            rows = self.client.page('animation.list', 'animations', document=self.path,
+                                    symbol=scene['symbol'], timeline=MAIN)
+            expected_animations = [r['id'] for r in rows
+                                   if r.get('referenceOid') == element and r.get('identifier') == property]
+        extra = {} if settle_timeout is None else {'settleTimeout': settle_timeout}
+        return self.run('animation.keyframes', scene=scene['id'], symbol=scene['symbol'],
+                        timeline=MAIN, element=element, property=property,
+                        keyframes=list(frames), expectedAnimations=list(expected_animations), **extra)
+
+    def timing(self, name):
+        """Return the document-local timing-function ID with this exact name."""
+        rows = [r for r in self.run('timingFunction.list')['timingFunctions'] if r.get('name') == name]
+        if len(rows) != 1:
+            raise ValueError('Timing function name must match exactly one entry: ' + repr(name))
+        return rows[0]['id']
 
     def time_guard(self, scene, seconds):
         rows = self.run('timeline.list', symbol=scene['symbol'])['timelines']

@@ -110,9 +110,33 @@ function chooseOption(hypeDocument, element, event) {
 
 Attach the returned function ID using `doc.run_script(scene, button_id, script_id)`. Build the result text as a fixed box with `ExplicitDimensions:'YES'`. Exercise the longest confirmation or error text the interaction can produce, including repeated choices. Check the runtime bounding box and horizontal/vertical scroll extents after the text changes. Increase the native box or revise the composition if the text overlaps, clips or escapes its intended region; an initially short placeholder is not a sufficient check. For a demo with no service, make clear that submission/purchase is simulated and keep the interaction local. Native mouse actions do not automatically establish keyboard accessibility. If needed, add keyboard/focus handling through the document's head content or Hype functions and verify it in the export. Do not claim accessibility from button-shaped text alone.
 
+## Code inside the document
+
+Inline HTML, SVG, CSS and JavaScript are a last resort, not the default way to build a design. People will open this document in Hype later, so they need to be able to read and change anything you embed.
+
+**First check that the code has to be there.** Before you write any markup or script into an element, a function or the head, answer three questions in your working notes:
+
+1. *Which native feature was considered?* Rectangles, ellipses, text, images, inspector properties, native actions, timelines and keyframes, scenes and layouts.
+2. *Why is it not enough?* For example: vector artwork with paths and gradients, state logic such as a selected pattern, or ARIA attributes Hype does not expose.
+3. *What is the smallest place for the code?* Use one element's `InnerHTML` for local artwork, a Hype function for behavior, and head HTML only for document-wide rules. Never use head CSS to override a value that an inspector field can set. Never use inline markup to replace native motion.
+
+If a native feature covers the need, use it and write no code. A raster image of a static illustration (`resource.import`, then `element.createImage`) is often simpler than a long inline SVG.
+
+**When code is justified, write it for a human reader:**
+
+- One element, rule or statement per line, indented by two spaces. Never ship a single-line SVG or CSS block.
+- Start with a short comment saying what the code does, which elements or layouts use it, and why native Hype features were not enough. Comment each meaningful part, for example `<!-- Cylinder: front layer, covers the rod -->`.
+- Use descriptive IDs, class names and named constants instead of magic numbers. Explain units and coordinate systems, such as an SVG `viewBox` versus its element size.
+- Keep every stroke inside the `viewBox`: allow at least half the stroke width as a margin. IDs inside inline SVG (gradients, clip paths) are document-wide in the export, so give them a unique suffix per layout.
+- Comments are exported. Keep them free of internal notes, file paths, test labels and credentials.
+- Keep the readable source in the builder too, as a multi-line string or a separate asset file, not a one-line literal.
+- Respect whitespace that is data. Do not reindent `<pre>` content or JavaScript template literals.
+
+Check the source before writing it, with `authoring.code_readability_issues(source, language)`. Fix every issue it reports, or state why an issue does not apply. Then read the element, function or head back through Connector and confirm that the formatting and comments survived.
+
 ## Motion and responsive behavior
 
-For a new decorative element, `doc.record(scene, element, 'Top', start_y, end_y, 1.0)` records native position motion on Main. The helper now delegates to `animation.create`, which refuses an existing property lane and never shortens a longer timeline. Use frame-aligned endpoints. Inspect the returned workflow receipt and animation projections, and test the actual export. Scene transitions and timeline motion are separate features. Do not make every piece move; animate where it helps attention or orientation.
+For a new decorative element, `doc.record(scene, element, 'Top', start_y, end_y, 1.0)` records native position motion on Main. The helper now delegates to `animation.create`, which refuses an existing property lane and never shortens a longer timeline. For a motion with several phases, such as lift, hold, strike and recovery, use one `doc.keyframes(scene, element, 'Top', frames)` request with `doc.timing('Ease Out')` style easing per segment instead of several separate lanes. Set the element's final geometry first: a model edit of an animated property would offset its keyframes, so `element.setAttributes` refuses it. Use frame-aligned endpoints. Inspect the returned workflow receipt and animation projections, and test the actual export. Scene transitions and timeline motion are separate features. Do not make every piece move; animate where it helps attention or orientation.
 
 A fixed 1200×800 stage is not a responsive layout by itself. Named scene scaling can scale its container but does not automatically reflow element geometry. For real alternate layouts, use `layout.add` with discovered IDs and prepare each layout independently. If using head CSS for surrounding viewport behavior, apply it in Hype before export and test narrow as well as desktop viewports. Report a fixed-stage limitation honestly when no alternate layout was built.
 

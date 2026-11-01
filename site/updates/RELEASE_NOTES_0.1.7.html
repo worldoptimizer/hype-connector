@@ -1,0 +1,11 @@
+<h2>Connector 0.1.7</h2>
+<p>Automations for Tumult Hype 4. App build 56 includes plugin build 47.</p>
+<ul>
+<li>Set several native attributes in one request, or reflow up to 200 elements with validation before the first commit and per-attribute readback.</li>
+<li>Insert elements with initial attributes and receive their IDs directly. Text, flat-button and textured-button insertions finish only their own text editor before returning.</li>
+<li>Record multiple native keyframes with easing and holds, or append after an existing lane. Current animation IDs guard against editing a changed lane.</li>
+<li>Reduce connection-discovery overhead and clean up ended-session manifests. Handle an initially empty selection when preparing a cloned layout.</li>
+<li>Updated authoring helper and agent skill for batch attributes, insertion receipts and keyframe workflows.</li>
+</ul>
+<p>Keyframe times must match Hype's native frame grid. Batch commits and recorded keyframes are sequential: earlier edits or a timeline extension can remain if a later step fails. Inspect receipts and current state before another deliberate change. Unknown outcomes are never retried automatically.</p>
+<p>After installing the bundled plugin, save your work and restart Hype when convenient to load it. Connector does not restart Hype automatically. Existing trial and license requirements continue to apply.</p>

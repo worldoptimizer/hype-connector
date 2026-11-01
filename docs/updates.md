@@ -1,10 +1,24 @@
 # App and plugin updates
 
-[Download Connector 0.1.6](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg) from GitHub Releases.
+[Download Connector 0.1.7](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.7/Connector-0.1.7-build56.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.6
+## What changes in 0.1.7
+
+Connector 0.1.7 includes app build 56 and plugin build 47.
+
+- Set attributes on one element or reflow several elements in one request, with validation before the first commit and per-attribute readback.
+- Insert native elements with initial attributes and use the returned element IDs directly. Text and both button variants finish their own inserted text editor before the next operation.
+- Record several native keyframes with easing and holds, or append after an existing lane, with an explicit guard against changed animation IDs.
+- Reduce connection-discovery work and clean up ended-session manifests. Prepare fresh cloned layouts whose native selection is initially empty.
+- Use the updated authoring helper and skill for batch reflow, insertion receipts and keyframe workflows.
+
+Read the [scripting guide](scripting.md) for batch limits, frame-grid requirements and failure receipts. Batches and keyframe workflows are sequential, so earlier edits can remain if a later step fails. Inspect state after an unknown outcome before making another deliberate change.
+
+After updating the plugin, save your documents and restart Hype when convenient. Each running Hype instance keeps its previously loaded plugin until it restarts. The selected host's capabilities describe the features actually available.
+
+## Licensing introduced in 0.1.6
 
 Connector 0.1.6 includes app build 47 and plugin build 38. Automation now requires a trial or paid license. Connector 0.1.5 is a historical release that did not require a license.
 

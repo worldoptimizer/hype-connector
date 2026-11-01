@@ -50,9 +50,11 @@ panel = doc.element(home, 'rectangle', 'Panel', 64, 240, 700, 300,
 doc.attributes(home, panel, {'Left': 90, 'Opacity': .9})
 ```
 
-The helper inserts through `editor.action`, exhausts before/after inventories and requires exactly one new element. It finds the native object through the scene's current root symbol and `allElements`, using native `find` on the known getter `oid`. A nested symbol mismatch is refused.
+On hosts that list features `insertedElementIDs` and `attributeBatch`, the helper takes the new ID from the `editor.action` receipt and sets all attributes with one `element.setAttributes` request. A whole element then costs two requests and no native handles; with feature `insertWithAttributes` the attributes travel with the insertion and it costs one. To restyle many elements, for example after `layout.add` clones a layout, use `doc.attributes_many(layout, {element_id: values, ...})`: one request for up to 200 elements (feature `multiElementAttributeBatch`). The batch refuses properties that already have animation rows, so set geometry before recording motion.
 
-To introduce or batch-set known attributes, use `HypeAttribute.attributeWithName:objectValue:` for each name and value, then `HypeElement.setAttributes:` with those returned attribute objects. The factory accepts names; success alone does not prove Hype uses an invented attribute. Use demonstrated names, read back and inspect export. `setAttributes:` returning false can mean no change. Mark the document changed with `updateChangeCount:0` and save explicitly.
+On older plugins the helper exhausts before/after inventories and requires exactly one new element. It finds the native object through the scene's current root symbol and `allElements`, using native `find` on the known getter `oid`. A nested symbol mismatch is refused.
+
+For those older plugins, to introduce or batch-set known attributes, use `HypeAttribute.attributeWithName:objectValue:` for each name and value, then `HypeElement.setAttributes:` with those returned attribute objects. The factory accepts names; success alone does not prove Hype uses an invented attribute. Use demonstrated names, read back and inspect export. `setAttributes:` returning false can mean no change. Mark the document changed with `updateChangeCount:0` and save explicitly.
 
 Useful measured names include geometry `Left`, `Top`, `Width`, `Height`, `Opacity`, `RotationAngleZ`; text `InnerHTML`, `FontSize`, `FontFamily`, `FontWeight`, `LineHeight`, `LetterSpacing`, `TextAlign`, `TextColor`, `ExplicitDimensions`, `WhiteSpace`; styling `BackgroundColor`, `PaddingTop`, `PaddingRight`, `PaddingBottom`, `PaddingLeft`, `BorderWidthTop`, `BorderWidthRight`, `BorderWidthBottom`, `BorderWidthLeft`; and `DisplayName`, `DomID`, `AltText`. Inspector property `TextAlignment` and model attribute `TextAlign` are different spellings.
 
@@ -83,7 +85,7 @@ button = doc.element(home, 'button', 'Details button', 64, 600, 250, 50,
 doc.go(home, button, details, transition=2, duration=.65)
 ```
 
-The helper creates `HypeAction.actionWithPlistRepresentation:` with a plain dictionary, checks `plistRepresentation`, and sets the known `ActionHandlerOnMouseClick` attribute to `{"actions":[ACTION_REF]}`. The selector's name refers to native serialization; no plist file is edited. Plain action dictionaries alone do not replace the required HypeAction objects.
+With feature `attributeBatch`, the helper sends the plain action dictionary inside `element.setAttributes`; the host builds the `HypeAction`, refuses a normalized plist and assigns it in one request. On older plugins the helper creates `HypeAction.actionWithPlistRepresentation:` with a plain dictionary, checks `plistRepresentation`, and sets the known `ActionHandlerOnMouseClick` attribute to `{"actions":[ACTION_REF]}`. The selector's name refers to native serialization; no plist file is edited. Plain action dictionaries alone do not replace the required HypeAction objects.
 
 Navigation dictionary: `{"type":1,"sceneOid":TARGET_SCENE_CONTAINER,"transition":2,"duration":0.65}`. JavaScript dictionary: `{"type":4,"javascriptOid":FUNCTION_ID}`. The function must belong to this document. These bindings persist through native save/export.
 
