@@ -4,26 +4,27 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Connector</title>
         <item>
-            <title>0.1.6</title>
-            <pubDate>Wed, 28 Oct 2026 10:20:47 +0100</pubDate>
-            <sparkle:version>47</sparkle:version>
-            <sparkle:shortVersionString>0.1.6</sparkle:shortVersionString>
+            <title>0.1.7</title>
+            <pubDate>Mon, 02 Nov 2026 00:41:05 +0100</pubDate>
+            <sparkle:version>56</sparkle:version>
+            <sparkle:shortVersionString>0.1.7</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>Connector 0.1.6</h2>
-<p>Automations for Tumult Hype 4.</p>
-<p>This version introduces a seven-day trial and paid licenses. Automation requires an active trial or license. Start your trial explicitly in License, with no payment card or automatic purchase.</p>
+            <description><![CDATA[<h2>Connector 0.1.7</h2>
+<p>Automations for Tumult Hype 4. App build 56 includes plugin build 47.</p>
 <ul>
-<li>Buy a license or request your license key again from the app.</li>
-<li>Activate a license on up to two Macs.</li>
-<li>CLI, MCP and AppleScript share the app's license.</li>
-<li>Signed updates and downloads remain available through GitHub.</li>
+<li>Set several native attributes in one request, or reflow up to 200 elements with validation before the first commit and per-attribute readback.</li>
+<li>Insert elements with initial attributes and receive their IDs directly. Text, flat-button and textured-button insertions finish only their own text editor before returning.</li>
+<li>Record multiple native keyframes with easing and holds, or append after an existing lane. Current animation IDs guard against editing a changed lane.</li>
+<li>Reduce connection-discovery overhead and clean up ended-session manifests. Handle an initially empty selection when preparing a cloned layout.</li>
+<li>Updated authoring helper and agent skill for batch attributes, insertion receipts and keyframe workflows.</li>
 </ul>
-<p>After installing the bundled plugin, save your work and restart Hype when convenient to load it. Connector does not restart Hype automatically.</p>
+<p>Keyframe times must match Hype's native frame grid. Batch commits and recorded keyframes are sequential: earlier edits or a timeline extension can remain if a later step fails. Inspect receipts and current state before another deliberate change. Unknown outcomes are never retried automatically.</p>
+<p>After installing the bundled plugin, save your work and restart Hype when convenient to load it. Connector does not restart Hype automatically. Existing trial and license requirements continue to apply.</p>
 ]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg" length="5625200" type="application/octet-stream" sparkle:edSignature="JxtFjHRNL9pfntjpOBGrpS/UAAcqA+Kr0PncvgZ1Yr969e1doyop7JF8toMJdk74lJyejvQHW6/eVkHeKj6dCA=="></enclosure>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.7/Connector-0.1.7-build56.dmg" length="5751207" type="application/octet-stream" sparkle:edSignature="e7n/4b+E2uSYYKEJrP/iN/x+Wq9MD2st/WZ4q/e5iCNHVEVK5qq2vL7kR5Rw9DzObNWIxfMi3EQ/nni+oc5OAg=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: kOsV0EWJN31Ez6BJsKNs2DF1LgfYnOYDu/dddUBmFqJUAJIdrmZ6gXwHiWGSd2YxvclSiCWqpuEhvFjSw9GUBA==
-length: 1789
+edSignature: EiT57I7BdtZUqRLrkrH3fdF0rQmeWwpSD6HPXCGzQltG2Gom7bnxTPQfWPpm9bO3GtYOMInuhpNcT/KIsPudCA==
+length: 2502
 -->
