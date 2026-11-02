@@ -81,3 +81,9 @@ Review [example prerequisites](examples.md), including a single root layout, tim
 A successful export confirms native output generation. Inspect the exported page in your browser for appearance, playback and custom JavaScript behavior. Save the editable document explicitly if you want native layout changes after export persisted as well. A save/export receipt is not a visual browser test.
 
 When reporting an issue, use a minimal document you are comfortable sharing. Remove private content, local usernames, credentials and unrelated file paths from logs or screenshots before posting them publicly.
+
+## Saving fails with `destination_access` in Documents
+
+Update to Connector 0.1.8 or later, then save your work and restart Hype to load the updated plugin. Version 0.1.7 could reject valid access to Documents and its subfolders with “The destination bookmark cannot resolve the exact requested parent.” Manual saving in Hype still worked.
+
+This fix does not grant access to an otherwise inaccessible folder. If a different permission error remains, check the requested path and the permissions of the client running the command. Do not disable macOS security protections.

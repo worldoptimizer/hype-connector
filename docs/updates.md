@@ -1,10 +1,19 @@
 # App and plugin updates
 
-[Download Connector 0.1.7](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.7/Connector-0.1.7-build56.dmg) from GitHub Releases.
+[Download Connector 0.1.8](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.8/Connector-0.1.8-build62.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.7
+## What changes in 0.1.8
+
+Connector 0.1.8 includes app build 62 and plugin build 53.
+
+- Fix a folder-access issue that could prevent saving in Documents or its subfolders, even when manual saving in Hype worked. The correction also applies to opening, creating and exporting documents.
+- Report destination-access refusals before an operation starts with `started: false` and `mayHaveSideEffects: false`.
+
+After updating Connector, save your work and restart Hype to load the corrected plugin. No scripting changes are needed.
+
+## What changed in 0.1.7
 
 Connector 0.1.7 includes app build 56 and plugin build 47.
 
