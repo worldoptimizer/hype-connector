@@ -87,3 +87,25 @@ When reporting an issue, use a minimal document you are comfortable sharing. Rem
 Update to Connector 0.1.8 or later, then save your work and restart Hype to load the updated plugin. Version 0.1.7 could reject valid access to Documents and its subfolders with “The destination bookmark cannot resolve the exact requested parent.” Manual saving in Hype still worked.
 
 This fix does not grant access to an otherwise inaccessible folder. If a different permission error remains, check the requested path and the permissions of the client running the command. Do not disable macOS security protections.
+
+## Local support report
+
+Available in Connector 0.1.9 or later. Run this in the same shell or agent shell where the problem occurred:
+
+```sh
+/Applications/Connector.app/Contents/MacOS/ConnectorApp --diagnostics
+```
+
+The bundled command-line tool also supports:
+
+```sh
+/Applications/Connector.app/Contents/MacOS/connector diagnose
+```
+
+Copy the JSON output into your support message. It contains app and bundled-plugin versions, macOS version, context indicators and checks of the local folder-access record and lock. It excludes user names, paths, document names, process IDs, license information, bookmark contents and environment-variable values. Nothing is uploaded automatically.
+
+The report does not select a folder, renew a grant, create a lock, contact Hype or start automation. It may open an existing lock read/write to check permission, but writes no data. Normal operations only read the settings and do not require write access to the lock. Selecting or forgetting a folder requires writing settings. A usable stale bookmark can still be used if its optional refresh cannot be persisted. A valid record does not prove that macOS bookmark resolution will succeed. Environment indicators are hints, not proof of a sandbox restriction.
+
+`folder_store_access` means the current process cannot access Connector's settings or lock. The stage and system error number help distinguish this from a damaged record. `folder_store_unsafe` means the writer lock is not a regular file, so concurrent settings changes cannot be coordinated. Ordinary file permission modes and symlinked settings directories are accepted. Neither error should be treated as an instruction to repeatedly select the Hype folder. `folder_record_invalid` refers to an invalid saved record.
+
+App and plugin versions are separate. The bundled plugin is included with the app; Hype keeps its currently loaded plugin until restarted. A report made without contacting Hype deliberately lists the loaded plugin as not queried.

@@ -1,10 +1,21 @@
 # App and plugin updates
 
-[Download Connector 0.1.8](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.8/Connector-0.1.8-build62.dmg) from GitHub Releases.
+[Download Connector 0.1.9](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.9/Connector-0.1.9-build64.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.8
+## What changes in 0.1.9
+
+Connector 0.1.9 includes app build 64 and the unchanged plugin 0.1.6 build 53.
+
+- Normal use of the saved Hype folder selection no longer requires a writable settings directory or lock file.
+- Removed unnecessary ownership and exact file-permission restrictions. macOS access permissions still apply.
+- Fixed renewal of older saved selections and simultaneous bookmark refreshes.
+- Added a [local support report](troubleshooting.md#local-support-report) that includes component versions and access diagnostics without personal paths, document names or license information.
+
+Restart Connector and reconnect your MCP client after updating, so they use the updated executable. If Hype already reports plugin build 53, this app-only update does not require restarting Hype. App and plugin versions are separate and do not need to match.
+
+## What changed in 0.1.8
 
 Connector 0.1.8 includes app build 62 and plugin build 53.
 

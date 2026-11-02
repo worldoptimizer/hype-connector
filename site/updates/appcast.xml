@@ -4,16 +4,16 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Connector</title>
         <item>
-            <title>0.1.8</title>
-            <pubDate>Mon, 02 Nov 2026 20:16:44 +0100</pubDate>
-            <sparkle:version>62</sparkle:version>
-            <sparkle:shortVersionString>0.1.8</sparkle:shortVersionString>
+            <title>0.1.9</title>
+            <pubDate>Mon, 02 Nov 2026 22:36:57 +0100</pubDate>
+            <sparkle:version>64</sparkle:version>
+            <sparkle:shortVersionString>0.1.9</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<!doctype html><html lang="en"><meta charset="utf-8"><title>Connector 0.1.8</title><body><h1>Connector 0.1.8</h1><p>This update fixes a folder-access issue that could prevent saving documents in your Documents folder or its subfolders, even when manual saving in Hype worked.</p><ul><li>Corrected folder access for saving, opening, creating and exporting documents.</li><li>Clearer errors when a destination is refused before an operation starts.</li></ul><p>After updating Connector, save your work and restart Hype to load the updated plugin.</p></body></html>]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.8/Connector-0.1.8-build62.dmg" length="5760242" type="application/octet-stream" sparkle:edSignature="7d3kWSNAFGnsuP0Y8IvbMHLxSnr9gQknhGIcQpNWtbws2pmUCqTcJVyl/nVKnzRf0MYdkXdFZGIx4r7hzFadCg=="></enclosure>
+            <description><![CDATA[<h2>Connector 0.1.9</h2><ul><li>Ordinary folder access no longer requires writable settings or a writable lock file.</li><li>Removed unnecessary ownership and exact permission-mode restrictions. macOS permissions still apply.</li><li>Improved handling of older saved folder selections and concurrent bookmark refreshes.</li><li>Added a privacy-safe support report: ConnectorApp --diagnostics or connector diagnose.</li></ul><p>App build 64 includes plugin 0.1.6 build 53. These version numbers describe separate components. Restart Connector and reconnect your MCP client after updating. If Hype already reports plugin build 53, this update does not require a plugin restart.</p>]]></description>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.9/Connector-0.1.9-build64.dmg" length="5773524" type="application/octet-stream" sparkle:edSignature="IrdvjRkBMAAB12oqy9XuQ6YuYBBRSmGCzwjzUd+x+b/2PetaU9MTprFksLmWeY1PRE8Mn+/pk86+8i0uI0vcBA=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: +xJ1PuoHMuWUGb/+ObbR6tMKeE7qOGyyXZ44djCsyyEjzRgJwjOKmBAlqlqGCVOsvKave9Nnx3cqqZOEpUS1AA==
-length: 1678
+edSignature: 4GzN0/IevcqwB7h0ETNPGGFRVAlpifKRhF56riC8CG+GLAjuVAhRvEWZb1bUKbrribyFT/+AL0Y0VlHJERe8DA==
+length: 1795
 -->
