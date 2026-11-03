@@ -2,13 +2,14 @@
 
 A standalone skill for Codex and Claude Code that teaches an agent to build and inspect editable Hype documents through Connector. It includes connection and save/export guidance, operation recipes, native authoring recipes, design patterns, and known compatibility limits.
 
-[Download the complete skill](https://worldoptimizer.github.io/hype-connector/downloads/hype-connector-skill.zip). The ZIP includes the instructions, five reference guides and two optional Python helpers. Keep the entire `hype-connector` folder together: the main instruction file loads references and helpers when needed.
+[Download the complete skill](https://worldoptimizer.github.io/hype-connector/downloads/hype-connector-skill.zip). The ZIP includes the instructions, six reference guides and two optional Python helpers. Keep the entire `hype-connector` folder together: the main instruction file loads references and helpers when needed.
 
 Install Connector and its Hype plugin separately. Set up MCP using **Connector → Automation → MCP configuration**, or give your agent the installed app's bundled CLI path. Installing the skill does not install an app, configure MCP, grant filesystem access or open Hype. It is independent of Skillset.
 
 ## What is included
 
 - [Connection and delivery](hype-connector/references/connection-and-delivery.md): selecting one Hype session, permissions, first save, save copies, export completion, MCP and AppleScript.
+- [Reliable editing](hype-connector/references/reliable-editing.md): complete workflows using documented editing commands.
 - [Operation recipes](hype-connector/references/operations.md): named editor workflows and the context each request needs.
 - [Native authoring recipes](hype-connector/references/native-recipes.md): measured Connector native calls for authoring beyond named operations.
 - [Design recipes](hype-connector/references/design-recipes.md): composing complete, editable scenes and interactions.

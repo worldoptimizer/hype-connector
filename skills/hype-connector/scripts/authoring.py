@@ -177,6 +177,8 @@ class Document:
             offset = r['nextOffset']
 
     def name_scene(self, scene, name):
+        if self.supports("sceneRename"):
+            return self.run("scene.rename", scene=scene["id"], name=name)
         self.client.invoke(self.ref, 'setCurrentScene:', self.scene_ref(scene))
         container = self.client.invoke(self.ref, 'currentSceneContainer', retain=True)
         self.client.invoke(container, 'setName:', name)

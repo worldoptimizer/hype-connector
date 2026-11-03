@@ -1,10 +1,24 @@
 # App and plugin updates
 
-[Download Connector 0.1.9](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.9/Connector-0.1.9-build64.dmg) from GitHub Releases.
+[Download Connector 0.1.10](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.10/Connector-0.1.10-build65.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.9
+## What changes in 0.1.10
+
+Connector 0.1.10 includes app build 65 and Hype plugin **0.1.7 build 54**. App and plugin version numbers are independent.
+
+- Newly created or updated JavaScript functions show their source immediately in Hype's editor. They can be edited without reopening the document.
+- `element.get` and `element.list` return action data with target references, including `javascriptOid`, instead of opaque `HypeAction` placeholders.
+- `scene.rename` renames a scene using its layout/controller ID. `scene.list` now exposes `sceneName`, `layoutName` and `sceneContainer`; its existing `name` field remains the layout name for compatibility.
+- MCP `resources/templates/list` returns an empty list instead of “Method not found”. The guide and operation catalog remain ordinary MCP resources. Read the installed skill files through the local filesystem.
+- The updated agent skill and Python authoring helper use the new scene rename command when the loaded plugin supports it.
+
+After updating Connector, **save your work and restart Hype** to load plugin build 54. Reconnect your MCP client so it uses the updated app, and [update the installed skill](../skills/README.md). Updating the app alone does not replace a skill previously copied into Codex or Claude.
+
+The fixes were checked in Hype 4.1.22 with a separate scene, native animations, JavaScript functions and button actions, including saving and reopening the document while preserving the original scene.
+
+## What changed in 0.1.9
 
 Connector 0.1.9 includes app build 64 and the unchanged plugin 0.1.6 build 53.
 

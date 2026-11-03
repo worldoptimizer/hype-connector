@@ -4,16 +4,20 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Connector</title>
         <item>
-            <title>0.1.9</title>
-            <pubDate>Mon, 02 Nov 2026 22:36:57 +0100</pubDate>
-            <sparkle:version>64</sparkle:version>
-            <sparkle:shortVersionString>0.1.9</sparkle:shortVersionString>
+            <title>0.1.10</title>
+            <pubDate>Tue, 03 Nov 2026 09:46:52 +0100</pubDate>
+            <sparkle:version>65</sparkle:version>
+            <sparkle:shortVersionString>0.1.10</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<h2>Connector 0.1.9</h2><ul><li>Ordinary folder access no longer requires writable settings or a writable lock file.</li><li>Removed unnecessary ownership and exact permission-mode restrictions. macOS permissions still apply.</li><li>Improved handling of older saved folder selections and concurrent bookmark refreshes.</li><li>Added a privacy-safe support report: ConnectorApp --diagnostics or connector diagnose.</li></ul><p>App build 64 includes plugin 0.1.6 build 53. These version numbers describe separate components. Restart Connector and reconnect your MCP client after updating. If Hype already reports plugin build 53, this update does not require a plugin restart.</p>]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.9/Connector-0.1.9-build64.dmg" length="5773524" type="application/octet-stream" sparkle:edSignature="IrdvjRkBMAAB12oqy9XuQ6YuYBBRSmGCzwjzUd+x+b/2PetaU9MTprFksLmWeY1PRE8Mn+/pk86+8i0uI0vcBA=="></enclosure>
+            <description><![CDATA[<!doctype html><html lang="en"><meta charset="utf-8"><title>Connector 0.1.10</title><body><h1>Connector 0.1.10</h1>
+<p>App build 65, Hype plugin 0.1.7 build 54.</p>
+<ul><li>New or updated JavaScript source appears immediately in Hype’s script editor and remains editable without reopening the document.</li><li>Read button action targets independently through element.get and element.list.</li><li>Rename scenes with the documented scene.rename operation. Scene lists now distinguish scene names from layout names.</li><li>Fix MCP resources/templates/list responses.</li><li>Update the scripting documentation and downloadable agent skill.</li></ul>
+<p>After updating Connector, save your work and restart Hype to load plugin build 54. Reconnect your MCP client and update your installed agent skill.</p></body></html>
+]]></description>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.10/Connector-0.1.10-build65.dmg" length="5783421" type="application/octet-stream" sparkle:edSignature="3TM3LmoMHN5GUZx1dL4aytQKbkhFA5ul3fTIZtVipOsDEGyhlFL+MeU1ABL5kfbfIzte19m6m5NPyIgjxRqoCg=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: 4GzN0/IevcqwB7h0ETNPGGFRVAlpifKRhF56riC8CG+GLAjuVAhRvEWZb1bUKbrribyFT/+AL0Y0VlHJERe8DA==
-length: 1795
+edSignature: r4/4MH+CtU4UHCKoOIDxgcgVuvDOwAYTWiuZNQkMOW7c44hJtBMXX3GFKHkAhUYIdOv7r4zzLG+vIVpCpIxBCA==
+length: 1941
 -->

@@ -163,3 +163,9 @@ Handles belong to one session and the same object can return the same handle. Th
 These helpers target bounded example documents, not unlimited batch creation. Context and collection handles remain retained for the workflow. Long-running services should explicitly track their own references, handle shared references correctly and release finished work; do not assume a Python object going out of scope releases a native handle.
 
 For diagnostics, a native synchronous call can include `undo:{"document":DOC_REF}` and explicit `trace` notification names or KVO target/keyPath pairs. These observe one request only, not async save or later browser events. A balanced undo group does not cause a model setter to register an action. Prefer the named guarded undo workflow described in [operation families](operations.md).
+
+## Prefer named scene rename and independent action readback
+
+On hosts with `sceneRename`, `Document.name_scene()` uses the documented `scene.rename` command without native handles. On older hosts its legacy native recipe remains available only when native access is allowed. If your task permits named operations only and the capability is missing, report the limitation instead of using that fallback.
+
+On hosts with `actionReadback`, verify button bindings independently with `element.get` after writing them. The returned action dictionaries identify the actual scene or JavaScript target. A mutation receipt alone is not an independent later read.

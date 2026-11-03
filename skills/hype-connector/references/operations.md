@@ -159,3 +159,15 @@ The current root scene/Main context must already be initialized, playback stoppe
 Undo is an extra diagnostic, not an atomic rollback or byte-for-byte restoration guarantee. Model setters need not register undo. Empty groups affect counts; names and counts do not uniquely identify an action. Do not use undo as cleanup after an uncertain mutation.
 
 The native interface additionally supports explicit synchronous `call`/`set` undo wrapping and bounded notification/KVO tracing. Trace observations cover only the request's synchronous execution, not later run-loop work, asynchronous save or browser events. A missing trace event is not proof of no side effect. Loaded controller inspection can expose existing window/inspector objects; inactive panes or lazy popovers can be absent. Do not treat an absent object as a license to invent a selector or force-create a controller.
+
+## Scene names and editor readback
+
+When the loaded host advertises `scene.rename`, call it with `document`, a `scene` ID from `scene.list`, and `name`. This renames the parent scene, not its individual layouts. `scene.list` exposes `sceneContainer` and `sceneName`; `name` and `layoutName` describe the layout. Verify the result through scene.list and its sceneName and preserve the IDs of pre-existing scenes. Check names before creating a new scene on repeated runs.
+
+```json
+{"op":"scene.rename","document":"/absolute/path/Example.hype","scene":"3","name":"Connector_Demo"}
+```
+
+With feature `actionReadback`, independently re-read `element.get` or `element.list` after assigning buttons. `ActionHandlerOnMouseClick.actions` contains native dictionaries: `type:4` with `javascriptOid` for a function, or `type:1` with `sceneOid`, `transition` and `duration` for scene navigation. Match each target ID against discovery in the same document. Older hosts can still return opaque action objects, which do not establish target correctness.
+
+With feature `javascriptEditorSync`, `javascript.setSource` also updates Hype's existing editor buffers and verifies their text. `editorsUpdated` counts checked buffers; it does not claim that a new tab was opened or browser execution was tested. The function remains editable without closing and reopening the document.
