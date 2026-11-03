@@ -4,20 +4,24 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>Connector</title>
         <item>
-            <title>0.1.10</title>
-            <pubDate>Tue, 03 Nov 2026 09:46:52 +0100</pubDate>
-            <sparkle:version>65</sparkle:version>
-            <sparkle:shortVersionString>0.1.10</sparkle:shortVersionString>
+            <title>0.1.11</title>
+            <pubDate>Tue, 03 Nov 2026 14:26:29 +0100</pubDate>
+            <sparkle:version>69</sparkle:version>
+            <sparkle:shortVersionString>0.1.11</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description><![CDATA[<!doctype html><html lang="en"><meta charset="utf-8"><title>Connector 0.1.10</title><body><h1>Connector 0.1.10</h1>
-<p>App build 65, Hype plugin 0.1.7 build 54.</p>
-<ul><li>New or updated JavaScript source appears immediately in Hype’s script editor and remains editable without reopening the document.</li><li>Read button action targets independently through element.get and element.list.</li><li>Rename scenes with the documented scene.rename operation. Scene lists now distinguish scene names from layout names.</li><li>Fix MCP resources/templates/list responses.</li><li>Update the scripting documentation and downloadable agent skill.</li></ul>
-<p>After updating Connector, save your work and restart Hype to load plugin build 54. Reconnect your MCP client and update your installed agent skill.</p></body></html>
+            <description><![CDATA[<!doctype html><html lang="en"><meta charset="utf-8"><title>Connector 0.1.11</title><body><h1>Connector 0.1.11</h1>
+<p>App build 69. Hype plugin 0.1.7 build 54 is unchanged from Connector 0.1.10.</p>
+<ul>
+<li>Setup finds Tumult Hype and installs the Connector plugin after you approve Hype’s support folder.</li>
+<li>In Applications, connect Codex or Claude Code to install the local MCP connection and the bundled agent skill together. Start a new chat and use Copy first prompt to check the connection. Setup leaves the trial unstarted.</li>
+<li>Connector updates unchanged skills it installed and preserves local edits. If you choose to replace an existing customized skill, Connector keeps a backup.</li>
+</ul>
+<p>If Hype is already running plugin build 54, there is no need to restart it for this app update. If Setup asks for a restart, save your documents, quit Hype and reopen it.</p></body></html>
 ]]></description>
-            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.10/Connector-0.1.10-build65.dmg" length="5783421" type="application/octet-stream" sparkle:edSignature="3TM3LmoMHN5GUZx1dL4aytQKbkhFA5ul3fTIZtVipOsDEGyhlFL+MeU1ABL5kfbfIzte19m6m5NPyIgjxRqoCg=="></enclosure>
+            <enclosure url="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg" length="6108248" type="application/octet-stream" sparkle:edSignature="XvywwLN/y222CtPhb23lpQCraUUoFP03SiDVDs7O8luXSsvI9E9SfWY02wmogwPRh41fqVY+39O0jygSTbIEAg=="></enclosure>
         </item>
     </channel>
 </rss><!-- sparkle-signatures:
-edSignature: r4/4MH+CtU4UHCKoOIDxgcgVuvDOwAYTWiuZNQkMOW7c44hJtBMXX3GFKHkAhUYIdOv7r4zzLG+vIVpCpIxBCA==
-length: 1941
+edSignature: ThWQLgSm1GaYIidCG90W6sqFtmjkSnK6f1YdPaQUcvNwy6JbiwcYoQNsynB0EPnChoCOJ+yaXyMUJ5B+DfyJBA==
+length: 2029
 -->

@@ -4,7 +4,15 @@ A standalone skill for Codex and Claude Code that teaches an agent to build and 
 
 [Download the complete skill](https://worldoptimizer.github.io/hype-connector/downloads/hype-connector-skill.zip). The ZIP includes the instructions, six reference guides and two optional Python helpers. Keep the entire `hype-connector` folder together: the main instruction file loads references and helpers when needed.
 
-Install Connector and its Hype plugin separately. Set up MCP using **Connector → Automation → MCP configuration**, or give your agent the installed app's bundled CLI path. Installing the skill does not install an app, configure MCP, grant filesystem access or open Hype. It is independent of Skillset.
+## Guided installation in Connector 0.1.11
+
+Connector 0.1.11 bundles this complete skill. After Hype setup, choose **Applications → Connect** beside **Codex** or **Claude Code**. This configures MCP and installs the skill together. A compatible Codex desktop installation supplies its own CLI; a separate terminal installation is not required. You can add the other client later from Applications.
+
+Start a new chat after connecting. “Configured” confirms the saved connection, not that your agent has made a successful Hype call. Use **Copy first prompt** to check `hype_hosts` without starting a trial. Normal client tool approvals still apply.
+
+Later app launches update unchanged skills managed by Connector. Locally edited skills are preserved. When connecting with a different existing skill, choose **Connect and keep my skill**, or **Replace and keep a backup**. Other MCP entries are preserved; an existing conflicting `hype-connector` connection needs review in the client's settings.
+
+Use the manual instructions below with Connector 0.1.10 or clients not covered by guided setup. Install Connector and its Hype plugin first. Configure MCP through **Automation → MCP configuration**, or give your agent the app's bundled CLI path. The standalone skill is independent of Skillset. Skip the manual copy if guided setup already installed it.
 
 ## What is included
 
@@ -18,7 +26,7 @@ Install Connector and its Hype plugin separately. Set up MCP using **Connector �
 
 The instructions describe both named operations and explicitly enabled native access. Use the current plugin's capabilities and the supplied recipes; the skill does not make every possible native selector a supported operation.
 
-## Codex
+## Manual installation: Codex
 
 Extract the ZIP. In Terminal, change to the directory containing the extracted `hype-connector` folder, then copy the whole folder's contents:
 
@@ -29,7 +37,7 @@ cp -R hype-connector/. "$HOME/.agents/skills/hype-connector/"
 
 Start a new Codex chat and invoke `$hype-connector`, or request a Connector task matching its description.
 
-## Claude Code
+## Manual installation: Claude Code
 
 From the directory containing the extracted `hype-connector` folder:
 
@@ -44,7 +52,7 @@ Start a new Claude Code session and invoke `/hype-connector`, or describe a matc
 
 From the downloaded or cloned repository root, use `skills/hype-connector/.` as the copy source instead of `hype-connector/.`. The destination stays the same. Choose either the ZIP or repository installation method.
 
-Copying updates files of the same name in that skill folder. For a clean replacement, preserve any personal additions, remove only the previous `hype-connector` skill folder, then copy the new complete folder. Do not update only `SKILL.md`; its recipes and Python helpers belong to the same version. To uninstall, remove only this skill folder. None of these steps runs automatically.
+Copying updates files of the same name in that skill folder. For a clean replacement, preserve any personal additions, remove only the previous `hype-connector` skill folder, then copy the new complete folder. Do not update only `SKILL.md`; its recipes and Python helpers belong to the same version. To uninstall, remove only this skill folder. These manual copy steps do not run automatically. Guided setup in 0.1.11 manages its own installed copy as described above.
 
 ## Try it
 

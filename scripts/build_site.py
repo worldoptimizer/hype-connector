@@ -93,12 +93,13 @@ def build(preview=False, output=None):
         raise RuntimeError('Missing signed update feed')
     (dist / 'updates').mkdir()
     shutil.copyfile(feed, dist / 'updates/appcast.xml')
-    notes = ROOT / 'site/updates/RELEASE_NOTES_0.1.10.html'
-    if not notes.is_file() or notes.is_symlink():
-        raise RuntimeError('Missing reviewed release notes')
-    shutil.copyfile(notes, dist / 'updates' / notes.name)
+    for version in ('0.1.10', '0.1.11'):
+        notes = ROOT / f'site/updates/RELEASE_NOTES_{version}.html'
+        if not notes.is_file() or notes.is_symlink():
+            raise RuntimeError('Missing reviewed release notes: ' + version)
+        shutil.copyfile(notes, dist / 'updates' / notes.name)
     banner = ('<div class="preview-banner">Local preview. Nothing has been published.</div>' if preview else '')
-    button = '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.10/Connector-0.1.10-build65.dmg">Download Connector 0.1.10</a>'
+    button = '<a class="button" href="https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg">Download Connector 0.1.11</a>'
     homepage = (ROOT / 'site/index.html').read_text().replace('<!--PREVIEW_NOTICE-->', banner).replace('<!--DOWNLOAD_BUTTON-->', button)
     homepage = homepage.replace('<!--SHARE_METADATA-->', share_tags())
     showcase_link = '<a class="button" href="demos/eiszeit/index.html">Play EISZEIT</a>'
@@ -141,7 +142,7 @@ def build(preview=False, output=None):
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f4f0"><title>{html.escape(title)} — Connector</title><meta name="description" content="{html.escape(title)} with Connector for Tumult Hype 4."><link rel="icon" href="../assets/connector-app-icon.png" type="image/png"><link rel="stylesheet" href="../assets/style.css"><link rel="stylesheet" href="../assets/connector-brand.css"><script src="../assets/site.js" defer></script></head>
 <body><a class="skip" href="#main">Skip to content</a>{banner}
 <header class="site-header wrap"><a class="brand" href="../"><img src="../assets/connector-app-icon.png" width="76" height="76" alt=""><span class="brand-copy"><span>Connector</span><span class="brand-tagline">Automations for Tumult Hype 4</span></span></a><nav aria-label="Main navigation"><a href="../#examples">Examples</a><a href="getting-started.html">Documentation</a><a href="agent-skill.html">Agent skill</a><a href="../#download">Download</a></nav></header>
-<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.10 · app 65 / plugin 54 · <a href="licensing.html">Trial and license</a> · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
+<div class="doc-layout wrap"><aside class="doc-sidebar" aria-label="Documentation"><details class="guide-menu" open><summary>Browse guides</summary><label class="sr-only" for="guide-filter">Filter guide titles</label><input id="guide-filter" class="doc-search" type="search" placeholder="Find a guide"><nav aria-label="Guide navigation">{nav}</nav><p class="search-empty" hidden>No matching guide titles.</p></details></aside><main id="main" class="doc-content">{content}<div class="doc-end">Connector 0.1.11 · app 69 / plugin 54 · <a href="licensing.html">Trial and license</a> · <a href="https://github.com/worldoptimizer/hype-connector">Project on GitHub</a></div></main></div>
 <footer class="footer wrap"><p>By Max Ziebell. Independent software for Tumult Hype.</p><a class="footer-brand" href="../"><img src="../assets/connector-app-icon.png" alt="" width="28" height="28">Connector home</a></footer><div class="copy-status sr-only" aria-live="polite"></div></body></html>'''
         metadata = (f'<meta property="og:title" content="{html.escape(title, quote=True)} — Connector">'
                     f'<meta property="og:description" content="{html.escape(title, quote=True)} with Connector for Tumult Hype 4.">'

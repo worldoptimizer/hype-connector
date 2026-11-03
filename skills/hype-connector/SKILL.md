@@ -9,6 +9,8 @@ Use Connector to operate the desktop editor. This package includes working patte
 
 ## Start here
 
+If MCP is not configured, use the setup guidance in [Connection and delivery](references/connection-and-delivery.md#install-or-repair-the-client-connection). Connector 0.1.11 can install both MCP and this skill through **Applications → Connect** in Codex and Claude Code. Connector 0.1.10 uses manual setup. Do not overwrite an existing client configuration or install duplicate skills just to test a connection.
+
 Connector automation requires an active trial or paid license. If it returns `license_required`, ask the user to start the seven-day trial or activate a key in Connector's **License** section. Do not start their trial merely to test connectivity. License errors do not call for reinstalling Hype or probing private selectors. See [Connection and delivery](references/connection-and-delivery.md#license-status).
 
 1. Discover the intended Hype host. Pin its PID and plugin session throughout the workflow. If several hosts or documents fit, resolve the target before editing. Never silently switch after a restart. Do not quit another workflow's Hype instance.
@@ -29,7 +31,7 @@ With plugin feature `sceneRename`, use `scene.rename` with the layout/controller
 | Native factories, references, event actions and runtime exploration | [Native recipes](references/native-recipes.md) |
 | Supported versions, measured scope and known boundaries | [Compatibility](references/compatibility.md) |
 
-The Connector 0.1.5 procedures require a loaded plugin that advertises them. Do not assume they exist in an older released app, and do not bypass a refusal with private selectors.
+The procedures in this skill require a loaded plugin that advertises their capabilities. Do not assume they exist in an older released app, and do not bypass a refusal with private selectors.
 
 Optional Python helpers are [connector_client.py](scripts/connector_client.py) and [authoring.py](scripts/authoring.py). Read their interfaces before importing. They do not start Hype, edit package files, install plugins or download dependencies. A client freezes after a transport/API failure: inspect the outcome before deliberately creating another client. It never retries a mutation automatically.
 

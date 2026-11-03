@@ -1,6 +1,6 @@
 # Trial and license
 
-Connector 0.1.6 requires a trial or paid license for automation. This release includes app build 47 and plugin build 38. Connector 0.1.5 is a historical release that did not require a license.
+Connector 0.1.6 and later require a trial or paid license for document automation. Installing the app, setting up a client and checking `hype_hosts` do not start the trial. Connector 0.1.5 is a historical release that did not require a license.
 
 ## Start the seven-day trial
 

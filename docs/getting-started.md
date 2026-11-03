@@ -1,6 +1,6 @@
 # Start automating Hype
 
-[Download Connector 0.1.6](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.6/Connector-0.1.6-build47.dmg) for macOS.
+[Download Connector 0.1.11](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg) for macOS.
 
 Connector adds local automation to the Tumult Hype editor. Build repeatable templates with a script, connect an MCP client, or send operations from AppleScript.
 
@@ -10,14 +10,26 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 
 - macOS 14 or later.
 - Tumult Hype 4. Compatibility is established with **Hype 4.1.22, build 786**. A newer version is not automatically supported simply because it starts.
-- Connector 0.1.6 (app build 47, plugin build 38).
+- Connector 0.1.11 (app build 69, plugin 0.1.7 build 54).
 - An internet connection to start the trial or activate a license.
 - Python 3 for the optional example scripts. Connector itself does not require Python.
 
-## Install and connect
+## Guided setup in Connector 0.1.11
+
+1. Move **Connector.app** into **Applications** and open it. **Setup** looks for Tumult Hype 4 automatically. If asked, choose the Hype installation you use.
+2. Under **Allow access once**, click **Continue** and confirm Hype’s support folder. If you’ve never opened Hype on this Mac, use **Open Hype** first so it can create the folder. Connector remembers your approval and installs its plugin automatically.
+3. Open Hype if it’s closed. If Setup asks for a restart, save your documents, quit Hype and reopen it. Connector detects the connection automatically. If prompted, choose the Hype window you want to automate.
+4. In **Setup** or **Applications**, click **Connect** next to **Codex** or **Claude Code**. Connector installs the personal MCP connection and the complete agent skill. You can connect another client later from **Applications** or choose **Use CLI or AppleScript instead** in Setup.
+5. Start a new chat in the connected client. Use **Copy first prompt** to check that it can list your Hype hosts. The client’s usual tool approvals still apply.
+
+Connector preserves customized skills during updates. If **Connect** finds a different copy of the skill, choose **Connect and keep my skill** or **Replace and keep a backup**.
+
+Setup and the first connection check leave the trial unstarted. When you’re ready to edit, open **License** and start the seven-day trial or activate a paid license.
+
+## Legacy manual setup for Connector 0.1.10
 
 1. Download and open the DMG, copy Connector into Applications, then open Connector.
-2. Open **License**. Choose **Start 7-day trial** to begin without a card, or enter your paid license key and choose **Activate license**. The trial starts only when you choose it. A [€29 one-time license](https://license.maxziebell.de/checkout) covers up to two Macs.
+2. Leave the trial unstarted while setting up the connection. When ready to work with documents, open **License** and choose **Start 7-day trial**, or enter your key and choose **Activate license**. A [€29 one-time license](https://license.maxziebell.de/checkout) covers up to two Macs.
 3. Choose Hype's existing `Application Support/Hype` folder when Connector asks. This selection lets Connector install its plugin and find running Hype sessions. Keep the selection so the app can restore access later.
 4. Install the bundled Connector plugin. If Hype is already open, save your work and restart Hype when convenient to load it. Connector does not quit Hype for you.
 5. Leave Hype running. Scripts can create and save a new document with `document.create`; no manually prepared document is required. When editing an existing document, stop playback and leave its root editing context active.
@@ -26,6 +38,8 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 The installer changes Connector's own plugin. Other installed plugins remain in place. Installing a new plugin on disk does not replace the one already loaded in a running Hype process.
 
 CLI, MCP and AppleScript use the same app license. Start or activate it once in Connector before running automation. The trial and activation require a network connection. A valid signed receipt can support offline use for at most 72 hours, with a normal refresh after 24 hours. See [Trial and license](licensing.md) for refresh, recovery and expiry.
+
+For Codex or Claude Code on 0.1.10, configure the [MCP connection](mcp.md) and [install the agent skill](../skills/README.md) separately.
 
 ## Check the connection
 
@@ -48,7 +62,7 @@ The terminal needs its own macOS access. If you prefer to reuse Connector's save
 '/Applications/Connector.app/Contents/MacOS/ConnectorApp' --run-operation '{"op":"document.list"}'
 ```
 
-This mode runs without opening another Connector window. If access is missing, open the normal app and choose the folder again. A version command alone does not test permission to reach Hype.
+This mode runs without opening another Connector window. If access fails, inspect the [support report](troubleshooting.md#local-support-report) first. Select the folder again only if its saved selection is missing or unusable. A version command alone does not test permission to reach Hype.
 
 ## Choose a workflow
 

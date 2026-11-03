@@ -1,10 +1,18 @@
 # App and plugin updates
 
-[Download Connector 0.1.10](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.10/Connector-0.1.10-build65.dmg) from GitHub Releases.
+[Download Connector 0.1.11](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.10
+## What changes in 0.1.11
+
+Connector 0.1.11 includes app build 69 and the unchanged Hype plugin **0.1.7 build 54**. It adds guided Hype setup and **Applications → Connect** for Codex and Claude Code. Connecting installs MCP and the complete skill together; another client can be added later. Setup does not start the trial.
+
+On launch, Connector checks the plugin installation and skills it manages. It updates unchanged managed skills, keeps customized copies and offers a backup when you explicitly replace one. The guided and manual Install / Update buttons preserve a newer installed plugin. Setup indicates when Hype still needs to load the installed plugin; save and restart Hype yourself when needed. App-only updates do not require restarting an already current Hype plugin.
+
+After updating from 0.1.10, connect Codex or Claude Code from **Applications** to set up the bundled skill. Start a new client chat after connecting.
+
+## What changed in 0.1.10
 
 Connector 0.1.10 includes app build 65 and Hype plugin **0.1.7 build 54**. App and plugin version numbers are independent.
 
@@ -14,7 +22,7 @@ Connector 0.1.10 includes app build 65 and Hype plugin **0.1.7 build 54**. App a
 - MCP `resources/templates/list` returns an empty list instead of “Method not found”. The guide and operation catalog remain ordinary MCP resources. Read the installed skill files through the local filesystem.
 - The updated agent skill and Python authoring helper use the new scene rename command when the loaded plugin supports it.
 
-After updating Connector, **save your work and restart Hype** to load plugin build 54. Reconnect your MCP client so it uses the updated app, and [update the installed skill](../skills/README.md). Updating the app alone does not replace a skill previously copied into Codex or Claude.
+After updating Connector, **save your work and restart Hype** to load plugin build 54. Reconnect your MCP client so it uses the updated app, and [update the installed skill](../skills/README.md). In 0.1.10, updating the app alone does not replace a skill previously copied into Codex or Claude.
 
 The fixes were checked in Hype 4.1.22 with a separate scene, native animations, JavaScript functions and button actions, including saving and reopening the document while preserving the original scene.
 
@@ -74,11 +82,11 @@ Connector postpones an update restart while an automation is running. An explici
 
 ## The Hype plugin
 
-The app includes a matching Connector plugin. After an app update, Connector uses your saved Hype folder selection to replace an older installed Connector plugin. An absent plugin still requires **Installation → Install / Update**. Existing probes and other plugins are left alone.
+The app includes a matching Connector plugin. After an app update, Connector uses your saved Hype folder selection to replace an older installed Connector plugin. Connector 0.1.11 installs it during first-time Setup. If the plugin is removed after setup, use **Installation → Install / Update**. Connector 0.1.10 also uses that button for its first installation. Existing probes and other plugins are left alone.
 
 Hype keeps its loaded plugin in memory. Save your documents and restart Hype when convenient to load the updated plugin. Connector never closes Hype automatically.
 
-If folder access cannot be restored, open **Connection**, choose the Hype support folder again, then use **Installation → Install / Update**. macOS may still request permission when its security policy requires it.
+If access fails, inspect the [support report](troubleshooting.md#local-support-report) before selecting the folder again. If the saved selection is missing or unusable, restore it in **Connection** (or **Setup** in Connector 0.1.11), then finish plugin installation. macOS may still request permission when its security policy requires it.
 
 ## Release channel
 

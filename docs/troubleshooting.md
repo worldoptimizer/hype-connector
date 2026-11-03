@@ -1,8 +1,18 @@
 # Troubleshooting
 
+## Setup or Applications is missing
+
+Setup and Applications were introduced in Connector 0.1.11. If you are using Connector 0.1.10, follow the [legacy setup guide](getting-started.md#legacy-manual-setup-for-connector-0110) for **Connection**, **Installation** and **Automation → MCP configuration**.
+
+## A client says Configured but cannot connect
+
+In Connector 0.1.11, Configured means Connector verified the stored MCP entry. Start a new Codex or Claude Code chat and call `hype_hosts`. Check the client's normal tool approvals and any project or company overrides. If the client is missing, install it and return to Applications. If a different `hype-connector` entry already exists, review that entry in the client's MCP settings; Connector preserves it rather than overwriting it.
+
+A message about local skill changes means those files were preserved. It is not a Hype folder-access error. When connecting, you can keep the skill or replace it with a backup.
+
 ## A trial or license is required
 
-Connector 0.1.6 requires a trial or paid license for automation. Open **License** in Connector to explicitly start the seven-day trial without a card, or activate your paid key. CLI, MCP and AppleScript use that same license. Connector 0.1.5 did not require a license.
+Connector 0.1.6 and later require a trial or paid license for automation. Open **License** in Connector to explicitly start the seven-day trial without a card, or activate your paid key. CLI, MCP and AppleScript use that same license. Connector 0.1.5 did not require a license.
 
 If a receipt has expired, connect to the internet and choose **Refresh status**. Temporary connection failures can use a still-valid signed receipt until its original expiry, at most 72 hours after issue. They do not extend the trial or receipt. A revoked license or invalid receipt cannot be used. Keep the Mac’s date and time correct.
 
@@ -30,7 +40,7 @@ A successful version or catalog command reads local information and does not pro
 
 Compare the local `catalog` with the selected host's `capabilities`. The catalog describes the installed app; capabilities describe the plugin loaded in Hype. Update Connector's plugin, then save and restart Hype when convenient.
 
-Connector 0.1.6 targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
+Connector targets Hype 4.1.22/build 786 on macOS 14 or later. Other versions or unusual editor contexts may refuse operations. Report the Connector version, Hype version, operation name and sanitized error when seeking help.
 
 ## The session changed
 

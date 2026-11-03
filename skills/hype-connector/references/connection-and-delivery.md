@@ -1,6 +1,6 @@
 # Connection, documents and delivery
 
-Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. Connector 0.1.5 targets Hype 4.1.22 build 786 on macOS 14 or later. Named creation, duration, video and external-access workflows require their advertised capabilities. Read [compatibility.md](compatibility.md) for architecture coverage and concrete limits. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
+Use this reference for choosing a transport, creating/opening a document, saving, exporting and resolving completion. Connector targets Hype 4.1.22 build 786 on macOS 14 or later. Named creation, duration, video and external-access workflows require their advertised capabilities. Read [compatibility.md](compatibility.md) for architecture coverage and concrete limits. Check the running plugin's capabilities; a newer installed app does not replace a plugin already loaded in Hype.
 
 ## Connect once, keep the identity
 
@@ -11,9 +11,17 @@ A normal installation contains two executables:
 
 Use the actual installed location if different. Open Connector normally to select Hype's support folder and install the plugin. If installation changed a running Hype's plugin, Hype must restart before that new version loads. Do not restart an editor with someone else's work as a side effect of discovery.
 
+### Install or repair the client connection
+
+In Connector 0.1.11, use **Setup** and **Applications → Connect** for Codex and Claude Code. Use **Automation → MCP configuration** for manual setup in Connector 0.1.10 or with other MCP clients. Connect installs both the personal MCP entry and this complete skill. It can use a compatible Codex desktop app's bundled CLI. It does not start a trial.
+
+If guided setup has already installed the skill and connection, use them instead of creating another copy. Start a new client chat, then call `hype_hosts` as the first connectivity check. A “Configured” badge verifies configuration only. Project or organization settings and the client's normal tool approvals can still affect actual access.
+
+Connector updates unchanged skills it manages when the app opens. A locally changed skill stays unchanged; explicit replacement keeps a backup. **Connect and keep my skill** sets up MCP without replacing that skill. A conflicting existing MCP entry is preserved and reported for review, not silently overwritten. Do not repeatedly request Hype folder selection to fix a client configuration conflict.
+
 ### License status
 
-Connector 0.1.6 requires an active seven-day trial or paid license. The app, CLI, MCP and AppleScript share that license. `connector license status` inspects the local status. The trial begins only when explicitly started, so obtain the user's intent before `connector license trial` or the app's **Start 7-day trial** action. Activation and the first trial start need internet access. Enter keys in the app or via `connector license activate -` on stdin, never command-line arguments, logs or public messages.
+Connector 0.1.6 and later require an active seven-day trial or paid license. The app, CLI, MCP and AppleScript share that license. `connector license status` inspects the local status. The trial begins only when explicitly started, so obtain the user's intent before `connector license trial` or the app's **Start 7-day trial** action. Activation and the first trial start need internet access. Enter keys in the app or via `connector license activate -` on stdin, never command-line arguments, logs or public messages.
 
 On `license_expired`, use **Refresh status** or `connector license refresh` while online. A valid signed receipt supports at most 72 hours offline. `trial_expired` requires a paid license, and `license_revoked` requires resolving the purchase with support. Do not delete Keychain entries, reset installation IDs, downgrade or switch transports to work around these errors. These are licensing outcomes, not a reason to mutate a Hype document or reinstall its plugin.
 

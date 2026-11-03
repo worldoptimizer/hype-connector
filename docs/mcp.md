@@ -2,11 +2,19 @@
 
 Connector lets an MCP-capable client discover Hype documents, inspect their content and make explicit editor changes. It communicates locally over standard input/output. It does not expose a public network service.
 
-Connector 0.1.6 automation uses the same [trial or paid app license](licensing.md). Start or activate it in Connector’s **License** section first.
+Document operations require the shared [trial or paid app license](licensing.md). Setup and a `hype_hosts` connection check do not start or require a trial. Start it explicitly in **License** when ready to edit.
 
 First complete [installation](getting-started.md), select Hype's folder in Connector and load the plugin in Hype. Keep a small disposable document available for your first session.
 
-## Server configuration
+## Guided connection in Connector 0.1.11
+
+Complete **Setup**, then choose **Applications → Connect** beside Codex or Claude Code. Connector installs the personal MCP connection and the complete skill together. A compatible Codex desktop app supplies its bundled CLI. Start a new chat after connecting and use **Copy first prompt** to check Hype discovery. You can connect another client later from Applications.
+
+Client tool approvals and project or company settings still apply. The Configured badge confirms saved settings, not a completed agent request. Existing conflicting MCP entries are preserved for review. For a customized skill, choose to keep it or replace it with a backup.
+
+Use the manual configuration below for Connector 0.1.10 and for other MCP clients.
+
+## Manual server configuration
 
 In Connector, use **Automation → MCP configuration** and copy the generated configuration into your client's MCP settings. The app provides its actual installed executable path. A standard installation uses:
 
@@ -25,7 +33,7 @@ This is the command/arguments configuration for clients using the `mcpServers` f
 
 Run the executable directly. Launching it through `open -a` does not preserve MCP's standard input/output connection. This explicit MCP mode opens no Connector window. The normal Connector app may stay open alongside it.
 
-App MCP reuses Connector's saved folder selection. If it reports missing or invalid access, open the normal app and choose the folder again. It does not open a background permission chooser. The alternative standalone `connector mcp` mode uses its launcher's access rather than that saved selection.
+App MCP reuses Connector's saved folder selection. If it reports an access failure, check the [support report](troubleshooting.md#local-support-report) first. Choose the folder again only when the diagnostic identifies a missing or unusable saved selection. It does not open a background permission chooser. The alternative standalone `connector mcp` mode uses its launcher's access rather than that saved selection.
 
 ## Tools and discovery
 
