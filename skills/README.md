@@ -4,9 +4,9 @@ A standalone skill for Codex and Claude Code that teaches an agent to build and 
 
 [Download the complete skill](https://worldoptimizer.github.io/hype-connector/downloads/hype-connector-skill.zip). The ZIP includes the instructions, six reference guides and two optional Python helpers. Keep the entire `hype-connector` folder together: the main instruction file loads references and helpers when needed.
 
-## Guided installation in Connector 0.1.11
+## Guided installation in Connector 0.1.12
 
-Connector 0.1.11 bundles this complete skill. After Hype setup, choose **Applications → Connect** beside **Codex** or **Claude Code**. This configures MCP and installs the skill together. A compatible Codex desktop installation supplies its own CLI; a separate terminal installation is not required. You can add the other client later from Applications.
+Connector 0.1.12 bundles this complete skill. In the assistant, choose **Codex** or **Claude Code** and click **Continue**. Later, use **Applications → Connect** to add another client. This configures MCP and installs the skill together. A compatible Codex desktop installation supplies its own CLI; a separate terminal installation is not required. You can add the other client later from Applications.
 
 Start a new chat after connecting. “Configured” confirms the saved connection, not that your agent has made a successful Hype call. Use **Copy first prompt** to check `hype_hosts` without starting a trial. Normal client tool approvals still apply.
 
@@ -52,7 +52,7 @@ Start a new Claude Code session and invoke `/hype-connector`, or describe a matc
 
 From the downloaded or cloned repository root, use `skills/hype-connector/.` as the copy source instead of `hype-connector/.`. The destination stays the same. Choose either the ZIP or repository installation method.
 
-Copying updates files of the same name in that skill folder. For a clean replacement, preserve any personal additions, remove only the previous `hype-connector` skill folder, then copy the new complete folder. Do not update only `SKILL.md`; its recipes and Python helpers belong to the same version. To uninstall, remove only this skill folder. These manual copy steps do not run automatically. Guided setup in 0.1.11 manages its own installed copy as described above.
+Copying updates files of the same name in that skill folder. For a clean replacement, preserve any personal additions, remove only the previous `hype-connector` skill folder, then copy the new complete folder. Do not update only `SKILL.md`; its recipes and Python helpers belong to the same version. To uninstall, remove only this skill folder. These manual copy steps do not run automatically. Guided setup in 0.1.11 and later manages its own installed copy as described above.
 
 ## Try it
 

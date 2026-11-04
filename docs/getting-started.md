@@ -1,6 +1,6 @@
 # Start automating Hype
 
-[Download Connector 0.1.11](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg) for macOS.
+[Download Connector 0.1.12](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.12/Connector-0.1.12-build78.dmg) for macOS.
 
 Connector adds local automation to the Tumult Hype editor. Build repeatable templates with a script, connect an MCP client, or send operations from AppleScript.
 
@@ -10,17 +10,19 @@ The Connector app installs its plugin inside Hype and manages the connection. Yo
 
 - macOS 14 or later.
 - Tumult Hype 4. Compatibility is established with **Hype 4.1.22, build 786**. A newer version is not automatically supported simply because it starts.
-- Connector 0.1.11 (app build 69, plugin 0.1.7 build 54).
+- Connector 0.1.12 (app build 78, plugin 0.1.7 build 54).
 - An internet connection to start the trial or activate a license.
 - Python 3 for the optional example scripts. Connector itself does not require Python.
 
-## Guided setup in Connector 0.1.11
+## Guided setup in Connector 0.1.12
 
-1. Move **Connector.app** into **Applications** and open it. **Setup** looks for Tumult Hype 4 automatically. If asked, choose the Hype installation you use.
-2. Under **Allow access once**, click **Continue** and confirm Hype’s support folder. If you’ve never opened Hype on this Mac, use **Open Hype** first so it can create the folder. Connector remembers your approval and installs its plugin automatically.
-3. Open Hype if it’s closed. If Setup asks for a restart, save your documents, quit Hype and reopen it. Connector detects the connection automatically. If prompted, choose the Hype window you want to automate.
-4. In **Setup** or **Applications**, click **Connect** next to **Codex** or **Claude Code**. Connector installs the personal MCP connection and the complete agent skill. You can connect another client later from **Applications** or choose **Use CLI or AppleScript instead** in Setup.
-5. Start a new chat in the connected client. Use **Copy first prompt** to check that it can list your Hype hosts. The client’s usual tool approvals still apply.
+1. Move **Connector.app** into **Applications** and open it. The assistant finds Hype automatically. If asked, choose your Hype installation.
+2. In **Connect Hype**, click **Continue**. The correct plugin folder opens directly; click **Allow access**. If Hype has not created its folder yet, Continue opens Hype first. Connector installs its plugin after access is confirmed.
+3. Follow the same step until Hype connects. Continue opens Hype if needed. If a running Hype needs to load a different plugin, save your documents, quit and reopen Hype. The assistant advances when it connects. With multiple sessions, choose the one to automate.
+4. In **Choose your application**, select **Codex**, **Claude Code**, or **CLI or AppleScript**, then click **Continue**. An agent connection installs MCP and the complete skill together. **Back** retains your selection and completed setup work.
+5. Click **Finish**. For an agent client, start a new chat and use **Copy first prompt** to check Hype discovery. Add another client later with **Applications → Connect**. The client's normal tool approvals still apply.
+
+The large navigation buttons stay at the bottom of the assistant. The normal sidebar appears after setup. If you already have plugin build 54, updating from 0.1.11 does not require a Hype restart.
 
 Connector preserves customized skills during updates. If **Connect** finds a different copy of the skill, choose **Connect and keep my skill** or **Replace and keep a backup**.
 

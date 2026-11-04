@@ -9,7 +9,7 @@ Use Connector to operate the desktop editor. This package includes working patte
 
 ## Start here
 
-If MCP is not configured, use the setup guidance in [Connection and delivery](references/connection-and-delivery.md#install-or-repair-the-client-connection). Connector 0.1.11 can install both MCP and this skill through **Applications → Connect** in Codex and Claude Code. Connector 0.1.10 uses manual setup. Do not overwrite an existing client configuration or install duplicate skills just to test a connection.
+If MCP is not configured, use the setup guidance in [Connection and delivery](references/connection-and-delivery.md#install-or-repair-the-client-connection). Connector 0.1.12 installs MCP and this skill when you choose Codex or Claude Code in Setup and click **Continue**. Use **Applications → Connect** to add another client later (also supported in 0.1.11). Connector 0.1.10 uses manual setup. Do not overwrite an existing client configuration or install duplicate skills just to test a connection.
 
 Connector automation requires an active trial or paid license. If it returns `license_required`, ask the user to start the seven-day trial or activate a key in Connector's **License** section. Do not start their trial merely to test connectivity. License errors do not call for reinstalling Hype or probing private selectors. See [Connection and delivery](references/connection-and-delivery.md#license-status).
 

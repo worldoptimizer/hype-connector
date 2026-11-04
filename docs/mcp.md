@@ -6,9 +6,9 @@ Document operations require the shared [trial or paid app license](licensing.md)
 
 First complete [installation](getting-started.md), select Hype's folder in Connector and load the plugin in Hype. Keep a small disposable document available for your first session.
 
-## Guided connection in Connector 0.1.11
+## Guided connection in Connector 0.1.12
 
-Complete **Setup**, then choose **Applications → Connect** beside Codex or Claude Code. Connector installs the personal MCP connection and the complete skill together. A compatible Codex desktop app supplies its bundled CLI. Start a new chat after connecting and use **Copy first prompt** to check Hype discovery. You can connect another client later from Applications.
+In **Setup**, choose Codex or Claude Code and click **Continue**. To add another client later, use **Applications → Connect**. Connector installs the personal MCP connection and the complete skill together. A compatible Codex desktop app supplies its bundled CLI. Start a new chat after connecting and use **Copy first prompt** to check Hype discovery. You can connect another client later from Applications.
 
 Client tool approvals and project or company settings still apply. The Configured badge confirms saved settings, not a completed agent request. Existing conflicting MCP entries are preserved for review. For a customized skill, choose to keep it or replace it with a backup.
 

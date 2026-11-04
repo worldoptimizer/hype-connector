@@ -1,10 +1,21 @@
 # App and plugin updates
 
-[Download Connector 0.1.11](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.11/Connector-0.1.11-build69.dmg) from GitHub Releases.
+[Download Connector 0.1.12](https://github.com/worldoptimizer/hype-connector/releases/download/v0.1.12/Connector-0.1.12-build78.dmg) from GitHub Releases.
 
 Connector includes a signed Sparkle update channel hosted on GitHub. The app checks the signed feed and verifies the downloaded update before installing it.
 
-## What changes in 0.1.11
+## What changes in 0.1.12
+
+Connector 0.1.12 includes app build 78 and the unchanged Hype plugin **0.1.7 build 54**.
+
+- A compact three-step assistant replaces the setup settings page: connect Hype, choose your application, finish.
+- Large Back and Continue buttons stay at the bottom. Each step has one primary action.
+- The folder permission dialog opens directly in Hype's plugin folder. Continue opens Hype first only if it still needs to create the folder.
+- Updated setup instructions and bundled agent skill guidance.
+
+Updating from 0.1.11 does not require restarting Hype when it already runs plugin build 54. Existing connections are kept. Setup does not start the trial.
+
+## What changed in 0.1.11
 
 Connector 0.1.11 includes app build 69 and the unchanged Hype plugin **0.1.7 build 54**. It adds guided Hype setup and **Applications → Connect** for Codex and Claude Code. Connecting installs MCP and the complete skill together; another client can be added later. Setup does not start the trial.
 

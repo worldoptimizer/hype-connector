@@ -13,7 +13,7 @@ Use the actual installed location if different. Open Connector normally to selec
 
 ### Install or repair the client connection
 
-In Connector 0.1.11, use **Setup** and **Applications → Connect** for Codex and Claude Code. Use **Automation → MCP configuration** for manual setup in Connector 0.1.10 or with other MCP clients. Connect installs both the personal MCP entry and this complete skill. It can use a compatible Codex desktop app's bundled CLI. It does not start a trial.
+In Connector 0.1.12, follow **Setup → Continue**, choose Codex or Claude Code, then **Continue → Finish**. The Hype folder opens directly for confirmation. Add another client with **Applications → Connect**, also available in 0.1.11. Use **Automation → MCP configuration** for manual setup in Connector 0.1.10 or with other MCP clients. Connect installs both the personal MCP entry and this complete skill. It can use a compatible Codex desktop app's bundled CLI. It does not start a trial.
 
 If guided setup has already installed the skill and connection, use them instead of creating another copy. Start a new client chat, then call `hype_hosts` as the first connectivity check. A “Configured” badge verifies configuration only. Project or organization settings and the client's normal tool approvals can still affect actual access.
 
